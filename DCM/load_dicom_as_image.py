@@ -53,6 +53,14 @@ def load_dicom_as_image(dicom_path):
 def read_image_file(filepath):
     """Read JPG or PNG file and return RGB array"""
     try:
+        ext = os.path.splitext(filepath)[1].lower()
+
+        # Handle DICOM files
+        if ext == ".dcm":
+            img, _ = load_dicom_as_image(filepath)
+            return img
+
+        # Fallback to standard image loading (JPG/PNG, etc.)
         img = np.array(Image.open(filepath).convert("RGB"))
         return img
     except Exception as e:
@@ -80,8 +88,8 @@ def get_dataset_files(data_dir: str) -> Optional[DatasetInfo]:
     Returns:
         DatasetInfo con la información del dataset, o None si hay error
     """
-    # Get all image files (JPG or PNG)
-    image_extensions = ['*.jpg', '*.jpeg', '*.png', '*.JPG', '*.PNG']
+    # Get all image files (JPG, PNG or DICOM)
+    image_extensions = ['*.jpg', '*.jpeg', '*.png', '*.JPG', '*.PNG', '*.dcm', '*.DCM']
     files = []
     for ext in image_extensions:
         files.extend(glob.glob(os.path.join(data_dir, ext)))

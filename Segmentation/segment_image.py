@@ -124,14 +124,21 @@ def segment_first_image(predictor, img, filename):
     img_enhanced = cv2.convertScaleAbs(img, alpha=1.2, beta=10)
     predictor.set_image(img_enhanced)
 
-    # Use the interactive point selector
+    # Use the interactive point selector (if GUI available)
     print("🎯 Selección de puntos iniciando...")
     print("   - Click DERECHO: Marca puntos POSITIVOS (objeto de interés)")
     print("   - Click IZQUIERDO: Marca puntos NEGATIVOS (para omitir contornos)")
     print("   - Tecla 'z': Deshacer último punto")
     print("   - Tecla 'c': Limpiar todos los puntos")
     positive_points, negative_points = interactive_sam_point_selector(img, predictor, filename)
-    
+
+    # Si no hay puntos (por ejemplo, en entorno sin GUI), usar punto central automático
+    if len(positive_points) == 0 and len(negative_points) == 0:
+        h, w = img.shape[:2]
+        auto_point = [w // 2, h // 2]
+        positive_points = [auto_point]
+        print(f"⚠️ No se seleccionaron puntos en la interfaz. Usando punto central automático: ({auto_point[0]}, {auto_point[1]})")
+
     # Prepare points and labels for SAM
     input_points = []
     input_labels = []
@@ -145,10 +152,6 @@ def segment_first_image(predictor, img, filename):
     for point in negative_points:
         input_points.append(point)
         input_labels.append(0)
-
-    if len(input_points) == 0:
-        print("⚠️ No se seleccionaron puntos. Saliendo...")
-        return None
 
     input_points = np.array(input_points)
     input_labels = np.array(input_labels)

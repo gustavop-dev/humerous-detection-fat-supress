@@ -1,0 +1,37 @@
+SAM Complete Folder Segmentation Summary
+======================================================================
+Dataset: axial_sections
+Middle image: I11.dcm (index 11)
+Initial segmentation: segment_sam_points.py
+Warning threshold: 25%
+Severe warning threshold: 35%
+Total images: 20
+Successfully segmented: 18
+Images with warnings: 2
+Failed images (skipped): 2
+
+Failed slices:
+  - [18] I18.dcm: Diferencia 57.1% > 45% (Dice: 0.429)
+  - [19] I19.dcm: Diferencia 93.6% > 45% (Dice: 0.064)
+
+======================================================================
+Results per image:
+----------------------------------------------------------------------
+  1. I01.dcm         | Area:    1254 px | Dice: 0.896 | Score: 0.903 | SegPt: (127,142) | Centro: (123,144)
+  2. I02.dcm         | Area:    1404 px | Dice: 0.872 | Score: 0.909 | SegPt: (130,140) | Centro: (127,142)
+  3. I03.dcm         | Area:    1691 px | Dice: 0.923 | Score: 0.942 | SegPt: (132,139) | Centro: (130,140)
+  4. I04.dcm         | Area:    1845 px | Dice: 0.835 | Score: 0.904 | SegPt: (138,137) | Centro: (132,139)
+  5. I05.dcm         | Area:    2445 px | Dice: 0.833 | Score: 0.916 | SegPt: (144,135) | Centro: (138,137)
+  6. I06.dcm         | Area:    3382 px | Dice: 0.874 | Score: 0.950 | SegPt: (147,132) | Centro: (144,135)
+  7. I07.dcm         | Area:    4231 px | Dice: 0.914 | Score: 0.945 | SegPt: (149,134) | Centro: (147,132)
+  8. I08.dcm         | Area:    4910 px | Dice: 0.915 | Score: 0.916 | SegPt: (149,136) | Centro: (149,134)
+  9. I09.dcm         | Area:    5748 px | Dice: 0.949 | Score: 0.900 | SegPt: (149,136) | Centro: (149,136)
+ 10. I10.dcm         | Area:    6152 px | Dice: 0.966 | Score: 0.951 | SegPt: (148,137) | Centro: (149,136)
+ 11. I11.dcm         | Area:    6317 px | Dice: REF | Score: 0.923 | SegPt: (148,137) | Centro: (148,137)
+ 12. I12.dcm         | Area:    6942 px | Dice: 0.948 | Score: 0.901 | SegPt: (148,137) | Centro: (149,134)
+ 13. I13.dcm         | Area:    7855 px | Dice: 0.929 | Score: 0.861 | SegPt: (149,134) | Centro: (154,132)
+ 14. I14.dcm         | Area:    5274 px | Dice: 0.803 | Score: 0.925 | SegPt: (154,132) | Centro: (149,137)
+ 15. I15.dcm         | Area:    3973 px | Dice: 0.856 | Score: 0.900 | SegPt: (149,137) | Centro: (149,140)
+ 16. I16.dcm         | Area:    2893 px | Dice: 0.843 | Score: 0.929 | SegPt: (149,140) | Centro: (150,142)
+ 17. I17.dcm         | Area:    1679 px | Dice: 0.734 | Score: 0.918 | SegPt: (150,142) | Centro: (151,140) ⚠️
+ 20. I20.dcm         | Area:    3357 px | Dice: 0.653 | Score: 0.741 | SegPt: (151,140) | Centro: (164,138) ⚠️
