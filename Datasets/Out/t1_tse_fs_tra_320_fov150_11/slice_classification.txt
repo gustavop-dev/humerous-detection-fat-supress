@@ -1,0 +1,40 @@
+Slice Classification Report – t1_tse_fs_tra_320_fov150_11
+============================================================
+Thresholds: CORRECT >= 0.8, AMBIGUOUS >= 0.55, FAILED < 0.55
+
+[CORRECT] (17 slices)
+  [ 13] IM-0008-0013.dcm      Dice=0.922  Area=1935
+  [ 14] IM-0008-0014.dcm      Dice=0.929  Area=2262
+  [ 15] IM-0008-0015.dcm      Dice=0.964  Area=2565
+  [ 16] IM-0008-0016.dcm      Dice=1.000  Area=2541
+  [ 17] IM-0008-0017.dcm      Dice=0.968  Area=2423
+  [ 18] IM-0008-0018.dcm      Dice=0.941  Area=2240
+  [ 19] IM-0008-0019.dcm      Dice=0.801  Area=1675
+  [ 21] IM-0008-0021.dcm      Dice=0.800  Area=1006
+  [ 22] IM-0008-0022.dcm      Dice=0.871  Area=781
+  [ 23] IM-0008-0023.dcm      Dice=0.918  Area=689
+  [ 24] IM-0008-0024.dcm      Dice=0.914  Area=624
+  [ 25] IM-0008-0025.dcm      Dice=0.945  Area=605
+  [ 26] IM-0008-0026.dcm      Dice=0.928  Area=565
+  [ 27] IM-0008-0027.dcm      Dice=0.948  Area=522
+  [ 28] IM-0008-0028.dcm      Dice=0.924  Area=549
+  [ 29] IM-0008-0029.dcm      Dice=0.952  Area=565
+  [ 30] IM-0008-0030.dcm      Dice=0.926  Area=543
+
+[AMBIGUOUS] (4 slices)
+  [  8] IM-0008-0008.dcm      Dice=0.601  Area=276
+  [ 11] IM-0008-0011.dcm      Dice=0.713  Area=616
+  [ 12] IM-0008-0012.dcm      Dice=0.727  Area=1104
+  [ 20] IM-0008-0020.dcm      Dice=0.664  Area=1495
+
+[FAILED] (9 slices)
+  [ -1] IM-0008-0009.dcm      Dice=0.000  Area=0
+  [ -1] IM-0008-0005.dcm      Dice=0.000  Area=0
+  [ -1] IM-0008-0010.dcm      Dice=0.000  Area=0
+  [ -1] IM-0008-0003.dcm      Dice=0.000  Area=0
+  [ -1] IM-0008-0004.dcm      Dice=0.000  Area=0
+  [ -1] IM-0008-0006.dcm      Dice=0.000  Area=0
+  [ -1] IM-0008-0002.dcm      Dice=0.000  Area=0
+  [ -1] IM-0008-0001.dcm      Dice=0.000  Area=0
+  [  7] IM-0008-0007.dcm      Dice=0.413  Area=834
+

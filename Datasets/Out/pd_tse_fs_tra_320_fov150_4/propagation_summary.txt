@@ -1,0 +1,49 @@
+SAM Complete Folder Segmentation Summary
+======================================================================
+Dataset: /home/cerrotico/unal/interactive-medsam/Datasets/In/pd_tse_fs_tra_320_fov150_4
+Middle image: IM-0001-0016.dcm (index 16)
+Initial segmentation: segment_sam_points.py
+Warning threshold: 25%
+Severe warning threshold: 35%
+Neighbor extra-area threshold: 25.0%
+Total images: 31
+Successfully segmented: 23
+Images with warnings: 5
+Failed images (skipped): 8
+
+Failed slices:
+  - [10] IM-0001-0010.dcm: Diferencia 96.4% > 55% (umbral dinámico) (Dice: 0.036)
+  - [9] IM-0001-0009.dcm: Diferencia 96.2% > 57% (umbral dinámico) (Dice: 0.038)
+  - [6] IM-0001-0006.dcm: Diferencia 96.3% > 62% (umbral dinámico) (Dice: 0.037)
+  - [5] IM-0001-0005.dcm: Diferencia 96.1% > 63% (umbral dinámico) (Dice: 0.039)
+  - [4] IM-0001-0004.dcm: Diferencia 95.4% > 65% (umbral dinámico) (Dice: 0.046)
+  - [3] IM-0001-0003.dcm: Diferencia 96.0% > 67% (umbral dinámico) (Dice: 0.040)
+  - [2] IM-0001-0002.dcm: Diferencia 98.3% > 68% (umbral dinámico) (Dice: 0.017)
+  - [1] IM-0001-0001.dcm: Diferencia 97.7% > 70% (umbral dinámico) (Dice: 0.023)
+
+======================================================================
+Results per image:
+----------------------------------------------------------------------
+  7. IM-0001-0007.dcm | Area:     830 px | Dice: 0.630 | Score: 0.834 | SegPt: (101,146) | Centro: (106,140) 🚨
+  8. IM-0001-0008.dcm | Area:    1544 px | Dice: 0.449 | Score: 0.839 | SegPt: (108,126) | Centro: (101,146) 🚨
+ 11. IM-0001-0011.dcm | Area:     847 px | Dice: 0.665 | Score: 0.854 | SegPt: (109,126) | Centro: (108,126) ⚠️
+ 12. IM-0001-0012.dcm | Area:    1702 px | Dice: 0.711 | Score: 0.885 | SegPt: (108,122) | Centro: (109,126) ⚠️
+ 13. IM-0001-0013.dcm | Area:    3088 px | Dice: 0.916 | Score: 0.926 | SegPt: (107,123) | Centro: (108,122)
+ 14. IM-0001-0014.dcm | Area:    3530 px | Dice: 0.933 | Score: 0.944 | SegPt: (107,123) | Centro: (107,123)
+ 15. IM-0001-0015.dcm | Area:    4037 px | Dice: 0.952 | Score: 0.919 | SegPt: (108,124) | Centro: (107,123)
+ 16. IM-0001-0016.dcm | Area:    4211 px | Dice: 1.000 | Score: 0.921 | SegPt: (128,128) | Centro: (108,124)
+ 17. IM-0001-0017.dcm | Area:    4252 px | Dice: 0.964 | Score: 0.963 | SegPt: (108,124) | Centro: (108,123)
+ 18. IM-0001-0018.dcm | Area:    3939 px | Dice: 0.955 | Score: 0.933 | SegPt: (108,123) | Centro: (109,124)
+ 19. IM-0001-0019.dcm | Area:    2500 px | Dice: 0.828 | Score: 0.894 | SegPt: (109,124) | Centro: (105,116)
+ 20. IM-0001-0020.dcm | Area:    2607 px | Dice: 0.653 | Score: 0.840 | SegPt: (117,130) | Centro: (106,119) ⚠️
+ 21. IM-0001-0021.dcm | Area:    1871 px | Dice: 0.832 | Score: 0.849 | SegPt: (106,119) | Centro: (101,120)
+ 22. IM-0001-0022.dcm | Area:    1480 px | Dice: 0.882 | Score: 0.931 | SegPt: (101,120) | Centro: (98,120)
+ 23. IM-0001-0023.dcm | Area:    1178 px | Dice: 0.871 | Score: 0.937 | SegPt: (98,120) | Centro: (96,120)
+ 24. IM-0001-0024.dcm | Area:    1084 px | Dice: 0.918 | Score: 0.954 | SegPt: (96,120) | Centro: (93,121)
+ 25. IM-0001-0025.dcm | Area:    1035 px | Dice: 0.950 | Score: 0.961 | SegPt: (93,121) | Centro: (92,121)
+ 26. IM-0001-0026.dcm | Area:     961 px | Dice: 0.937 | Score: 0.966 | SegPt: (92,121) | Centro: (91,122)
+ 27. IM-0001-0027.dcm | Area:     853 px | Dice: 0.918 | Score: 0.952 | SegPt: (91,122) | Centro: (89,123)
+ 28. IM-0001-0028.dcm | Area:     936 px | Dice: 0.920 | Score: 0.951 | SegPt: (89,123) | Centro: (87,123)
+ 29. IM-0001-0029.dcm | Area:     950 px | Dice: 0.963 | Score: 0.943 | SegPt: (87,123) | Centro: (87,124)
+ 30. IM-0001-0030.dcm | Area:     908 px | Dice: 0.921 | Score: 0.940 | SegPt: (87,124) | Centro: (84,124)
+ 31. IM-0001-0031.dcm | Area:     687 px | Dice: 0.861 | Score: 0.945 | SegPt: (84,124) | Centro: (82,125)

@@ -1,0 +1,38 @@
+SAM Complete Folder Segmentation Summary
+======================================================================
+Dataset: /home/cerrotico/unal/interactive-medsam/Datasets/In/axial_A_to_T_fatSupressed_dicoms-20260214T164130Z-1-001/axial_A_to_T_fatSupressed_dicoms
+Middle image: K.dcm (index 11)
+Initial segmentation: segment_sam_points.py
+Warning threshold: 25%
+Severe warning threshold: 35%
+Neighbor extra-area threshold: 25.0%
+Total images: 20
+Successfully segmented: 13
+Images with warnings: 5
+Failed images (skipped): 7
+
+Failed slices:
+  - [10] J.dcm: Diferencia 93.4% > 48% (umbral dinámico) (Dice: 0.066)
+  - [9] I.dcm: Diferencia 94.4% > 50% (umbral dinámico) (Dice: 0.056)
+  - [8] H.dcm: Diferencia 89.9% > 52% (umbral dinámico) (Dice: 0.101)
+  - [7] G.dcm: Diferencia 94.2% > 55% (umbral dinámico) (Dice: 0.058)
+  - [18] R.dcm: Diferencia 94.3% > 62% (umbral dinámico) (Dice: 0.057)
+  - [19] S.dcm: Diferencia 93.9% > 65% (umbral dinámico) (Dice: 0.061)
+  - [20] T.dcm: Diferencia 93.1% > 68% (umbral dinámico) (Dice: 0.069)
+
+======================================================================
+Results per image:
+----------------------------------------------------------------------
+  1. A.dcm           | Area:    4568 px | Dice: 0.838 | Score: 0.970 | SegPt: (191,225) | Centro: (184,222)
+  2. B.dcm           | Area:    6165 px | Dice: 0.745 | Score: 0.928 | SegPt: (199,235) | Centro: (191,225) ⚠️
+  3. C.dcm           | Area:   10390 px | Dice: 0.891 | Score: 0.940 | SegPt: (200,235) | Centro: (199,235)
+  4. D.dcm           | Area:   12931 px | Dice: 0.952 | Score: 0.977 | SegPt: (201,236) | Centro: (200,235)
+  5. E.dcm           | Area:   12028 px | Dice: 0.743 | Score: 0.988 | SegPt: (200,242) | Centro: (201,236) ⚠️
+  6. F.dcm           | Area:    7109 px | Dice: 0.546 | Score: 0.920 | SegPt: (181,222) | Centro: (200,242) 🚨
+ 11. K.dcm           | Area:    3864 px | Dice: 1.000 | Score: 0.955 | SegPt: (204,204) | Centro: (181,222)
+ 12. L.dcm           | Area:    5052 px | Dice: 0.843 | Score: 0.971 | SegPt: (181,222) | Centro: (188,223)
+ 13. M.dcm           | Area:   12302 px | Dice: 0.582 | Score: 0.970 | SegPt: (188,223) | Centro: (201,235) 🚨
+ 14. N.dcm           | Area:   12480 px | Dice: 0.955 | Score: 0.972 | SegPt: (201,235) | Centro: (200,236)
+ 15. O.dcm           | Area:    7764 px | Dice: 0.767 | Score: 0.929 | SegPt: (200,236) | Centro: (196,229)
+ 16. P.dcm           | Area:    9880 px | Dice: 0.825 | Score: 0.950 | SegPt: (196,229) | Centro: (201,235)
+ 17. Q.dcm           | Area:    4455 px | Dice: 0.601 | Score: 0.890 | SegPt: (201,235) | Centro: (199,243) 🚨

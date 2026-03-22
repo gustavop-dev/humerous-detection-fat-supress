@@ -1,0 +1,29 @@
+Slice Classification Report – AXIAL-P5SE1 Clinica Especialistas Reina Virgen Maria QUIBDO HombroDer pd_tse_fs_tra_320 SIEMENS
+============================================================
+Thresholds: CORRECT >= 0.8, AMBIGUOUS >= 0.55, FAILED < 0.55
+
+[CORRECT] (14 slices)
+  [  1] I01.dcm               Dice=0.896  Area=1254
+  [  2] I02.dcm               Dice=0.872  Area=1404
+  [  3] I03.dcm               Dice=0.923  Area=1691
+  [  4] I04.dcm               Dice=0.835  Area=1845
+  [  5] I05.dcm               Dice=0.833  Area=2445
+  [  6] I06.dcm               Dice=0.874  Area=3382
+  [  7] I07.dcm               Dice=0.914  Area=4231
+  [  8] I08.dcm               Dice=0.915  Area=4910
+  [  9] I09.dcm               Dice=0.956  Area=5748
+  [ 10] I10.dcm               Dice=1.000  Area=6054
+  [ 11] I12.dcm               Dice=0.924  Area=7004
+  [ 12] I13.dcm               Dice=0.908  Area=8346
+  [ 14] I15.dcm               Dice=0.855  Area=3973
+  [ 15] I16.dcm               Dice=0.843  Area=2893
+
+[AMBIGUOUS] (2 slices)
+  [ 13] I14.dcm               Dice=0.775  Area=5283
+  [ 16] I17.dcm               Dice=0.734  Area=1679
+
+[FAILED] (3 slices)
+  [ -1] I19.dcm               Dice=0.000  Area=0
+  [ 17] I18.dcm               Dice=0.429  Area=458
+  [ 19] I20.dcm               Dice=0.431  Area=968
+

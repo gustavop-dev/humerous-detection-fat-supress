@@ -1,0 +1,40 @@
+SAM Complete Folder Segmentation Summary
+======================================================================
+Dataset: /home/cerrotico/unal/interactive-medsam/Datasets/In/AXIAL fs PD FSE 256x256 GE MEDICAL SYSTEMS Optima MR360 CLINICA SANTA ANA hombroDerecho
+Middle image: I000013.dcm (index 13)
+Initial segmentation: segment_sam_points.py
+Warning threshold: 25%
+Severe warning threshold: 35%
+Neighbor extra-area threshold: 25.0%
+Total images: 24
+Successfully segmented: 24
+Images with warnings: 6
+Failed images (skipped): 0
+
+======================================================================
+Results per image:
+----------------------------------------------------------------------
+  1. I000001.dcm     | Area:      96 px | Dice: 0.486 | Score: 0.913 | SegPt: (122,115) | Centro: (126,111) 🚨
+  2. I000002.dcm     | Area:     299 px | Dice: 0.583 | Score: 0.783 | SegPt: (126,117) | Centro: (122,115) 🚨
+  3. I000003.dcm     | Area:     703 px | Dice: 0.613 | Score: 0.744 | SegPt: (121,118) | Centro: (126,117) 🚨
+  4. I000004.dcm     | Area:    1505 px | Dice: 0.525 | Score: 0.810 | SegPt: (107,118) | Centro: (121,118) 🚨
+  5. I000005.dcm     | Area:     826 px | Dice: 0.902 | Score: 0.789 | SegPt: (106,119) | Centro: (107,118)
+  6. I000006.dcm     | Area:     948 px | Dice: 0.491 | Score: 0.826 | SegPt: (115,107) | Centro: (106,119) 🚨
+  7. I000007.dcm     | Area:     813 px | Dice: 0.656 | Score: 0.952 | SegPt: (116,105) | Centro: (115,107) ⚠️
+  8. I000008.dcm     | Area:    1665 px | Dice: 0.869 | Score: 0.952 | SegPt: (116,105) | Centro: (116,105)
+  9. I000009.dcm     | Area:    2167 px | Dice: 0.892 | Score: 0.921 | SegPt: (115,104) | Centro: (116,105)
+ 10. I000010.dcm     | Area:    2684 px | Dice: 0.954 | Score: 0.938 | SegPt: (116,104) | Centro: (115,104)
+ 11. I000011.dcm     | Area:    2911 px | Dice: 0.954 | Score: 0.953 | SegPt: (115,104) | Centro: (116,104)
+ 12. I000012.dcm     | Area:    3182 px | Dice: 0.970 | Score: 0.950 | SegPt: (114,103) | Centro: (115,104)
+ 13. I000013.dcm     | Area:    3177 px | Dice: 1.000 | Score: 0.914 | SegPt: (102,102) | Centro: (114,103)
+ 14. I000014.dcm     | Area:    2888 px | Dice: 0.951 | Score: 0.913 | SegPt: (114,103) | Centro: (114,103)
+ 15. I000015.dcm     | Area:    2394 px | Dice: 0.905 | Score: 0.905 | SegPt: (114,103) | Centro: (114,102)
+ 16. I000016.dcm     | Area:    1803 px | Dice: 0.844 | Score: 0.915 | SegPt: (114,102) | Centro: (114,98)
+ 17. I000017.dcm     | Area:    1213 px | Dice: 0.804 | Score: 0.931 | SegPt: (114,98) | Centro: (111,98)
+ 18. I000018.dcm     | Area:     900 px | Dice: 0.852 | Score: 0.938 | SegPt: (111,98) | Centro: (111,97)
+ 19. I000019.dcm     | Area:     744 px | Dice: 0.905 | Score: 0.953 | SegPt: (111,97) | Centro: (111,97)
+ 20. I000020.dcm     | Area:     613 px | Dice: 0.903 | Score: 0.934 | SegPt: (111,97) | Centro: (111,97)
+ 21. I000021.dcm     | Area:     528 px | Dice: 0.926 | Score: 0.948 | SegPt: (111,97) | Centro: (111,97)
+ 22. I000022.dcm     | Area:     469 px | Dice: 0.941 | Score: 0.969 | SegPt: (111,97) | Centro: (111,97)
+ 23. I000023.dcm     | Area:     400 px | Dice: 0.921 | Score: 0.959 | SegPt: (111,97) | Centro: (110,98)
+ 24. I000024.dcm     | Area:     360 px | Dice: 0.942 | Score: 0.960 | SegPt: (110,98) | Centro: (111,98)

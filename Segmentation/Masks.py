@@ -161,3 +161,7 @@ def save_segmentation_result(img, mask, filename, output_dir, center=None, seg_p
     plt.savefig(output_path, dpi=150, bbox_inches='tight')
     plt.close(fig)
 
+    # Also save binary mask as .npy for downstream analysis
+    mask_npy_path = os.path.join(output_dir, f"{filename}_mask.npy")
+    np.save(mask_npy_path, mask.astype(np.uint8))
+

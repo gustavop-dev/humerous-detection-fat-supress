@@ -7,6 +7,21 @@ checkpoints/
 segmentation_results/
 batch_segmentation_results/
 
+# DICOM input data (too large for GitHub)
+Datasets/In/
+*.dcm
+*.DCM
+
+# Large binary outputs (STL, npy, model files)
+*.stl
+*.npy
+
+# Old dataset directories (moved to Datasets/In)
+axial_sections/
+axial_sections_2/
+axial_sections_propagation_results/
+axial_sections_2_propagation_results/
+
 # Virtual environment
 venv/
 .venv/

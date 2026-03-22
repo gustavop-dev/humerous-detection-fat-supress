@@ -1,0 +1,37 @@
+SAM Complete Folder Segmentation Summary
+======================================================================
+Dataset: /home/cerrotico/unal/interactive-medsam/Datasets/In/AXIAL-P5SE1 Clinica Especialistas Reina Virgen Maria QUIBDO HombroDer pd_tse_fs_tra_320 SIEMENS
+Middle image: I10.dcm (index 10)
+Initial segmentation: segment_sam_points.py
+Warning threshold: 25%
+Severe warning threshold: 35%
+Neighbor extra-area threshold: 25.0%
+Total images: 19
+Successfully segmented: 18
+Images with warnings: 3
+Failed images (skipped): 1
+
+Failed slices:
+  - [18] I19.dcm: Diferencia 98.2% > 67% (umbral dinámico) (Dice: 0.018)
+
+======================================================================
+Results per image:
+----------------------------------------------------------------------
+  1. I01.dcm         | Area:    1254 px | Dice: 0.896 | Score: 0.903 | SegPt: (127,142) | Centro: (123,144)
+  2. I02.dcm         | Area:    1404 px | Dice: 0.872 | Score: 0.909 | SegPt: (130,140) | Centro: (127,142)
+  3. I03.dcm         | Area:    1691 px | Dice: 0.923 | Score: 0.942 | SegPt: (132,139) | Centro: (130,140)
+  4. I04.dcm         | Area:    1845 px | Dice: 0.835 | Score: 0.904 | SegPt: (138,137) | Centro: (132,139)
+  5. I05.dcm         | Area:    2445 px | Dice: 0.833 | Score: 0.916 | SegPt: (144,135) | Centro: (138,137)
+  6. I06.dcm         | Area:    3382 px | Dice: 0.874 | Score: 0.950 | SegPt: (147,132) | Centro: (144,135)
+  7. I07.dcm         | Area:    4231 px | Dice: 0.914 | Score: 0.945 | SegPt: (149,134) | Centro: (147,132)
+  8. I08.dcm         | Area:    4910 px | Dice: 0.915 | Score: 0.916 | SegPt: (149,136) | Centro: (149,134)
+  9. I09.dcm         | Area:    5748 px | Dice: 0.956 | Score: 0.898 | SegPt: (148,137) | Centro: (149,136)
+ 10. I10.dcm         | Area:    6054 px | Dice: 1.000 | Score: 0.935 | SegPt: (128,128) | Centro: (148,137)
+ 11. I12.dcm         | Area:    7004 px | Dice: 0.924 | Score: 0.900 | SegPt: (148,137) | Centro: (150,134)
+ 12. I13.dcm         | Area:    8346 px | Dice: 0.908 | Score: 0.851 | SegPt: (150,134) | Centro: (155,133)
+ 13. I14.dcm         | Area:    5283 px | Dice: 0.775 | Score: 0.925 | SegPt: (155,133) | Centro: (149,137)
+ 14. I15.dcm         | Area:    3973 px | Dice: 0.855 | Score: 0.900 | SegPt: (149,137) | Centro: (149,140)
+ 15. I16.dcm         | Area:    2893 px | Dice: 0.843 | Score: 0.929 | SegPt: (149,140) | Centro: (150,142)
+ 16. I17.dcm         | Area:    1679 px | Dice: 0.734 | Score: 0.918 | SegPt: (150,142) | Centro: (151,140) ⚠️
+ 17. I18.dcm         | Area:     458 px | Dice: 0.429 | Score: 0.799 | SegPt: (151,140) | Centro: (151,139) 🚨
+ 19. I20.dcm         | Area:     968 px | Dice: 0.431 | Score: 0.816 | SegPt: (151,139) | Centro: (163,142) 🚨

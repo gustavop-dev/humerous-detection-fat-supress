@@ -1,4 +1,5 @@
 import sys
+import os
 sys.path.append('path/to/segment-anything')
 import numpy as np
 from PIL import Image
@@ -118,26 +119,45 @@ def segment_with_point(predictor, img, point, label=1, verbose=False):
 
 
 def segment_first_image(predictor, img, filename):
-    """Main function to segment the first image using SAM with interactive point selection"""
+    """Main function to segment the first image using SAM with interactive point selection.
+
+    Returns
+    -------
+    refined_mask : np.ndarray
+        Máscara segmentada y refinada.
+    best_score : float
+        Score de la mejor máscara de SAM.
+    seed_point : list[float, float]
+        Punto positivo principal usado como seed ([x, y]).
+    """
 
     # Enhance contrast for medical images
     img_enhanced = cv2.convertScaleAbs(img, alpha=1.2, beta=10)
     predictor.set_image(img_enhanced)
 
-    # Use the interactive point selector (if GUI available)
-    print("🎯 Selección de puntos iniciando...")
-    print("   - Click DERECHO: Marca puntos POSITIVOS (objeto de interés)")
-    print("   - Click IZQUIERDO: Marca puntos NEGATIVOS (para omitir contornos)")
-    print("   - Tecla 'z': Deshacer último punto")
-    print("   - Tecla 'c': Limpiar todos los puntos")
-    positive_points, negative_points = interactive_sam_point_selector(img, predictor, filename)
+    # En modo batch (SAM_BATCH_MODE=1) no abrimos GUI y usamos punto automático.
+    use_gui = os.environ.get("SAM_BATCH_MODE", "0") != "1"
+    positive_points, negative_points = [], []
 
-    # Si no hay puntos (por ejemplo, en entorno sin GUI), usar punto central automático
+    if use_gui:
+        # Use the interactive point selector (if GUI available)
+        print("🎯 Selección de puntos iniciando...")
+        print("   - Click DERECHO: Marca puntos POSITIVOS (objeto de interés)")
+        print("   - Click IZQUIERDO: Marca puntos NEGATIVOS (para omitir contornos)")
+        print("   - Tecla 'z': Deshacer último punto")
+        print("   - Tecla 'c': Limpiar todos los puntos")
+        positive_points, negative_points = interactive_sam_point_selector(img, predictor, filename)
+
+    # Si no hay puntos (por ejemplo, en entorno sin GUI), usar punto automático
+    # ligeramente desplazado hacia el cuadrante superior izquierdo
     if len(positive_points) == 0 and len(negative_points) == 0:
         h, w = img.shape[:2]
-        auto_point = [w // 2, h // 2]
+        # Punto automático un poco arriba-izquierda del centro (pero no tan extremo)
+        auto_x = int(w * 0.40)
+        auto_y = int(h * 0.40)
+        auto_point = [auto_x, auto_y]
         positive_points = [auto_point]
-        print(f"⚠️ No se seleccionaron puntos en la interfaz. Usando punto central automático: ({auto_point[0]}, {auto_point[1]})")
+        print(f"⚠️ No se seleccionaron puntos en la interfaz. Usando punto automático desplazado: ({auto_point[0]}, {auto_point[1]})")
 
     # Prepare points and labels for SAM
     input_points = []
@@ -216,4 +236,16 @@ def segment_first_image(predictor, img, filename):
     print(f"🎭 Total masks generated: {len(masks)}")
     print(f"{'='*50}")
 
-    return refined_mask, best_score
+    # Seed que realmente usamos como punto positivo principal
+    if len(positive_points) > 0:
+        seed_point = positive_points[0]
+    else:
+        # Fallback: centroide de la máscara refinada o centro de la imagen
+        ys, xs = np.where(refined_mask > 0)
+        if xs.size > 0 and ys.size > 0:
+            seed_point = [float(np.mean(xs)), float(np.mean(ys))]
+        else:
+            h, w = img.shape[:2]
+            seed_point = [w / 2.0, h / 2.0]
+
+    return refined_mask, best_score, seed_point

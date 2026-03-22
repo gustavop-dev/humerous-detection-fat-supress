@@ -7,8 +7,9 @@ import Segmentation.Metrics as Metrics
 from Segmentation.negative_points import calculate_negative_point
 import cv2
 
-SIMILARITY_THRESHOLD = 0.35  # 30% diferencia aceptable
-WARNING_THRESHOLD = 0.45    # 50% diferencia para saltar imagen
+SIMILARITY_THRESHOLD = 0.35  # 30% diferencia aceptable (advertencia leve fija)
+WARNING_THRESHOLD = 0.45     # Diferencia base (1 - Dice) para saltar imagen cerca del centro
+MAX_WARNING_EXTRA = 0.25     # Aumento máximo permitido del umbral severo en los extremos
 
 
 def propagate_segmentation(predictor, files, start_idx, start_mask, start_center, 
@@ -103,12 +104,25 @@ def propagate_segmentation(predictor, files, start_idx, start_mask, start_center
         # Calculate similarity with reference
         dice = Metrics.calculate_dice_coefficient(reference_mask, next_mask)
         iou = Metrics.calculate_iou(reference_mask, next_mask)
-        difference = 1.0 - dice
-        
+        difference = 1.0 - dice  # Diferencia en términos de (1 - Dice)
+
+        # Umbral severo DINÁMICO según posición relativa de la slice respecto a la central
+        # - En el centro del volumen: WARNING_THRESHOLD (más estricto)
+        # - En los extremos: WARNING_THRESHOLD + MAX_WARNING_EXTRA (más permisivo)
+        max_distance = max(start_idx, len(files) - 1 - start_idx)
+        if max_distance > 0:
+            dist_from_center = abs(next_idx - start_idx)
+            relative_pos = dist_from_center / max_distance  # 0.0 en el centro, ~1.0 en extremos
+        else:
+            relative_pos = 0.0
+
+        dynamic_warning_threshold = WARNING_THRESHOLD + MAX_WARNING_EXTRA * relative_pos
+
         print(f"    📊 Dice: {dice:.3f}, IoU: {iou:.3f}, Diferencia: {difference*100:.1f}%")
+        print(f"    📏 Umbral severo dinámico: {dynamic_warning_threshold*100:.1f}% (pos_rel={relative_pos:.2f})")
         
-        # Si la diferencia es mayor al umbral severo, intentar con punto negativo
-        if difference > WARNING_THRESHOLD:
+        # Si la diferencia es mayor al umbral severo dinámico, intentar con punto negativo
+        if difference > dynamic_warning_threshold:
             print(f"    ⚠️ Diferencia alta ({difference*100:.1f}%). Intentando con punto negativo...")
             
             # Calcular punto negativo basado en la máscara de referencia
@@ -135,8 +149,8 @@ def propagate_segmentation(predictor, files, start_idx, start_mask, start_center
                         
                         print(f"    📊 Con punto negativo - Dice: {new_dice:.3f}, Diferencia: {new_difference*100:.1f}%")
                         
-                        # Si mejoró o está dentro del umbral, usar esta segmentación
-                        if new_difference <= WARNING_THRESHOLD or new_dice > dice:
+                        # Si mejoró o está dentro del umbral dinámico, usar esta segmentación
+                        if new_difference <= dynamic_warning_threshold or new_dice > dice:
                             print(f"    ✅ Punto negativo mejoró la segmentación!")
                             next_mask = new_mask
                             next_score = new_score
@@ -150,12 +164,12 @@ def propagate_segmentation(predictor, files, start_idx, start_mask, start_center
             else:
                 print(f"    ⚠️ No se pudo calcular punto negativo")
         
-        # Si aún la diferencia es mayor al umbral, SALTAR esta imagen
-        if difference > WARNING_THRESHOLD:
+        # Si aún la diferencia es mayor al umbral dinámico, SALTAR esta imagen
+        if difference > dynamic_warning_threshold:
             failed_slices.append({
                 'idx': next_idx,
                 'filename': os.path.basename(next_file),
-                'reason': f'Diferencia {difference*100:.1f}% > {WARNING_THRESHOLD*100:.0f}%',
+                'reason': f'Diferencia {difference*100:.1f}% > {dynamic_warning_threshold*100:.0f}% (umbral dinámico)',
                 'dice': dice
             })
             current_idx = next_idx
@@ -176,12 +190,16 @@ def propagate_segmentation(predictor, files, start_idx, start_mask, start_center
         
         # Guardar resultado
         used_seg_point = list(reference_center)
+        area = np.sum(next_mask)
+        orig_center = list(next_center) if next_center is not None else None
         segmentations[next_idx] = {
             'mask': next_mask,
             'center': next_center,
             'seg_point': used_seg_point,
             'score': next_score,
-            'area': np.sum(next_mask),
+            'area': area,
+            'orig_area': area,
+            'orig_center': orig_center,
             'dice': dice,
             'iou': iou
         }
