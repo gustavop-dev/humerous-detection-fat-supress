@@ -38,8 +38,8 @@ print(f"🖥️  Using device: {device}")
 
 # Paths - MODIFICAR SEGÚN TUS NECESIDADES
 ckpt = "Checkpoints/sam_vit_b_01ec64.pth"  # Ruta al checkpoint de SAM
-data_dir = "axial_sections_2"  # Carpeta con imágenes DICOM del segundo volumen
-output_dir = "axial_sections_2_propagation_results"  # Carpeta de resultados para axial_sections_2
+data_dir = "Datasets/In/pd_tse_fs_tra_320_fov150_4"  # Carpeta con imágenes DICOM
+output_dir = "Datasets/Out/pd_tse_fs_tra_320_fov150_4"  # Carpeta de resultados
 
 
 

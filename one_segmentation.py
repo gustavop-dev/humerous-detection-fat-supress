@@ -1,5 +1,5 @@
 import sys
-sys.path.append('path/to/segment-anything')
+import os
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
@@ -8,22 +8,37 @@ from segment_anything import sam_model_registry, SamPredictor
 from scipy import ndimage
 from skimage import morphology
 import cv2
+from DCM.load_dicom_as_image import load_dicom_as_image
 
 
-device = "mps" if torch.backends.mps.is_available() else "cpu"
+if torch.cuda.is_available():
+    device = "cuda"
+elif torch.backends.mps.is_available():
+    device = "mps"
+else:
+    device = "cpu"
+print(f"Using device: {device}")
 
 
-
-# Here goes the path to your SAM model checkpoint
-ckpt = "/Users/thomasmolinamolina/Downloads/TopicosGeo/Checkpoints/sam_vit_b_01ec64.pth"
+# Path to SAM model checkpoint
+ckpt = "Checkpoints/sam_vit_b_01ec64.pth"
 
 # Load model
-sam = sam_model_registry["vit_b"](checkpoint=ckpt)
+sam = sam_model_registry["vit_b"]()
+checkpoint_data = torch.load(ckpt, map_location=device)
+sam.load_state_dict(checkpoint_data)
 sam = sam.to(device)
 predictor = SamPredictor(sam)
 
-# Here goes the path to your medical image
-img = np.array(Image.open("/Users/thomasmolinamolina/Downloads/TopicosGeo/DATA/D9/pngs/hum0015.png").convert("RGB"))
+# Path to the image to segment (DICOM or PNG/JPG)
+# Change this to your image path
+image_path = "Datasets/In/pd_tse_fs_tra_320_fov150_4/IM-0001-0016.dcm"
+
+ext = os.path.splitext(image_path)[1].lower()
+if ext == ".dcm":
+    img, _ = load_dicom_as_image(image_path)
+else:
+    img = np.array(Image.open(image_path).convert("RGB"))
 
 # Enhance contrast for medical images
 img_enhanced = cv2.convertScaleAbs(img, alpha=1.2, beta=10)

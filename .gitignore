@@ -7,10 +7,10 @@ checkpoints/
 segmentation_results/
 batch_segmentation_results/
 
-# DICOM input data (too large for GitHub)
-Datasets/In/
-*.dcm
-*.DCM
+# DICOM input data (uncomment if too large for GitHub)
+# Datasets/In/
+# *.dcm
+# *.DCM
 
 # Large binary outputs (STL, npy, model files)
 *.stl

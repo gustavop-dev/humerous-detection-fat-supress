@@ -1,276 +1,192 @@
-# 🏥 Medical Image Segmentation with SAM
+# Humerus Detection in Fat-Suppressed MRI
 
-Herramienta de segmentación de imágenes médicas utilizando **SAM** (Segment Anything Model). Soporta dos modos de operación: segmentación de **una sola imagen** o **volúmenes completos** con propagación automática y reconstrucción 3D.
+Segmentation and geometric analysis of the **humerus** from axial fat-suppressed shoulder MRI using **SAM** (Segment Anything Model). The pipeline segments the humerus across DICOM slices, extracts boundary points in real-world 3D coordinates, and detects circular arcs on the humeral head (spherical cap).
 
-## 🎯 Dos Modos de Operación
+## Quick Start
 
-| Característica | `one_segmentation.py` | `segment_sam_propagation.py` |
-|----------------|----------------------|------------------------------|
-| **Propósito** | 🖼️ Segmentar **una sola imagen** | 📦 Segmentar **datasets completos** |
-| **Entrada** | Una imagen PNG/JPG | Carpeta con múltiples imágenes |
-| **Interacción** | Selección manual de puntos | Un click en slice central |
-| **Salida** | Máscara + visualización | Máscaras + Reconstrucción 3D + STL |
-| **Uso típico** | Pruebas, imágenes individuales | Volúmenes CT/MRI completos |
+```bash
+# 1. Clone
+git clone https://github.com/gustavop-dev/humerous-detection-fat-supress.git
+cd humerous-detection-fat-supress
 
----
+# 2. Virtual environment
+python3 -m venv venv
+source venv/bin/activate        # Linux / macOS
+# venv\Scripts\activate         # Windows
 
-## 🖼️ Opción 1: Segmentación de Una Sola Imagen
+# 3. Install dependencies
+pip install -r requirements.txt
+pip install git+https://github.com/facebookresearch/segment-anything.git
 
-**Script:** `one_segmentation.py`
-
-Ideal para segmentar una imagen individual de forma interactiva con vista previa en tiempo real.
-
-### Configuración
-
-Edita las rutas en el archivo (líneas 17 y 22):
-
-```python
-# Ruta al checkpoint de SAM
-ckpt = "Checkpoints/sam_vit_b_01ec64.pth"
-
-# Ruta a tu imagen
-img = np.array(Image.open("tu_imagen.png").convert("RGB"))
+# 4. Download SAM checkpoint (~375 MB)
+mkdir -p Checkpoints
+wget https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth -P Checkpoints/
 ```
 
-### Ejecución
+## Scripts
+
+### 1. `one_segmentation.py` — Segment a single image
+
+Interactive segmentation of one DICOM/PNG image. Edit line 35 to set your image path:
+
+```python
+image_path = "Datasets/In/pd_tse_fs_tra_320_fov150_4/IM-0001-0016.dcm"
+```
 
 ```bash
 python one_segmentation.py
 ```
 
-### Uso Interactivo
+A window opens with two panels. Mark the humerus and see the mask in real time.
 
-1. Se abre una ventana con **dos paneles**: imagen original y vista previa de segmentación
-2. **Click derecho**: Agregar punto positivo (⭐ verde) - marca el objeto a segmentar
-3. **Click izquierdo**: Agregar punto negativo (❌ rojo) - excluye regiones
-4. **Tecla 'z'**: Deshacer último punto
-5. **Tecla 'c'**: Limpiar todos los puntos
-6. **Cerrar ventana**: Finalizar y ver resultados
+### 2. `segment_sam_propagation.py` — Segment a full dataset
 
-### Salida
-
-- Visualización de 6 paneles comparando imagen original, máscara raw y máscara refinada
-- Estadísticas en consola (área, score, número de puntos)
-
----
-
-## 📦 Opción 2: Segmentación de Datasets Completos
-
-**Script:** `segment_sam_propagation.py`
-
-Diseñado para segmentar **volúmenes CT/MRI completos** con propagación automática bidireccional desde la slice central, incluyendo reconstrucción 3D.
-
-### Características
-
-- ✅ Procesa **todas las imágenes** de una carpeta automáticamente
-- 🔄 **Propagación bidireccional**: desde la slice central hacia arriba y abajo
-- 📊 **Métricas de calidad**: Dice coefficient entre slices consecutivas
-- 🎨 **Reconstrucción 3D**: Nube de puntos, contornos y malla sólida
-- 💾 **Exportación STL**: Para impresión 3D o software CAD
-- 📋 **Resumen estadístico**: Archivo con métricas de cada slice
-
-### Configuración
-
-Edita las rutas en el archivo (líneas 35-37):
+Segments all slices in a DICOM folder using bidirectional propagation from the central slice. Edit lines 41-42:
 
 ```python
-# Ruta al checkpoint de SAM
-ckpt = "Checkpoints/sam_vit_b_01ec64.pth"
-
-# Carpeta con las imágenes PNG/JPG del volumen
-data_dir = "DATA/D1/pngs"
-
-# Carpeta donde se guardarán los resultados
-output_dir = "DATA/D1_propagation_results"
+data_dir = "Datasets/In/pd_tse_fs_tra_320_fov150_4"
+output_dir = "Datasets/Out/pd_tse_fs_tra_320_fov150_4"
 ```
-
-### Ejecución
 
 ```bash
 python segment_sam_propagation.py
 ```
 
-### Flujo de Trabajo
+Generates per-slice segmentation overlays, 3D reconstructions, STL meshes, and a propagation summary.
 
-1. **Paso 1**: Se abre la **slice central** del volumen
-2. **Paso 2**: Segmentas interactivamente (igual que `one_segmentation.py`)
-3. **Paso 3**: Al cerrar, **propaga automáticamente** a todas las demás slices
-4. **Paso 4**: Genera **reconstrucción 3D** y exporta modelo STL
+### 3. `batch_segment_sam_propagation.py` — Batch all datasets
 
-### Salida
-
-```
-DATA/D1_propagation_results/
-├── I01_seg.png                    # Overlay de cada slice
-├── I01_mask.png                   # Máscara binaria
-├── ...
-├── contour_points_3d.npy          # Puntos 3D (numpy)
-├── contour_points_3d.csv          # Puntos 3D (CSV)
-├── reconstruction_3d_points.png   # Vista 3D nube de puntos
-├── reconstruction_3d_contours_*.png
-├── solid_mesh_3d_*.png            # Vistas de malla sólida
-├── modelo_3d.stl                  # Modelo para impresión 3D
-└── propagation_summary.txt        # Estadísticas completas
-```
-
----
-
-## ⚡ Quick Start
+Runs `segment_sam_propagation` on all 8 datasets defined in `DATASET_NAMES`. Uses an automatic seed point (no GUI).
 
 ```bash
-# 1. Clonar el repositorio
-git clone https://github.com/ThomasMolina19/medsam-unal-project.git
-cd medsam-unal-project
-
-# 2. Instalar dependencias
-pip install -r requirements.txt
-pip install git+https://github.com/facebookresearch/segment-anything.git
-
-# 3. Descargar checkpoint SAM ViT-B (~375 MB)
-mkdir -p Checkpoints
-wget https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth -P Checkpoints/
-
-# 4. Ejecutar según tu necesidad
-python one_segmentation.py           # Una sola imagen
-python segment_sam_propagation.py    # Dataset completo
+python batch_segment_sam_propagation.py
 ```
 
-## 🔧 Requisitos
+### 4. `humerus_boundary_analysis.py` — Boundary analysis pipeline
 
-### Sistema
-- Python 3.8+
-- PyTorch 2.0+
-- Dispositivo: CUDA GPU, Apple Silicon (MPS), o CPU
-
-### Librerías Principales
-```
-torch>=2.0.0
-torchvision>=0.15.0
-numpy>=1.24.0
-matplotlib>=3.7.0
-opencv-python>=4.8.0
-scikit-image>=0.21.0
-scipy>=1.10.0
-Pillow>=9.5.0
-pydicom>=2.4.0
-```
-
-## 📦 Instalación Completa
-
-### Paso 1: Crear entorno virtual
+Post-processing analysis on already-segmented datasets. **Does not require SAM or GPU.**
 
 ```bash
-# macOS / Linux
-python3 -m venv venv
-source venv/bin/activate
-
-# Windows
-python -m venv venv
-venv\Scripts\activate
+python humerus_boundary_analysis.py
 ```
 
-### Paso 2: Instalar dependencias
+This script runs steps 1–5 of the geometric analysis:
 
-```bash
-pip install -r requirements.txt
-pip install git+https://github.com/facebookresearch/segment-anything.git
+| Step | Description | Output |
+|------|-------------|--------|
+| 1 | Classify slices as **correct** / **ambiguous** / **failed** (Dice-based) | `slice_classification.txt` |
+| 2 | List ambiguous slices that need manual review | (printed + in report) |
+| 3 | Extract boundary pixels from correctly segmented slices | — |
+| 4 | Convert pixels to real-world 3D coords (mm) using DICOM headers | `boundary_world_coords.csv` |
+| 5 | RANSAC sphere fit to detect circular arcs (humeral head cap) | `circular_arcs.csv` |
+| 6 | Generate 6-panel summary diagram per dataset | `boundary_analysis_summary.png` |
+
+## Interactive Controls
+
+| Action | Control |
+|--------|---------|
+| Positive point (object) | **Right click** |
+| Negative point (exclude) | **Left click** |
+| Undo last point | Key `z` |
+| Clear all points | Key `c` |
+| Skip image (batch) | Key `s` |
+| Finish | Close window |
+
+## Project Structure
+
 ```
-
-### Paso 3: Descargar checkpoint SAM
-
-```bash
-mkdir -p Checkpoints
-wget https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth -P Checkpoints/
-```
-
-Otras opciones:
-- **ViT-H (Huge)**: [Descargar](https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth) (~2.4 GB)
-- **ViT-L (Large)**: [Descargar](https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth) (~1.2 GB)
-
-## 📁 Estructura del Proyecto
-
-```
-medsam-unal-project/
-├── one_segmentation.py             # 🖼️ Segmentación de UNA imagen
-├── segment_sam_propagation.py      # 📦 Segmentación de DATASETS completos
+humerous-detection-fat-supress/
+├── one_segmentation.py                 # Segment a single image
+├── segment_sam_propagation.py          # Segment a full dataset
+├── batch_segment_sam_propagation.py    # Batch all datasets
+├── humerus_boundary_analysis.py        # Boundary analysis pipeline
 ├── requirements.txt
 ├── README.md
 │
-├── DCM/                            # Módulo de carga de imágenes
-│   └── load_dicom_as_image.py
+├── DCM/
+│   └── load_dicom_as_image.py          # DICOM loading + dataset info
 │
-├── Graphics/                       # Módulo de visualización
-│   ├── grafication.py              # Reconstrucción 3D, exportación STL
-│   └── interface.py                # Interfaz interactiva
+├── Graphics/
+│   ├── grafication.py                  # 3D reconstruction, STL export
+│   └── interface.py                    # Interactive point selection GUI
 │
-├── Segmentation/                   # Módulo de segmentación
-│   ├── Masks.py                    # Operaciones con máscaras
-│   ├── Metrics.py                  # Cálculo de Dice, IoU
-│   ├── propagation.py              # Lógica de propagación
-│   ├── segment_image.py            # Segmentación con SAM
-│   └── negative_points.py
+├── Segmentation/
+│   ├── Masks.py                        # Mask operations, contour extraction
+│   ├── Metrics.py                      # Dice coefficient, IoU
+│   ├── propagation.py                  # Bidirectional propagation logic
+│   ├── segment_image.py                # SAM segmentation wrapper
+│   └── negative_points.py             # Negative point calculation
 │
-├── Checkpoints/                    # Checkpoints de SAM
-│   └── sam_vit_b_01ec64.pth
+├── Datasets/
+│   ├── In/                             # Input DICOM datasets (8 patients)
+│   │   ├── pd_tse_fs_tra_320_fov150_4/
+│   │   ├── t1_tse_fs_tra_320_fov150_5/
+│   │   ├── t1_tse_fs_tra_320_fov150_11/
+│   │   ├── AXIAL fs PD FSE ... hombroDerecho/
+│   │   ├── AXIAL-P5SE1 ... SIEMENS/
+│   │   ├── AXIAL(creo)ePDW_SPAIR ... hombroIzquierdo/
+│   │   ├── axial_A_to_T_fatSupressed_dicoms.../
+│   │   └── dp_tse_cor_320_fs_8.../
+│   └── Out/                            # Segmentation results per dataset
+│       └── <dataset_name>/
+│           ├── *_seg.png               # Per-slice segmentation overlay
+│           ├── *_mask.npy              # Binary mask (numpy)
+│           ├── contour_points_3d.csv   # Contour points (pixel space)
+│           ├── propagation_summary.txt # Per-slice metrics
+│           ├── slice_classification.txt
+│           ├── boundary_world_coords.csv  # 3D coords in mm
+│           ├── circular_arcs.csv       # Points on the sphere
+│           ├── boundary_analysis_summary.png  # 6-panel diagram
+│           ├── reconstruction_3d_*.png
+│           ├── solid_mesh_3d_*.png
+│           └── modelo_3d.stl
 │
-└── DATA/                           # Datos de entrada/salida
-    ├── D1/pngs/
-    ├── D1_propagation_results/
-    └── ...
+└── Checkpoints/                        # SAM weights (not tracked)
+    └── sam_vit_b_01ec64.pth
 ```
 
-## 🖱️ Controles de la Interfaz
+## Datasets
 
-| Acción | Control |
-|--------|---------|
-| Punto positivo (objeto) | Click **derecho** |
-| Punto negativo (excluir) | Click **izquierdo** |
-| Deshacer | Tecla `z` |
-| Limpiar todo | Tecla `c` |
-| Finalizar | Cerrar ventana |
+| Dataset | Equipment | Slices | Side |
+|---------|-----------|--------|------|
+| `pd_tse_fs_tra_320_fov150_4` | SIEMENS | 31 | — |
+| `t1_tse_fs_tra_320_fov150_5` | SIEMENS | 30 | — |
+| `t1_tse_fs_tra_320_fov150_11` | SIEMENS | 30 | — |
+| `AXIAL fs PD FSE 256x256` | GE Optima MR360 | 24 | Right |
+| `AXIAL-P5SE1 ... SIEMENS` | SIEMENS | 19 | Right |
+| `AXIAL(creo)ePDW_SPAIR ...` | Philips Ingenia | 25 | Left |
+| `axial_A_to_T_fatSupressed` | — | 20 | — |
+| `dp_tse_cor_320_fs_8` | SIEMENS | 22 | — |
 
-## 🖥️ Soporte de Dispositivos
+## Requirements
 
-```python
-device = "mps" if torch.backends.mps.is_available() else "cpu"
-```
+- Python 3.8+
+- PyTorch 2.0+
+- CUDA GPU, Apple Silicon (MPS), or CPU
 
-- **MPS** (Apple Silicon M1/M2/M3): Detección automática
-- **CUDA** (NVIDIA GPU): Cambiar a `device = "cuda"`
-- **CPU**: Fallback automático
+Key libraries: `torch`, `torchvision`, `numpy`, `matplotlib`, `opencv-python`, `scikit-image`, `scipy`, `Pillow`, `pydicom`.
 
-## 🐛 Solución de Problemas
+## Device Support
 
-### "No module named 'segment_anything'"
-```bash
-pip install git+https://github.com/facebookresearch/segment-anything.git
-```
+Device is auto-detected: CUDA > MPS > CPU.
 
-### "Checkpoint not found"
-```bash
-ls -lh Checkpoints/sam_vit_b_01ec64.pth
-```
+## Troubleshooting
 
-### Segmentación de baja calidad
-- Agregar más puntos positivos en el objeto
-- Usar puntos negativos para excluir regiones no deseadas
+- **"No module named 'segment_anything'"** → `pip install git+https://github.com/facebookresearch/segment-anything.git`
+- **"Checkpoint not found"** → Download it: `wget https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth -P Checkpoints/`
+- **"No image files found"** → Edit `data_dir` in `segment_sam_propagation.py` (line 41) to point to a valid `Datasets/In/` subfolder
+- **Poor segmentation** → Add more positive/negative points interactively
 
-### Errores de memoria
-- Usar SAM ViT-B en lugar de ViT-H
-- Cerrar otras aplicaciones
-
-## �� Referencias
+## References
 
 - **SAM**: Kirillov, A., et al. (2023). "Segment Anything" [arXiv:2304.02643](https://arxiv.org/abs/2304.02643)
 - **MedSAM**: Ma, J., et al. (2023). "Segment Anything in Medical Images" [arXiv:2304.12306](https://arxiv.org/abs/2304.12306)
-- **Segment Anything**: https://github.com/facebookresearch/segment-anything
 
-## 👥 Autor
+## Authors
 
-**Thomas Molina Molina**  
-Universidad Nacional de Colombia  
-Tópicos en Geometría Computacional
+**Thomas Molina Molina**
+Universidad Nacional de Colombia — Topicos en Geometria Computacional
 
-## 📝 Licencia
+## License
 
-Proyecto de código abierto para uso educativo y de investigación.
+Open-source project for educational and research use.
