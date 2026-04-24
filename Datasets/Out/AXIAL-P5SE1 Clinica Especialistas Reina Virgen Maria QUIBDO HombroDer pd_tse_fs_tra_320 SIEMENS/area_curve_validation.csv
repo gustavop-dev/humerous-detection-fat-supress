@@ -1,0 +1,19 @@
+slice_idx,filename,area_px,dice,status,reason,residual_sigma,trend_area,side
+1,I01.dcm,1254,0.896,kept,,-1.500,1329.0,shaft
+2,I02.dcm,1404,0.872,kept,,0.000,1404.0,shaft
+3,I03.dcm,1691,0.923,kept,,0.000,1691.0,shaft
+4,I04.dcm,1845,0.835,kept,,0.000,1845.0,shaft
+5,I05.dcm,2445,0.833,kept,,0.000,2445.0,shaft
+6,I06.dcm,3382,0.874,kept,,0.000,3382.0,shaft
+7,I07.dcm,4231,0.914,kept,,0.000,4231.0,shaft
+8,I08.dcm,4910,0.915,kept,,0.000,4910.0,shaft
+9,I09.dcm,5748,0.956,kept,,0.000,5748.0,shaft
+10,I10.dcm,6054,1.000,kept,,0.000,6054.0,shaft
+11,I12.dcm,7004,0.924,kept,,0.000,7004.0,shaft
+12,I13.dcm,8346,0.908,outlier_internal_weak,residual_sigma>thr; no_cross_check,26.840,7004.0,peak
+13,I14.dcm,5283,0.775,kept,,0.000,5283.0,head
+14,I15.dcm,3973,0.855,kept,,0.000,3973.0,head
+15,I16.dcm,2893,0.843,kept,,-10.800,2893.0,head
+16,I17.dcm,1679,0.734,trimmed_post,below head/shaft threshold from edge,,1679.0,head
+17,I18.dcm,458,0.429,trimmed_post,below head/shaft threshold from edge,,968.0,head
+19,I20.dcm,968,0.431,trimmed_post,below head/shaft threshold from edge,,713.0,head

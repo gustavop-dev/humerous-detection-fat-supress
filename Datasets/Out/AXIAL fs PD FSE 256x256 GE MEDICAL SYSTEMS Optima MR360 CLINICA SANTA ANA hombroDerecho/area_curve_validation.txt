@@ -1,0 +1,30 @@
+Area-Curve Validation Report — AXIAL fs PD FSE 256x256 GE MEDICAL SYSTEMS Optima MR360 CLINICA SANTA ANA hombroDerecho
+============================================================
+Acquisition direction: alphabetical_to_inferior  (source: ImagePositionPatient)
+Head side: low_idx     Shaft side: high_idx
+Bell peak: slice 13  area=3177 px
+
+Bell extent (kept):
+  start = 8  end = 24  (count = 17)
+
+Trimmed PRE-bell (low_idx side):
+  - [  1] I000001.dcm  smoothed=198
+  - [  2] I000002.dcm  smoothed=299
+  - [  3] I000003.dcm  smoothed=703
+  - [  4] I000004.dcm  smoothed=826
+  - [  5] I000005.dcm  smoothed=948
+  - [  6] I000006.dcm  smoothed=826
+  - [  7] I000007.dcm  smoothed=948
+
+Trimmed POST-bell (high_idx side):
+  - none
+
+Internal outliers (Pattern B):
+  - none
+
+Decision log:
+  - peak (smoothed) at slice 13, raw area = 3177
+  - left side (head): floor=953 (=0.30*peak), reversal_ratio=1.1; static=[1, 2, 3, 4, 5, 6, 7], reversal=[5, 4, 3, 2, 1] → trimmed=[1, 2, 3, 4, 5, 6, 7]
+  - right side (shaft): floor=318 (=0.10*peak), reversal_ratio=1.2; static=[], reversal=[] → trimmed=[]
+  - internal outliers: 0 flagged, 0 confirmed and excluded
+============================================================

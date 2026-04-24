@@ -29,13 +29,13 @@ Thresholds: CORRECT >= 0.8, AMBIGUOUS >= 0.55, FAILED < 0.55
   [ 20] IM-0001-0020.dcm      Dice=0.653  Area=2607
 
 [FAILED] (9 slices)
-  [ -1] IM-0001-0010.dcm      Dice=0.000  Area=0
-  [ -1] IM-0001-0009.dcm      Dice=0.000  Area=0
-  [ -1] IM-0001-0003.dcm      Dice=0.000  Area=0
-  [ -1] IM-0001-0006.dcm      Dice=0.000  Area=0
-  [ -1] IM-0001-0004.dcm      Dice=0.000  Area=0
   [ -1] IM-0001-0005.dcm      Dice=0.000  Area=0
-  [ -1] IM-0001-0002.dcm      Dice=0.000  Area=0
+  [ -1] IM-0001-0006.dcm      Dice=0.000  Area=0
+  [ -1] IM-0001-0009.dcm      Dice=0.000  Area=0
   [ -1] IM-0001-0001.dcm      Dice=0.000  Area=0
+  [ -1] IM-0001-0004.dcm      Dice=0.000  Area=0
+  [ -1] IM-0001-0010.dcm      Dice=0.000  Area=0
+  [ -1] IM-0001-0003.dcm      Dice=0.000  Area=0
+  [ -1] IM-0001-0002.dcm      Dice=0.000  Area=0
   [  8] IM-0001-0008.dcm      Dice=0.449  Area=1544
 

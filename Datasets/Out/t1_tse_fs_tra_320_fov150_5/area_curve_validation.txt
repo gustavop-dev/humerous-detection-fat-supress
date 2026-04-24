@@ -1,0 +1,25 @@
+Area-Curve Validation Report — t1_tse_fs_tra_320_fov150_5
+============================================================
+Acquisition direction: alphabetical_to_inferior  (source: ImagePositionPatient)
+Head side: low_idx     Shaft side: high_idx
+Bell peak: slice 17  area=2459 px
+
+Bell extent (kept):
+  start = 12  end = 30  (count = 19)
+
+Trimmed PRE-bell (low_idx side):
+  - [ 10] IM-0002-0010.dcm  smoothed=460
+  - [ 11] IM-0002-0011.dcm  smoothed=607
+
+Trimmed POST-bell (high_idx side):
+  - none
+
+Internal outliers (Pattern B):
+  - none
+
+Decision log:
+  - peak (smoothed) at slice 17, raw area = 2459
+  - left side (head): floor=738 (=0.30*peak), reversal_ratio=1.1; static=[10, 11], reversal=[] → trimmed=[10, 11]
+  - right side (shaft): floor=246 (=0.10*peak), reversal_ratio=1.2; static=[], reversal=[] → trimmed=[]
+  - internal outliers: 0 flagged, 0 confirmed and excluded
+============================================================

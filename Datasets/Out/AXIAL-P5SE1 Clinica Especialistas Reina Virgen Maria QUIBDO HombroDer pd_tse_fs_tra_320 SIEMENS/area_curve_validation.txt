@@ -1,0 +1,26 @@
+Area-Curve Validation Report — AXIAL-P5SE1 Clinica Especialistas Reina Virgen Maria QUIBDO HombroDer pd_tse_fs_tra_320 SIEMENS
+============================================================
+Acquisition direction: alphabetical_to_superior  (source: ImagePositionPatient)
+Head side: high_idx     Shaft side: low_idx
+Bell peak: slice 12  area=8346 px
+
+Bell extent (kept):
+  start = 1  end = 15  (count = 15)
+
+Trimmed PRE-bell (low_idx side):
+  - none
+
+Trimmed POST-bell (high_idx side):
+  - [ 16] I17.dcm  smoothed=1679
+  - [ 17] I18.dcm  smoothed=968
+  - [ 19] I20.dcm  smoothed=713
+
+Internal outliers (Pattern B):
+  - [ 12] I13.dcm  area=8346 trend=7004 σ=+26.84  confirm=[no cross-check]  FLAGGED (weak)
+
+Decision log:
+  - peak (smoothed) at slice 12, raw area = 8346
+  - left side (shaft): floor=700 (=0.10*peak), reversal_ratio=1.2; static=[], reversal=[] → trimmed=[]
+  - right side (head): floor=2101 (=0.30*peak), reversal_ratio=1.1; static=[19, 17, 16], reversal=[] → trimmed=[16, 17, 19]
+  - internal outliers: 1 flagged, 0 confirmed and excluded
+============================================================

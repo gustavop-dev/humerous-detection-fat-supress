@@ -26,6 +26,7 @@ axial_sections_2_propagation_results/
 venv/
 .venv/
 env/
+venv-analysis/        # lightweight analysis-only venv (numpy/scipy/cv2/pydicom/matplotlib)
 
 # Python cache
 __pycache__/

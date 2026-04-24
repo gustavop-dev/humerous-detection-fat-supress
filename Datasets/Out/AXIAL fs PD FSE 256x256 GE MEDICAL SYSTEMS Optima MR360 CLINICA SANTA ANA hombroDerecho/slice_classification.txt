@@ -2,8 +2,7 @@ Slice Classification Report – AXIAL fs PD FSE 256x256 GE MEDICAL SYSTEMS Optim
 ============================================================
 Thresholds: CORRECT >= 0.8, AMBIGUOUS >= 0.55, FAILED < 0.55
 
-[CORRECT] (18 slices)
-  [  5] I000005.dcm           Dice=0.902  Area=826
+[CORRECT] (17 slices)
   [  8] I000008.dcm           Dice=0.869  Area=1665
   [  9] I000009.dcm           Dice=0.892  Area=2167
   [ 10] I000010.dcm           Dice=0.954  Area=2684

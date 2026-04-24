@@ -1,0 +1,29 @@
+Area-Curve Validation Report — axial_A_to_T_fatSupressed_dicoms-20260214T164130Z-1-001
+============================================================
+Acquisition direction: alphabetical_to_superior  (source: ImagePositionPatient)
+Head side: high_idx     Shaft side: low_idx
+Bell peak: slice 14  area=12480 px
+
+Bell extent (kept):
+  start = 11  end = 17  (count = 7)
+
+Trimmed PRE-bell (low_idx side):
+  - [  1] A.dcm  smoothed=5366
+  - [  2] B.dcm  smoothed=6165
+  - [  3] C.dcm  smoothed=10390
+  - [  4] D.dcm  smoothed=12028
+  - [  5] E.dcm  smoothed=12028
+  - [  6] F.dcm  smoothed=7109
+
+Trimmed POST-bell (high_idx side):
+  - none
+
+Internal outliers (Pattern B):
+  - none
+
+Decision log:
+  - peak (smoothed) at slice 14, raw area = 12480
+  - left side (shaft): floor=1230 (=0.10*peak), reversal_ratio=1.2; static=[], reversal=[6, 5, 4, 3, 2, 1] → trimmed=[1, 2, 3, 4, 5, 6]
+  - right side (head): floor=3691 (=0.30*peak), reversal_ratio=1.1; static=[], reversal=[] → trimmed=[]
+  - internal outliers: 0 flagged, 0 confirmed and excluded
+============================================================

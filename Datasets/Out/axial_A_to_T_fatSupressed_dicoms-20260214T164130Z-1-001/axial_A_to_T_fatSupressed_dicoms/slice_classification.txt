@@ -2,10 +2,7 @@ Slice Classification Report – axial_A_to_T_fatSupressed_dicoms-20260214T164130
 ============================================================
 Thresholds: CORRECT >= 0.8, AMBIGUOUS >= 0.55, FAILED < 0.55
 
-[CORRECT] (7 slices)
-  [  1] A.dcm                 Dice=0.838  Area=4568
-  [  3] C.dcm                 Dice=0.891  Area=10390
-  [  4] D.dcm                 Dice=0.952  Area=12931
+[CORRECT] (4 slices)
   [ 11] K.dcm                 Dice=1.000  Area=3864
   [ 12] L.dcm                 Dice=0.843  Area=5052
   [ 14] N.dcm                 Dice=0.955  Area=12480
@@ -19,12 +16,12 @@ Thresholds: CORRECT >= 0.8, AMBIGUOUS >= 0.55, FAILED < 0.55
   [ 17] Q.dcm                 Dice=0.601  Area=4455
 
 [FAILED] (8 slices)
-  [ -1] S.dcm                 Dice=0.000  Area=0
-  [ -1] J.dcm                 Dice=0.000  Area=0
-  [ -1] T.dcm                 Dice=0.000  Area=0
-  [ -1] H.dcm                 Dice=0.000  Area=0
-  [ -1] R.dcm                 Dice=0.000  Area=0
   [ -1] G.dcm                 Dice=0.000  Area=0
   [ -1] I.dcm                 Dice=0.000  Area=0
+  [ -1] J.dcm                 Dice=0.000  Area=0
+  [ -1] T.dcm                 Dice=0.000  Area=0
+  [ -1] S.dcm                 Dice=0.000  Area=0
+  [ -1] H.dcm                 Dice=0.000  Area=0
+  [ -1] R.dcm                 Dice=0.000  Area=0
   [  6] F.dcm                 Dice=0.546  Area=7109
 

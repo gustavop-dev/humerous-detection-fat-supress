@@ -1,0 +1,25 @@
+slice_idx,filename,area_px,dice,status,reason,residual_sigma,trend_area,side
+1,I000001.dcm,96,0.486,trimmed_pre,below head/shaft threshold from edge,,197.5,head
+2,I000002.dcm,299,0.583,trimmed_pre,below head/shaft threshold from edge,,299.0,head
+3,I000003.dcm,703,0.613,trimmed_pre,below head/shaft threshold from edge,,703.0,head
+4,I000004.dcm,1505,0.525,trimmed_pre,below head/shaft threshold from edge,,826.0,head
+5,I000005.dcm,826,0.902,trimmed_pre,below head/shaft threshold from edge,,948.0,head
+6,I000006.dcm,948,0.491,trimmed_pre,below head/shaft threshold from edge,,826.0,head
+7,I000007.dcm,813,0.656,trimmed_pre,below head/shaft threshold from edge,,948.0,head
+8,I000008.dcm,1665,0.869,kept,,-5.020,1665.0,head
+9,I000009.dcm,2167,0.892,kept,,0.000,2167.0,head
+10,I000010.dcm,2684,0.954,kept,,0.000,2684.0,head
+11,I000011.dcm,2911,0.954,kept,,0.000,2911.0,head
+12,I000012.dcm,3182,0.970,kept,,0.100,3177.0,head
+13,I000013.dcm,3177,1.000,kept,,0.000,3177.0,peak
+14,I000014.dcm,2888,0.951,kept,,0.000,2888.0,shaft
+15,I000015.dcm,2394,0.905,kept,,0.000,2394.0,shaft
+16,I000016.dcm,1803,0.844,kept,,0.000,1803.0,shaft
+17,I000017.dcm,1213,0.804,kept,,0.000,1213.0,shaft
+18,I000018.dcm,900,0.852,kept,,0.000,900.0,shaft
+19,I000019.dcm,744,0.905,kept,,0.000,744.0,shaft
+20,I000020.dcm,613,0.903,kept,,0.000,613.0,shaft
+21,I000021.dcm,528,0.926,kept,,0.000,528.0,shaft
+22,I000022.dcm,469,0.941,kept,,0.000,469.0,shaft
+23,I000023.dcm,400,0.921,kept,,0.000,400.0,shaft
+24,I000024.dcm,360,0.942,kept,,-0.400,380.0,shaft
