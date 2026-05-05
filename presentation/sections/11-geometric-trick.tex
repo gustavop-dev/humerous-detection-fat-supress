@@ -1,55 +1,76 @@
-% Slide 11 -- The geometric trick: angular sectors -> tendons
-\begin{frame}{The geometric trick: angular sectors $\to$ rotator cuff}
+% Slide 11 -- The geometric trick: parameterizing the circle
+\begin{frame}{The geometric trick: parameterizing the articular circle}
   \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Parameterizing the articular circle}
-        Each per-slice circle has an in-plane basis $(\mathbf{u},\mathbf{v})$ and a center $\mathbf{c}$.
+    \begin{column}{0.55\textwidth}
+      \begin{block}{From a circle to a 1D angular map}
+        Each per-slice circle has an in-plane basis $(\mathbf{u},\mathbf{v})$ and center $\mathbf{c}$.
         Any inlier $\mathbf{p}$ has angular coordinate
         \[
           \theta = \mathrm{atan2}\big((\mathbf{p}-\mathbf{c})\!\cdot\!\mathbf{v},\; (\mathbf{p}-\mathbf{c})\!\cdot\!\mathbf{u}\big).
         \]
       \end{block}
 
+      \begin{block}{Why this is powerful}
+        The articular circle becomes a \alert{1D tendon map}:
+        each $\theta$ on the circle corresponds to a known anatomical direction at the humeral head.
+      \end{block}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.0]
+        \filldraw[medSoft] (0,0) circle (2.0);
+        \draw[thick, medBlue] (0,0) circle (2.0);
+        \draw[->] (-2.4,0) -- (2.4,0) node[right, font=\tiny] {$\mathbf{u}$};
+        \draw[->] (0,-2.4) -- (0,2.4) node[above, font=\tiny] {$\mathbf{v}$};
+        \filldraw[medBlue] (0,0) circle (1.5pt);
+        \node[medBlue, font=\tiny, below left] at (0,0) {$\mathbf{c}$};
+        \filldraw[medAccent] (60:2.0) circle (1.8pt);
+        \draw[medAccent, dashed] (0,0) -- (60:2.0);
+        \node[medAccent, font=\tiny, above right] at (60:2.0) {$\mathbf{p}$};
+        \draw[medAccent] (0.6,0) arc (0:60:0.6);
+        \node[medAccent, font=\tiny] at (35:0.85) {$\theta$};
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 11b -- Anatomical sector mapping
+\begin{frame}{Angular sectors $\to$ rotator-cuff tendons}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
       \begin{block}{Anatomical sector mapping}
-        \footnotesize Tendon insertions fall in \alert{predictable angular sectors}:
-        \begin{itemize}\footnotesize
-          \item \textbf{Subscapularis} $\to$ lesser tub.: $\sim 0$--$45^\circ$.
-          \item \textbf{Supraspinatus} $\to$ greater tub. (sup): $\sim 45$--$135^\circ$.
-          \item \textbf{Infraspinatus} $\to$ greater tub. (post): $\sim 135$--$225^\circ$.
-          \item \textbf{Teres minor} $\to$ greater tub. (inf-post): $\sim 225$--$270^\circ$.
+        Tendon insertions fall in \alert{predictable sectors}:
+        \begin{itemize}
+          \item \textbf{Subscapularis}: $\sim 0$--$45^\circ$.
+          \item \textbf{Supraspinatus}: $\sim 45$--$135^\circ$.
+          \item \textbf{Infraspinatus}: $\sim 135$--$225^\circ$.
+          \item \textbf{Teres minor}: $\sim 225$--$270^\circ$.
         \end{itemize}
       \end{block}
 
       \begin{block}{Localization rule}
-        A focal drop in inlier ratio in a specific sector $\to$ candidate tear in the corresponding tendon, at the slice height where the drop occurs.
+        A focal drop in inlier ratio in a sector $\to$ \alert{candidate tear} in the corresponding tendon, at the slice where the drop occurs.
       \end{block}
     \end{column}
     \begin{column}{0.5\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.85]
-        % Sector pie
         \filldraw[medSoft] (0,0) circle (2.2);
         \draw[thick, medBlue] (0,0) circle (2.2);
-        % Sectors
         \filldraw[medTeal!30] (0,0) -- (2.2,0) arc (0:45:2.2) -- cycle;
         \filldraw[medTeal!50] (0,0) -- (45:2.2) arc (45:135:2.2) -- cycle;
         \filldraw[medTeal!30] (0,0) -- (135:2.2) arc (135:225:2.2) -- cycle;
         \filldraw[medTeal!50] (0,0) -- (225:2.2) arc (225:270:2.2) -- cycle;
-        % Sector labels
         \node[font=\tiny] at (22:1.5) {Subscap.};
         \node[font=\tiny] at (90:1.5) {Supraspin.};
         \node[font=\tiny] at (180:1.5) {Infraspin.};
         \node[font=\tiny] at (247:1.5) {T. minor};
-        % Tear marker
         \draw[medAccent, ultra thick] (60:2.0) -- (60:2.6);
         \draw[medAccent, ultra thick] (75:2.6) -- (75:2.0);
         \node[medAccent, font=\tiny, above] at (67:2.7) {focal drop};
-        % Axes
-        \draw[->] (-2.6,0) -- (2.6,0) node[right, font=\tiny] {$\mathbf{u}$};
-        \draw[->] (0,-2.6) -- (0,2.6) node[above, font=\tiny] {$\mathbf{v}$};
       \end{tikzpicture}
-      \\[0.4em]
-      {\footnotesize The articular circle, parameterized by $\theta$,\\ becomes a 1D \emph{tendon map}.}
+      \\[0.3em]
+      {\footnotesize The articular circle becomes a 1D \emph{tendon map}.}
     \end{column}
   \end{columns}
 \end{frame}

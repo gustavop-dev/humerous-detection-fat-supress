@@ -1,20 +1,12 @@
-% Slide 3 -- Imaging context
-\begin{frame}{Imaging context: why fat-suppressed axial MRI?}
+% Slide 3 -- Imaging context: fat saturation
+\begin{frame}{Why fat-suppressed MRI?}
   \begin{columns}[T]
     \begin{column}{0.55\textwidth}
       \begin{block}{Fat saturation (fs)}
         \begin{itemize}
           \item Selective RF pulse \alert{nulls fat signal} $\Rightarrow$ subcutaneous and marrow fat appear dark.
           \item Cortical bone, tendon, edema and joint fluid become \alert{conspicuous}.
-          \item Standard sequences here: \textbf{PD-fs} (anatomical detail + edema sensitivity) and \textbf{T1-fs}.
-        \end{itemize}
-      \end{block}
-
-      \begin{block}{Why the axial plane?}
-        \begin{itemize}
-          \item The humeral head appears as \alert{nested circles} that grow to a maximum (the ``equator'') and shrink.
-          \item Yields a clean \emph{area-vs-slice} curve we can validate geometrically.
-          \item Direct view of the glenohumeral contact surface where most tears manifest.
+          \item Standard sequences here: \textbf{PD-fs} (anatomy + edema sensitivity) and \textbf{T1-fs}.
         \end{itemize}
       \end{block}
     \end{column}
@@ -22,7 +14,23 @@
       \centering
       \includegraphics[width=\linewidth]{figures/seg_example.png}
       \\[0.2em]
-      {\footnotesize Axial PD-fs slice with humeral segmentation overlay\\ \textit{(PixelSpacing $\approx$ 0.47\,mm; matrix 320$\times$320)}}
+      {\footnotesize Axial PD-fs slice with humeral segmentation overlay\\
+      \textit{(PixelSpacing $\approx$ 0.47\,mm; matrix 320$\times$320).}}
     \end{column}
   \end{columns}
+\end{frame}
+
+% Slide 3b -- Why axial
+\begin{frame}{Why the axial plane?}
+  \begin{block}{Geometric structure of the axial stack}
+    \begin{itemize}
+      \item The humeral head appears as \alert{nested circles} that grow to a maximum (the ``equator'') and shrink.
+      \item This yields a clean \emph{area-vs-slice} curve that we can validate geometrically.
+      \item The axial plane gives a direct view of the \alert{glenohumeral contact surface}, where most rotator-cuff tears manifest.
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Why this matters for the pipeline}
+    The bell-shaped area curve is the \alert{anchor} for downstream validation: trimming non-humeral tails, detecting outlier slices, and selecting the articular slices on which we fit per-slice circles.
+  \end{block}
 \end{frame}

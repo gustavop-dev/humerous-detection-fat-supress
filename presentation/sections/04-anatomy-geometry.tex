@@ -1,48 +1,70 @@
-% Slide 4 -- Anatomy to geometry
+% Slide 4 -- Anatomy to geometry: two primitives
 \begin{frame}{From anatomy to geometry: two natural primitives}
   \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.55\textwidth}
       \begin{block}{The humeral head $\approx$ spherical cap}
         \begin{itemize}
-          \item Articular cartilage covers a near-perfect spherical surface (radius $\sim$23--26\,mm in adults).
+          \item Articular cartilage covers a near-perfect spherical surface (radius $\sim$23--26\,mm).
           \item Motivates a \alert{global sphere fit} as a patient-specific anatomical reference.
         \end{itemize}
       \end{block}
       \begin{block}{The articular surface $\approx$ local circles}
         \begin{itemize}
           \item In equatorial axial slices, the contact contour with the glenoid is locally circular.
-          \item Motivates \alert{per-slice circles} that \emph{lie on} the articular surface (not approximate it).
+          \item Motivates \alert{per-slice circles} that \emph{lie on} the articular surface.
         \end{itemize}
       \end{block}
-      \begin{block}{Anatomical asymmetry}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.75]
+        \draw[thick, medBlue, fill=medSoft] (0,0) ellipse (1.6 and 1.2);
+        \node[medBlue] at (0,0) {\footnotesize head};
+        \draw[thick, medTeal] (1.4,0.4) .. controls (2.0,0.6) and (2.0,-0.4) .. (1.4,-0.6);
+        \node[medTeal, font=\tiny, align=center] at (2.5,0) {greater\\tubercle};
+        \draw[thick, medBlue] (-0.4,-1.2) -- (-0.7,-3.5);
+        \draw[thick, medBlue] (0.6,-1.2) -- (0.4,-3.5);
+        \node[medBlue, font=\tiny, align=center] at (1.6,-2.5) {shaft\\(taper)};
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Slide 4b -- Anatomical asymmetry
+\begin{frame}{Anatomical asymmetry: head vs shaft}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{block}{The two ends of the humerus look different}
         \begin{itemize}
           \item \textbf{Head}: closes \alert{abruptly} at the anatomical neck.
           \item \textbf{Shaft}: tapers \alert{gradually} (longer, smoother).
         \end{itemize}
       \end{block}
+      \begin{block}{Direct consequence on the pipeline}
+        Two asymmetric thresholds in the area-curve validation:
+        \begin{itemize}
+          \item \alert{30\%} of peak on the \textbf{head} side.
+          \item \alert{10\%} of peak on the \textbf{shaft} side.
+        \end{itemize}
+        Anatomy, not arbitrary heuristics.
+      \end{block}
     \end{column}
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.45\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.7]
-        % Sagittal sketch of proximal humerus
-        \draw[thick, medBlue, fill=medSoft]
-          (0,0) ellipse (1.6 and 1.2);
-        \node[medBlue] at (0,0) {\footnotesize head};
-        % Tubercles
-        \draw[thick, medTeal] (1.4,0.4) .. controls (2.0,0.6) and (2.0,-0.4) .. (1.4,-0.6);
-        \node[medTeal, font=\tiny, align=center] at (2.5,0) {greater\\tubercle};
-        % Shaft
-        \draw[thick, medBlue] (-0.4,-1.2) -- (-0.7,-3.5);
-        \draw[thick, medBlue] (0.6,-1.2) -- (0.4,-3.5);
-        \node[medBlue, font=\tiny, align=center] at (1.6,-2.5) {shaft\\(taper)};
-        % Curve hint
-        \draw[->, thick, medAccent] (-2.2,1.0) -- (-1.4,1.0)
-          node[right, font=\tiny] {abrupt closure};
-        \draw[->, thick, medAccent] (-2.2,-3.0) -- (-1.0,-3.0)
-          node[right, font=\tiny] {gradual taper};
+      \begin{tikzpicture}[scale=0.85]
+        \draw[->] (0,0) -- (5.5,0) node[right, font=\tiny] {slice};
+        \draw[->] (0,0) -- (0,3.5) node[above, font=\tiny] {area};
+        \draw[thick, medBlue, smooth, samples=80, domain=0.3:5.0]
+          plot (\x, {2.6*exp(-pow(\x-2.5,2)/1.4)});
+        \draw[medAccent, dashed] (0.6,0) -- (0.6,1.0)
+          node[above, font=\tiny, medAccent] {30\% (head)};
+        \draw[medAccent, dashed] (4.6,0) -- (4.6,0.4)
+          node[above, font=\tiny, medAccent] {10\% (shaft)};
+        \node[medTeal, font=\tiny] at (0.6,2.8) {H $\rightarrow$};
+        \node[medTeal, font=\tiny] at (4.6,2.8) {$\leftarrow$ shaft};
       \end{tikzpicture}
-      \\[0.4em]
-      {\footnotesize Anatomy directly motivates two thresholds in the pipeline:\\ \textbf{30\%} on the head side, \textbf{10\%} on the shaft side.}
+      \\[0.3em]
+      {\footnotesize Asymmetric trim thresholds.}
     \end{column}
   \end{columns}
 \end{frame}

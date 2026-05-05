@@ -1,4 +1,4 @@
-% Slide 2 -- Clinical problem
+% Slide 2 -- Clinical problem (overview)
 \begin{frame}{The clinical problem: rotator cuff tears}
   \begin{columns}[T]
     \begin{column}{0.55\textwidth}
@@ -6,32 +6,20 @@
         \begin{itemize}
           \item Rotator cuff disease affects \alert{$>$30\% of adults over 60}, the leading cause of shoulder pain and disability.
           \item Tears arise from acute trauma or chronic degeneration (microtrauma + tendon-insertion ischemia).
-          \item Accurate \alert{localization} -- which tendon, where along the insertion -- drives surgical planning.
-        \end{itemize}
-      \end{block}
-
-      \begin{block}{Diagnostic challenge}
-        \begin{itemize}
-          \item MRI reading is expert-dependent and time-consuming.
-          \item Inter-vendor variability (SIEMENS / GE / Philips) complicates automation.
-          \item Equity gap: limited access to subspecialty radiology in low-resource settings.
+          \item Accurate \alert{localization} --- which tendon, where along the insertion --- drives surgical planning.
         \end{itemize}
       \end{block}
     \end{column}
     \begin{column}{0.45\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.85]
-        % Humeral head as circle
+      \begin{tikzpicture}[scale=0.9]
         \draw[thick, medBlue, fill=medSoft] (0,0) circle (1.6);
         \node[medBlue] at (0,0) {\footnotesize Humeral head};
-        % Glenoid
         \draw[thick, medTeal] (-2.2,-0.6) arc (-30:30:1.4);
         \node[medTeal, rotate=90] at (-2.4,0) {\footnotesize Glenoid};
-        % Tear marker
         \draw[medAccent, ultra thick] (1.1,1.1) -- (1.5,1.5);
         \draw[medAccent, ultra thick] (1.0,1.5) -- (1.6,1.1);
         \node[medAccent, right] at (1.6,1.3) {\footnotesize Tear};
-        % Cuff muscles labels
         \node[gray, font=\tiny] at (0,1.9) {Supraspinatus};
         \node[gray, font=\tiny] at (1.9,0) {Infraspinatus};
         \node[gray, font=\tiny] at (-0.4,-1.9) {Subscapularis};
@@ -40,4 +28,23 @@
       {\footnotesize Axial schematic of the glenohumeral joint.\\ Tears disrupt the articular contour focally.}
     \end{column}
   \end{columns}
+\end{frame}
+
+% Slide 2b -- Diagnostic challenge
+\begin{frame}{Why is this hard to read on MRI?}
+  \begin{block}{Diagnostic challenge}
+    \begin{itemize}
+      \item MRI reading is \alert{expert-dependent} and time-consuming.
+      \item Inter-vendor variability (SIEMENS / GE / Philips) complicates automation.
+      \item Subtle partial tears can be missed on a single slice; 3D context is needed.
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Equity-of-access gap}
+    \begin{itemize}
+      \item Limited access to subspecialty musculoskeletal radiology in low-resource settings.
+      \item In Colombia, regions like \alert{Choc\'o} (Quibd\'o) lack dedicated MSK readers despite having modern MRI.
+      \item Automated, interpretable tools can support generalist radiologists.
+    \end{itemize}
+  \end{block}
 \end{frame}

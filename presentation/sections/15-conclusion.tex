@@ -1,19 +1,22 @@
-% Slide 15 -- Conclusion
-\begin{frame}{Conclusions and next steps}
-  \begin{block}{Take-home messages}
-    \footnotesize
+% Slide 15 -- Take-home messages
+\begin{frame}{Take-home messages}
+  \begin{block}{What we have built}
     \begin{itemize}
-      \item A \alert{frozen foundation model} (SAM) plus \alert{anatomy-aware classical geometry} produces interpretable shoulder MRI features without training.
+      \item A \alert{frozen foundation model} (SAM) plus \alert{anatomy-aware classical geometry}
+            produces interpretable shoulder MRI features without training.
       \item DICOM-header reading makes the pipeline \alert{direction-aware} with asymmetric anatomy-driven thresholds.
-      \item Two features (humeral sphere + per-slice articular circles) enable \alert{tear localization by angular sector}.
-      \item Robust across SIEMENS, GE, Philips; relevant for low-resource radiology settings.
+      \item Two features --- humeral sphere + per-slice articular circles --- enable \alert{tear localization by angular sector}.
+      \item Robust across SIEMENS, GE and Philips; relevant for low-resource radiology settings.
     \end{itemize}
   \end{block}
+\end{frame}
 
+% Slide 15b -- Next steps
+\begin{frame}{Next steps and acknowledgements}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
       \begin{block}{Next steps}
-        \begin{itemize}\footnotesize
+        \begin{itemize}
           \item Implement the angular-sector $\to$ tendon mapping end-to-end.
           \item Prospective validation against arthroscopy.
           \item Inter-reader and inter-vendor reproducibility study.
@@ -23,18 +26,18 @@
     \end{column}
     \begin{column}{0.5\textwidth}
       \begin{block}{Acknowledgements}
-        \begin{itemize}\footnotesize
+        \begin{itemize}
           \item Universidad Nacional de Colombia --- Topics in Computational Geometry.
-          \item Clínica Especialistas Reina Virgen María (Quibdó), Clínica Santa Ana (Bogotá), SOMA Radiology.
+          \item Cl\'inica Especialistas Reina Virgen Mar\'ia (Quibd\'o), Cl\'inica Santa Ana (Bogot\'a), SOMA Radiology.
           \item Open-source: SAM (Meta AI), pydicom, scikit-image, OpenCV, NumPy/SciPy.
         \end{itemize}
       \end{block}
     \end{column}
   \end{columns}
 
-  \vspace{0.4em}
+  \vspace{0.6em}
   \begin{center}
-    \large \textcolor{medBlue}{\textbf{Thank you --- questions welcome.}}\\
+    \large \textcolor{medBlue}{\textbf{Thank you --- questions welcome.}}\\[0.3em]
     \footnotesize \textit{1\textsuperscript{st} UEMS Congress 2026 --- Leuven, Belgium}
   \end{center}
 \end{frame}

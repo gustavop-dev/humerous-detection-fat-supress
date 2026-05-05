@@ -16,12 +16,20 @@
       \item Uses these features as inputs for downstream tear-localization.
     \end{enumerate}
   \end{block}
+\end{frame}
 
-  \begin{block}{Design principles}
-    \begin{itemize}
-      \item \textbf{Interpretable}: every output is geometrically meaningful and visually verifiable by a radiologist.
-      \item \textbf{Vendor-agnostic}: works on SIEMENS, GE and Philips data without retraining.
-      \item \textbf{Anatomy-aware}: pipeline parameters reflect humeral anatomy, not arbitrary heuristics.
-    \end{itemize}
+% Slide 5b -- Design principles
+\begin{frame}{Design principles}
+  \begin{block}{Interpretable}
+    Every output is geometrically meaningful and \alert{visually verifiable} by a radiologist:
+    masks, boundary CSVs, fitted circles, summary figures.
+  \end{block}
+
+  \begin{block}{Vendor-agnostic}
+    Works on SIEMENS, GE and Philips data \alert{without retraining}: thresholds are geometric (mm, \% of peak), not intensity-based.
+  \end{block}
+
+  \begin{block}{Anatomy-aware}
+    Pipeline parameters reflect humeral anatomy (head vs shaft asymmetry, articular surface localization), \alert{not arbitrary heuristics}.
   \end{block}
 \end{frame}
