@@ -1,45 +1,42 @@
-% Slide 8 -- Direction-aware validation: reading anatomy
+% Slide 8 -- Direction-aware validation: header reading (text only)
 \begin{frame}{Stage 2: direction-aware validation of the area curve}
-  \begin{columns}[T]
-    \begin{column}{0.55\textwidth}
-      \begin{block}{Reading anatomy from the DICOM header}
-        \begin{itemize}
-          \item Compute slice normal $\mathbf{n} = \mathrm{row} \times \mathrm{col}$ from \texttt{ImageOrientationPatient}.
-          \item Project \texttt{ImagePositionPatient} on $\mathbf{n}$ $\Rightarrow$ \alert{which end is the head}.
-          \item Fallback: \texttt{SliceLocation} $\to$ \texttt{InstanceNumber}.
-        \end{itemize}
-      \end{block}
+  \begin{block}{Reading anatomy from the DICOM header}
+    \begin{itemize}
+      \item Compute slice normal $\mathbf{n} = \mathrm{row} \times \mathrm{col}$ from \texttt{ImageOrientationPatient}.
+      \item Project \texttt{ImagePositionPatient} on $\mathbf{n}$ $\Rightarrow$ \alert{which end is the head}.
+      \item Fallback: \texttt{SliceLocation} $\to$ \texttt{InstanceNumber}.
+    \end{itemize}
+  \end{block}
 
-      \begin{block}{Why the headers, not conventions}
-        Vendor conventions about scan direction are inconsistent.
-        Reading the geometric headers makes the pipeline \alert{vendor-agnostic by construction}.
-      \end{block}
-    \end{column}
-    \begin{column}{0.45\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.75]
-        \draw[->] (0,0) -- (8,0) node[right, font=\tiny] {slice idx};
-        \draw[->] (0,0) -- (0,4) node[above, font=\tiny] {area (px)};
-        \draw[thick, medBlue, smooth, samples=80, domain=0.5:7.5]
-          plot (\x, {3.2*exp(-pow(\x-4,2)/2.5)});
-        \draw[medAccent, dashed] (1.0,0) -- (1.0,0.5);
-        \draw[medAccent, dashed] (7.0,0) -- (7.0,0.5);
-        \node[font=\tiny, medAccent] at (1.0,3.5) {trimmed};
-        \node[font=\tiny, medAccent] at (7.0,3.5) {trimmed};
-        \filldraw[medAccent] (5.5,3.0) circle (2pt);
-        \node[medAccent, font=\tiny, above right] at (5.5,3.0) {strong outlier};
-        \node[medTeal, font=\tiny] at (1.5,3.7) {H $\rightarrow$};
-        \node[medTeal, font=\tiny] at (6.5,3.7) {$\leftarrow$ shaft};
-        \draw[medTeal, very thick] (1.6,-0.15) -- (6.4,-0.15);
-        \node[medTeal, font=\tiny, below] at (4.0,-0.2) {bell extent};
-      \end{tikzpicture}
-      \\[0.3em]
-      {\footnotesize Per-slice mask area along the axial stack.}
-    \end{column}
-  \end{columns}
+  \begin{block}{Why the headers, not conventions}
+    Vendor conventions about scan direction are inconsistent. Reading the geometric headers makes the pipeline \alert{vendor-agnostic by construction}.
+  \end{block}
 \end{frame}
 
-% Slide 8b -- Asymmetric trim and outlier detection
+% Slide 8b -- Bell-curve schematic (image only)
+\begin{frame}{Schematic: per-slice mask area along the axial stack}
+  \centering
+  \begin{tikzpicture}[scale=1.3]
+    \draw[->] (0,0) -- (8,0) node[right, font=\footnotesize] {slice idx};
+    \draw[->] (0,0) -- (0,4) node[above, font=\footnotesize] {area (px)};
+    \draw[thick, medBlue, smooth, samples=80, domain=0.5:7.5]
+      plot (\x, {3.2*exp(-pow(\x-4,2)/2.5)});
+    \draw[medAccent, dashed] (1.0,0) -- (1.0,0.5);
+    \draw[medAccent, dashed] (7.0,0) -- (7.0,0.5);
+    \node[font=\footnotesize, medAccent] at (1.0,3.5) {trimmed};
+    \node[font=\footnotesize, medAccent] at (7.0,3.5) {trimmed};
+    \filldraw[medAccent] (5.5,3.0) circle (2pt);
+    \node[medAccent, font=\footnotesize, above right] at (5.5,3.0) {strong outlier};
+    \node[medTeal, font=\footnotesize] at (1.5,3.7) {H $\rightarrow$};
+    \node[medTeal, font=\footnotesize] at (6.5,3.7) {$\leftarrow$ shaft};
+    \draw[medTeal, very thick] (1.6,-0.15) -- (6.4,-0.15);
+    \node[medTeal, font=\footnotesize, below] at (4.0,-0.2) {bell extent};
+  \end{tikzpicture}
+  \\[0.6em]
+  {\footnotesize The pipeline trims tails and flags internal anomalies before fitting any geometry.}
+\end{frame}
+
+% Slide 8c -- Asymmetric trim and outlier flagging (text only)
 \begin{frame}{Asymmetric trim and outlier flagging}
   \begin{block}{Asymmetric static floor (anatomy-driven)}
     \begin{itemize}
@@ -49,12 +46,11 @@
   \end{block}
 
   \begin{block}{Reversal-from-peak}
-    Walk outward from the peak; trim when the curve genuinely rises again
-    ($\geq$10\% on the head side, $\geq$20\% on the shaft side, with a $\geq$50\,px absolute floor).
+    Walk outward from the peak; trim when the curve genuinely rises again ($\geq$10\% on the head side, $\geq$20\% on the shaft side, $\geq$50\,px absolute).
   \end{block}
 
   \begin{block}{Internal outlier flagging}
     Robust MAD residual ($\geq 2.5\sigma$), cross-checked with circle inlier-ratio drop ($\geq$15\%) or Dice drop ($\geq$10\%).
-    Strong outliers are excluded; weak ones are reported but kept.
+    Strong outliers excluded; weak ones reported but kept.
   \end{block}
 \end{frame}

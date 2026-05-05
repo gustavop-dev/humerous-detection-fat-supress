@@ -1,26 +1,15 @@
-% Slide 3 -- Imaging context: fat saturation
+% Slide 3 -- Fat saturation (text only)
 \begin{frame}{Why fat-suppressed MRI?}
-  \begin{columns}[T]
-    \begin{column}{0.55\textwidth}
-      \begin{block}{Fat saturation (fs)}
-        \begin{itemize}
-          \item Selective RF pulse \alert{nulls fat signal} $\Rightarrow$ subcutaneous and marrow fat appear dark.
-          \item Cortical bone, tendon, edema and joint fluid become \alert{conspicuous}.
-          \item Standard sequences here: \textbf{PD-fs} (anatomy + edema sensitivity) and \textbf{T1-fs}.
-        \end{itemize}
-      \end{block}
-    \end{column}
-    \begin{column}{0.45\textwidth}
-      \centering
-      \includegraphics[width=\linewidth]{figures/seg_example.png}
-      \\[0.2em]
-      {\footnotesize Axial PD-fs slice with humeral segmentation overlay\\
-      \textit{(PixelSpacing $\approx$ 0.47\,mm; matrix 320$\times$320).}}
-    \end{column}
-  \end{columns}
+  \begin{block}{Fat saturation (fs)}
+    \begin{itemize}
+      \item Selective RF pulse \alert{nulls fat signal} $\Rightarrow$ subcutaneous and marrow fat appear dark.
+      \item Cortical bone, tendon, edema and joint fluid become \alert{conspicuous}.
+      \item Standard sequences here: \textbf{PD-fs} (anatomy + edema sensitivity) and \textbf{T1-fs}.
+    \end{itemize}
+  \end{block}
 \end{frame}
 
-% Slide 3b -- Why axial
+% Slide 3b -- Axial plane rationale (text only)
 \begin{frame}{Why the axial plane?}
   \begin{block}{Geometric structure of the axial stack}
     \begin{itemize}
@@ -31,6 +20,14 @@
   \end{block}
 
   \begin{block}{Why this matters for the pipeline}
-    The bell-shaped area curve is the \alert{anchor} for downstream validation: trimming non-humeral tails, detecting outlier slices, and selecting the articular slices on which we fit per-slice circles.
+    The bell-shaped area curve is the \alert{anchor} for downstream validation: trimming non-humeral tails, detecting outlier slices, and selecting articular slices.
   \end{block}
+\end{frame}
+
+% Slide 3c -- Axial PD-fs example (image only)
+\begin{frame}{Axial PD-fs slice with humeral segmentation}
+  \centering
+  \includegraphics[height=0.78\textheight,keepaspectratio]{figures/seg_example.png}
+  \\[0.4em]
+  {\footnotesize PD-fs axial slice (PixelSpacing $\approx$ 0.47\,mm; matrix 320$\times$320). Green: mask boundary; red dot: positive prompt centroid.}
 \end{frame}

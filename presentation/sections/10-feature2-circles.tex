@@ -1,31 +1,29 @@
-% Slide 10 -- Feature 2: per-slice articular circles (key idea + computation)
+% Slide 10 -- Feature 2: per-slice articular circles (text only)
 \begin{frame}{Feature 2: per-slice articular circles}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Key idea}
-        These circles do \alert{not approximate} the sphere ---
-        they \alert{lie on} the cartilage surface where the humeral head meets the glenoid.
-      \end{block}
+  \begin{block}{Key idea}
+    These circles do \alert{not approximate} the sphere ---
+    they \alert{lie on} the cartilage surface where the humeral head meets the glenoid.
+  \end{block}
 
-      \begin{block}{How they are computed}
-        \begin{itemize}
-          \item Articular slices: mask area $\geq 70\%$ of the peak.
-          \item Project boundary to the slice's best-fit plane via \alert{SVD}.
-          \item Iterative 2D RANSAC + K\aa{}sa fit (up to 3 circles per slice).
-          \item Inlier distance $\leq 1.5$\,mm; ratio $\geq 35\%$; min.~10 inliers.
-        \end{itemize}
-      \end{block}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \centering
-      \includegraphics[width=\linewidth]{figures/circle_articular.png}
-      \\[0.3em]
-      {\footnotesize Five-panel render for one articular slice.\\ The fitted circle lies on the articular contour.}
-    \end{column}
-  \end{columns}
+  \begin{block}{How they are computed}
+    \begin{itemize}
+      \item Articular slices: mask area $\geq 70\%$ of the peak.
+      \item Project boundary to the slice's best-fit plane via \alert{SVD}.
+      \item Iterative 2D RANSAC + K\aa{}sa fit (up to 3 circles per slice).
+      \item Inlier distance $\leq 1.5$\,mm; ratio $\geq 35\%$; min.~10 inliers.
+    \end{itemize}
+  \end{block}
 \end{frame}
 
-% Slide 10b -- What each circle stores + clinical interpretation
+% Slide 10b -- Five-panel circle render (image only)
+\begin{frame}{Five-panel render for one articular slice}
+  \centering
+  \includegraphics[width=0.95\linewidth,height=0.65\textheight,keepaspectratio]{figures/circle_articular.png}
+  \\[0.6em]
+  {\footnotesize Original image, mask, contour, fitted circle, and overlay. The fitted circle lies precisely on the articular contour.}
+\end{frame}
+
+% Slide 10c -- What each circle stores + clinical meaning (text only)
 \begin{frame}{Feature 2: stored information and clinical meaning}
   \begin{block}{What each circle stores}
     \begin{itemize}
