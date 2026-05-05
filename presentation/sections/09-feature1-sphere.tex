@@ -1,0 +1,55 @@
+% Slide 9 -- Feature 1: sphere
+\begin{frame}{Feature 1: global humeral-head sphere}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{block}{What it is}
+        \footnotesize Single sphere fitted to the 3D contour cloud (DICOM millimeters): a patient-specific \alert{anatomical reference} for the humeral head.
+      \end{block}
+
+      \begin{block}{How it is computed}
+        \footnotesize
+        \begin{itemize}
+          \item Pixel $\to$ world via \texttt{IPP}, \texttt{IOP}, \texttt{PixelSpacing}.
+          \item \alert{RANSAC sphere}: 2000 iter., 4-point sampling, K\aa{}sa fit.
+          \item Inlier distance $\leq 2.0$\,mm; refit LSQ on inliers; sanity $r<200$\,mm.
+        \end{itemize}
+      \end{block}
+
+      \begin{block}{Why it is clinically useful}
+        \footnotesize
+        \begin{itemize}
+          \item Patient-expected curvature (typical $r \in 23$--$26$\,mm).
+          \item Filters tubercles, shaft and artifacts automatically.
+          \item Enables \alert{normalized comparison} across patients and vendors.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        % Sphere proxy
+        \draw[thick, medBlue, fill=medSoft, fill opacity=0.6] (0,0) circle (1.8);
+        \draw[medBlue, dashed] (-1.8,0) arc (180:360:1.8 and 0.4);
+        \draw[medBlue] (-1.8,0) arc (180:0:1.8 and 0.4);
+        % Inlier dots
+        \foreach \a in {10,30,...,170}{
+          \filldraw[medTeal] ({1.8*cos(\a)},{1.8*sin(\a)}) circle (1.5pt);
+        }
+        \foreach \a in {200,225,250,290,310,335}{
+          \filldraw[medTeal] ({1.8*cos(\a)},{1.8*sin(\a)}) circle (1.5pt);
+        }
+        % Outliers
+        \filldraw[medAccent] (2.4,0.2) circle (1.5pt);
+        \filldraw[medAccent] (-2.3,-0.4) circle (1.5pt);
+        \filldraw[medAccent] (0.3,-2.2) circle (1.5pt);
+        \node[medAccent, font=\tiny, right] at (2.4,0.2) {tubercle};
+        \node[medAccent, font=\tiny, left] at (-2.3,-0.4) {shaft};
+        % Center
+        \filldraw[medBlue] (0,0) circle (1.5pt);
+        \node[medBlue, font=\tiny, below right] at (0,0) {$(c_x,c_y,c_z)$};
+      \end{tikzpicture}
+      \\[0.4em]
+      {\footnotesize Inliers (teal) define the humeral head;\\ tubercles and shaft (orange) are correctly excluded.}
+    \end{column}
+  \end{columns}
+\end{frame}

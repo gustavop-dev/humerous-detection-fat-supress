@@ -1,0 +1,63 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{caption}
+
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, fit, backgrounds, calc}
+
+% --- Theme: clean medical palette ----------------------------------------
+\usetheme{Madrid}
+\usecolortheme{whale}
+
+\definecolor{medBlue}{RGB}{0,73,114}
+\definecolor{medTeal}{RGB}{0,128,128}
+\definecolor{medAccent}{RGB}{200,80,40}
+\definecolor{medSoft}{RGB}{235,242,247}
+
+\setbeamercolor{structure}{fg=medBlue}
+\setbeamercolor{title}{fg=white,bg=medBlue}
+\setbeamercolor{frametitle}{fg=white,bg=medBlue}
+\setbeamercolor{block title}{bg=medTeal,fg=white}
+\setbeamercolor{block body}{bg=medSoft,fg=black}
+\setbeamercolor{alerted text}{fg=medAccent}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamerfont{title}{size=\Large,series=\bfseries}
+\setbeamerfont{frametitle}{size=\large,series=\bfseries}
+
+% --- Metadata ------------------------------------------------------------
+\title[Geometric humeral analysis]{Interpretable Geometric Analysis of the Humerus\\ in Fat-Suppressed Shoulder MRI}
+\subtitle{Toward localization of rotator cuff tears via foundation-model segmentation\\ and direction-aware geometric features}
+\author[UNAL]{Research Team\\\small Universidad Nacional de Colombia}
+\institute[UNAL]{Topics in Computational Geometry --- UNAL, Colombia}
+\date{1\textsuperscript{st} UEMS Congress 2026 \\ Leuven, Belgium --- 27--30 May 2026}
+
+\begin{document}
+
+\input{sections/01-title}
+\input{sections/02-clinical-problem}
+\input{sections/03-imaging}
+\input{sections/04-anatomy-geometry}
+\input{sections/05-hypothesis}
+\input{sections/06-pipeline-overview}
+\input{sections/07-sam-propagation}
+\input{sections/08-direction-aware}
+\input{sections/09-feature1-sphere}
+\input{sections/10-feature2-circles}
+\input{sections/11-geometric-trick}
+\input{sections/12-multivendor}
+\input{sections/13-results}
+\input{sections/14-limitations}
+\input{sections/15-conclusion}
+
+\end{document}

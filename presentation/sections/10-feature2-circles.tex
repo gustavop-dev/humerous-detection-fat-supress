@@ -1,0 +1,37 @@
+% Slide 10 -- Feature 2: per-slice articular circles
+\begin{frame}{Feature 2: per-slice articular circles}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Key idea}
+        \footnotesize These circles do \alert{not approximate} the sphere --- they \alert{lie on} the cartilage surface where the humeral head meets the glenoid.
+      \end{block}
+
+      \begin{block}{How they are computed}
+        \footnotesize
+        \begin{itemize}
+          \item Articular slices: mask area $\geq 70\%$ of the peak.
+          \item Project boundary to the slice's best-fit plane via \alert{SVD}.
+          \item Iterative 2D RANSAC + K\aa{}sa fit (up to 3 circles/slice).
+          \item Inlier $\leq 1.5$\,mm; ratio $\geq 35\%$; min 10 inliers.
+        \end{itemize}
+      \end{block}
+
+      \begin{block}{What each circle stores}
+        \footnotesize
+        \begin{itemize}
+          \item Center (3D mm), radius, in-plane axes $(\mathbf{u},\mathbf{v})$, normal.
+          \item Inlier cloud + residual statistics.
+          \item Re-projection on the original axial PNG for clinician review.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/circle_articular.png}
+      \\[0.3em]
+      {\footnotesize Five-panel render for one articular slice:
+      original image, mask, contour, fitted circle, and overlay.\\
+      The fitted circle lies precisely on the articular contour.}
+    \end{column}
+  \end{columns}
+\end{frame}

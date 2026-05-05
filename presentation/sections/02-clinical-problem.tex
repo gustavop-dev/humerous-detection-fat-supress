@@ -1,0 +1,43 @@
+% Slide 2 -- Clinical problem
+\begin{frame}{The clinical problem: rotator cuff tears}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{block}{Why it matters}
+        \begin{itemize}
+          \item Rotator cuff disease affects \alert{$>$30\% of adults over 60}, the leading cause of shoulder pain and disability.
+          \item Tears arise from acute trauma or chronic degeneration (microtrauma + tendon-insertion ischemia).
+          \item Accurate \alert{localization} -- which tendon, where along the insertion -- drives surgical planning.
+        \end{itemize}
+      \end{block}
+
+      \begin{block}{Diagnostic challenge}
+        \begin{itemize}
+          \item MRI reading is expert-dependent and time-consuming.
+          \item Inter-vendor variability (SIEMENS / GE / Philips) complicates automation.
+          \item Equity gap: limited access to subspecialty radiology in low-resource settings.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        % Humeral head as circle
+        \draw[thick, medBlue, fill=medSoft] (0,0) circle (1.6);
+        \node[medBlue] at (0,0) {\footnotesize Humeral head};
+        % Glenoid
+        \draw[thick, medTeal] (-2.2,-0.6) arc (-30:30:1.4);
+        \node[medTeal, rotate=90] at (-2.4,0) {\footnotesize Glenoid};
+        % Tear marker
+        \draw[medAccent, ultra thick] (1.1,1.1) -- (1.5,1.5);
+        \draw[medAccent, ultra thick] (1.0,1.5) -- (1.6,1.1);
+        \node[medAccent, right] at (1.6,1.3) {\footnotesize Tear};
+        % Cuff muscles labels
+        \node[gray, font=\tiny] at (0,1.9) {Supraspinatus};
+        \node[gray, font=\tiny] at (1.9,0) {Infraspinatus};
+        \node[gray, font=\tiny] at (-0.4,-1.9) {Subscapularis};
+      \end{tikzpicture}
+      \\[0.3em]
+      {\footnotesize Axial schematic of the glenohumeral joint.\\ Tears disrupt the articular contour focally.}
+    \end{column}
+  \end{columns}
+\end{frame}

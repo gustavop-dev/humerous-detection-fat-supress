@@ -1,0 +1,48 @@
+% Slide 4 -- Anatomy to geometry
+\begin{frame}{From anatomy to geometry: two natural primitives}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{The humeral head $\approx$ spherical cap}
+        \begin{itemize}
+          \item Articular cartilage covers a near-perfect spherical surface (radius $\sim$23--26\,mm in adults).
+          \item Motivates a \alert{global sphere fit} as a patient-specific anatomical reference.
+        \end{itemize}
+      \end{block}
+      \begin{block}{The articular surface $\approx$ local circles}
+        \begin{itemize}
+          \item In equatorial axial slices, the contact contour with the glenoid is locally circular.
+          \item Motivates \alert{per-slice circles} that \emph{lie on} the articular surface (not approximate it).
+        \end{itemize}
+      \end{block}
+      \begin{block}{Anatomical asymmetry}
+        \begin{itemize}
+          \item \textbf{Head}: closes \alert{abruptly} at the anatomical neck.
+          \item \textbf{Shaft}: tapers \alert{gradually} (longer, smoother).
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.7]
+        % Sagittal sketch of proximal humerus
+        \draw[thick, medBlue, fill=medSoft]
+          (0,0) ellipse (1.6 and 1.2);
+        \node[medBlue] at (0,0) {\footnotesize head};
+        % Tubercles
+        \draw[thick, medTeal] (1.4,0.4) .. controls (2.0,0.6) and (2.0,-0.4) .. (1.4,-0.6);
+        \node[medTeal, font=\tiny, align=center] at (2.5,0) {greater\\tubercle};
+        % Shaft
+        \draw[thick, medBlue] (-0.4,-1.2) -- (-0.7,-3.5);
+        \draw[thick, medBlue] (0.6,-1.2) -- (0.4,-3.5);
+        \node[medBlue, font=\tiny, align=center] at (1.6,-2.5) {shaft\\(taper)};
+        % Curve hint
+        \draw[->, thick, medAccent] (-2.2,1.0) -- (-1.4,1.0)
+          node[right, font=\tiny] {abrupt closure};
+        \draw[->, thick, medAccent] (-2.2,-3.0) -- (-1.0,-3.0)
+          node[right, font=\tiny] {gradual taper};
+      \end{tikzpicture}
+      \\[0.4em]
+      {\footnotesize Anatomy directly motivates two thresholds in the pipeline:\\ \textbf{30\%} on the head side, \textbf{10\%} on the shaft side.}
+    \end{column}
+  \end{columns}
+\end{frame}

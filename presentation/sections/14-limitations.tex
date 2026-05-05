@@ -1,0 +1,30 @@
+% Slide 14 -- Limitations & clinical considerations
+\begin{frame}{Limitations and clinical considerations}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Current limitations}
+        \begin{itemize}\small
+          \item \textbf{Validation cohort size}: 6 datasets across 3 vendors --- proof of concept, not clinical validation.
+          \item \textbf{Seed-slice selection}: automatic point at $(0.40W, 0.40H)$ assumes typical centering; pathological positioning may fail.
+          \item \textbf{Pattern B without GPU}: when SAM grabs adjacent muscle/glenoid, weak outliers are flagged but not re-segmented unless GPU + SAM are available (Step 1.6).
+          \item \textbf{Tear-localization rule is a hypothesis}: the angular-sector mapping needs prospective validation against arthroscopic ground truth.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{What is required for clinical translation}
+        \begin{itemize}\small
+          \item \alert{Multi-center, larger cohort} with arthroscopy or surgical confirmation.
+          \item Inter-reader study: do radiologists agree with the geometric flag location?
+          \item Integration with PACS / DICOM-SR for routine workflow.
+          \item Reproducibility: containerized pipeline, public benchmarks.
+        \end{itemize}
+      \end{block}
+
+      \begin{block}{Risk profile}
+        Because outputs are \alert{geometric, visualized, and auditable}, the system fails ``loudly''
+        rather than silently --- a key property for clinical deployment compared to opaque end-to-end models.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}

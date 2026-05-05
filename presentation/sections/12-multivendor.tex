@@ -1,0 +1,45 @@
+% Slide 12 -- Multi-vendor robustness
+\begin{frame}{Multi-vendor robustness and equity of access}
+  \begin{columns}[T]
+    \begin{column}{0.45\textwidth}
+      \begin{block}{Tested across vendors and sites}
+        \footnotesize
+        \begin{itemize}
+          \item \textbf{SIEMENS} -- Quibd\'o, PD-fs TSE.
+          \item \textbf{GE} -- Optima MR360, Bogot\'a, PD-fs FSE.
+          \item \textbf{Philips} -- Ingenia, SOMA, ePDW SPAIR.
+          \item Matrix 256$\times$256 to 320$\times$320; PD-fs and T1-fs.
+        \end{itemize}
+      \end{block}
+
+      \begin{block}{Why this generalizes}
+        \footnotesize
+        \begin{itemize}
+          \item Frozen SAM $\Rightarrow$ no domain-specific weights to overfit.
+          \item Thresholds are \alert{geometric} (mm, \% of peak), not intensity-based.
+          \item Direction handling reads DICOM headers, not vendor conventions.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.55\textwidth}
+      \footnotesize
+      \begin{tabular}{@{}lcc@{}}
+        \toprule
+        \textbf{Dataset} & \textbf{Kept} & \textbf{Articular} \\
+        \midrule
+        SIEMENS P5SE1 (Quibdó)        & 21/32 & 5 \\
+        SIEMENS PD fs (fov150)        & 18/23 & 4 \\
+        SIEMENS T1 fs \#5             & 19/24 & 5 \\
+        SIEMENS T1 fs \#11            & 17/22 & 4 \\
+        GE Optima MR360 (Bogotá)      & 16/21 & 4 \\
+        Philips Ingenia (SOMA)        & 20/26 & 5 \\
+        \bottomrule
+      \end{tabular}
+      \vspace{0.4em}
+
+      \begin{block}{Equity-of-access angle}
+        \footnotesize Datasets include \alert{Quibd\'o, Choc\'o}, a region with limited subspecialty radiology. Vendor-agnostic, interpretable AI directly supports diagnostic capacity in such settings.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}

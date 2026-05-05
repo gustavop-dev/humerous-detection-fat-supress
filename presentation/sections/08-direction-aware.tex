@@ -1,0 +1,53 @@
+% Slide 8 -- Direction-aware validation
+\begin{frame}{Stage 2: Direction-aware validation of the area curve}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Reading anatomy from the DICOM header}
+        \begin{itemize}
+          \item Compute slice normal $\mathbf{n} = \mathrm{row} \times \mathrm{col}$ from \texttt{ImageOrientationPatient}.
+          \item Project \texttt{ImagePositionPatient} on $\mathbf{n}$ $\Rightarrow$ \alert{which end is the head}.
+          \item Fallback: \texttt{SliceLocation} $\to$ \texttt{InstanceNumber}.
+        \end{itemize}
+      \end{block}
+
+      \begin{block}{Asymmetric trim (anatomy-driven)}
+        \begin{itemize}
+          \item Static floor from each border:
+            \begin{itemize}\footnotesize
+              \item \alert{30\% of peak} on the head side (abrupt closure)
+              \item \alert{10\% of peak} on the shaft side (gradual taper)
+            \end{itemize}
+          \item Reversal-from-peak: stop when the curve genuinely rises ($\geq$10\% head, $\geq$20\% shaft, $\geq$50\,px absolute).
+          \item Internal-outlier flagging: robust MAD residual ($\geq 2.5\sigma$) cross-checked with circle inlier-ratio drop ($\geq$15\%) or Dice drop ($\geq$10\%).
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.65]
+        % Axes
+        \draw[->] (0,0) -- (8,0) node[right, font=\tiny] {slice idx};
+        \draw[->] (0,0) -- (0,4) node[above, font=\tiny] {area (px)};
+        % Bell curve
+        \draw[thick, medBlue, smooth, samples=80, domain=0.5:7.5]
+          plot (\x, {3.2*exp(-pow(\x-4,2)/2.5)});
+        % Head/shaft trims
+        \draw[medAccent, dashed] (1.0,0) -- (1.0,0.5);
+        \draw[medAccent, dashed] (7.0,0) -- (7.0,0.5);
+        \node[font=\tiny, medAccent] at (1.0,3.5) {trimmed};
+        \node[font=\tiny, medAccent] at (7.0,3.5) {trimmed};
+        % Outlier
+        \filldraw[medAccent] (5.5,3.0) circle (2pt);
+        \node[medAccent, font=\tiny, above right] at (5.5,3.0) {strong outlier};
+        % Head/shaft labels
+        \node[medTeal, font=\tiny] at (1.5,3.7) {H $\rightarrow$};
+        \node[medTeal, font=\tiny] at (6.5,3.7) {$\leftarrow$ shaft};
+        % Bell extent
+        \draw[medTeal, very thick] (1.6,-0.15) -- (6.4,-0.15);
+        \node[medTeal, font=\tiny, below] at (4.0,-0.2) {bell extent};
+      \end{tikzpicture}
+      \\[0.5em]
+      {\footnotesize Schematic: per-slice mask area along the axial stack.\\ The pipeline trims tails and flags internal anomalies before fitting any geometry.}
+    \end{column}
+  \end{columns}
+\end{frame}

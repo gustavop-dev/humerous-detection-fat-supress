@@ -1,0 +1,27 @@
+% Slide 5 -- Hypothesis & objective
+\begin{frame}{Hypothesis and objective}
+  \begin{block}{Hypothesis}
+    A rotator cuff tear produces a \alert{focal, geometrically detectable} discontinuity of the humeral
+    articular contour. If we extract clinically interpretable geometric features from MRI, we can
+    \alert{localize} the lesion to a specific tendon insertion sector --- without training a new neural network.
+  \end{block}
+
+  \begin{block}{Objective}
+    Build an \alert{end-to-end pipeline} that:
+    \begin{enumerate}
+      \item Segments the humerus across the entire axial volume from a \alert{single seed slice}.
+      \item Extracts two interpretable features:
+        \textbf{(1)} a global humeral-head \alert{sphere};
+        \textbf{(2)} per-slice articular \alert{circles} that lie on the cartilage surface.
+      \item Uses these features as inputs for downstream tear-localization.
+    \end{enumerate}
+  \end{block}
+
+  \begin{block}{Design principles}
+    \begin{itemize}
+      \item \textbf{Interpretable}: every output is geometrically meaningful and visually verifiable by a radiologist.
+      \item \textbf{Vendor-agnostic}: works on SIEMENS, GE and Philips data without retraining.
+      \item \textbf{Anatomy-aware}: pipeline parameters reflect humeral anatomy, not arbitrary heuristics.
+    \end{itemize}
+  \end{block}
+\end{frame}

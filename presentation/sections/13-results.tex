@@ -1,0 +1,28 @@
+% Slide 13 -- Results
+\begin{frame}{Qualitative results: per-dataset summary}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \centering
+      \includegraphics[height=0.72\textheight,keepaspectratio]{figures/summary_pd4.png}
+      \\[0.2em]
+      {\scriptsize Summary (\textit{pd\_tse\_fs\_tra\_320\_fov150\_4}):
+      mask boundaries, area curve, circle centers, reconstructed surface.}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \begin{block}{What the figure shows}
+        \begin{itemize}\footnotesize
+          \item \textcolor{green!50!black}{\textbf{Green}}: slices kept for analysis.
+          \item \textcolor{gray}{\textbf{Gray}}: tails trimmed by direction-aware logic.
+          \item \textcolor{red}{\textbf{Red}}: strong outliers excluded after Pass 2.
+          \item Vertical lines: bell-extent boundaries.
+          \item Caret \texttt{H$\rightarrow$}: which side of the volume is the head.
+        \end{itemize}
+      \end{block}
+
+      \begin{block}{Per-slice circle visualization}
+        Five-panel \texttt{*\_circle.png} files
+        let a radiologist verify each fit at a glance, slice by slice -- \alert{auditability by design}.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}

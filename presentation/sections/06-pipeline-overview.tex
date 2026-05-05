@@ -1,0 +1,44 @@
+% Slide 6 -- Pipeline overview
+\begin{frame}{Pipeline overview}
+  \begin{center}
+  \begin{tikzpicture}[
+    scale=0.85, transform shape,
+    node distance=0.4cm and 0.45cm,
+    box/.style={
+      rectangle, rounded corners=2pt, draw=medBlue, thick, fill=medSoft,
+      text width=2.2cm, align=center, minimum height=0.95cm, font=\scriptsize
+    },
+    feat/.style={
+      rectangle, rounded corners=2pt, draw=medTeal, thick, fill=medTeal!15,
+      text width=2.4cm, align=center, minimum height=0.95cm, font=\scriptsize
+    },
+    arr/.style={->, thick, medBlue, >=Stealth}
+  ]
+    \node[box] (dicom) {DICOM\\axial fs MRI};
+    \node[box, right=of dicom] (sam) {SAM seed\\(central slice)};
+    \node[box, right=of sam] (prop) {Bidirectional\\propagation\\(dynamic Dice)};
+    \node[box, right=of prop] (post) {Neighbor +\\bright-ring\\post-processing};
+
+    \node[box, below=1.0cm of sam] (val) {Direction-aware\\area-curve\\validation (1.5)};
+    \node[box, right=of val] (resam) {Optional SAM\\re-segmentation\\(Step 1.6)};
+
+    \node[feat, below=1.0cm of val] (sphere) {Feature 1\\Global sphere\\(humeral head)};
+    \node[feat, right=of sphere] (circles) {Feature 2\\Per-slice articular\\circles};
+    \node[feat, right=of circles] (locate) {Tear localization\\(angular sector\\$\to$ tendon)};
+
+    \draw[arr] (dicom) -- (sam);
+    \draw[arr] (sam) -- (prop);
+    \draw[arr] (prop) -- (post);
+    \draw[arr] (post.south) |- (val.east);
+    \draw[arr] (val) -- (resam);
+    \draw[arr] (val.south) |- (sphere.north);
+    \draw[arr] (resam.south) |- (circles.north);
+    \draw[arr] (sphere) -- (circles);
+    \draw[arr] (circles) -- (locate);
+  \end{tikzpicture}
+  \end{center}
+
+  \vspace{0.4em}
+  {\footnotesize \textcolor{medTeal}{Foundation model (SAM, frozen) + classical geometry + clinical anatomy.}\\
+  Each block produces auditable artifacts: masks, CSVs, validation reports, summary figures.}
+\end{frame}

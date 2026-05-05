@@ -1,0 +1,40 @@
+% Slide 15 -- Conclusion
+\begin{frame}{Conclusions and next steps}
+  \begin{block}{Take-home messages}
+    \footnotesize
+    \begin{itemize}
+      \item A \alert{frozen foundation model} (SAM) plus \alert{anatomy-aware classical geometry} produces interpretable shoulder MRI features without training.
+      \item DICOM-header reading makes the pipeline \alert{direction-aware} with asymmetric anatomy-driven thresholds.
+      \item Two features (humeral sphere + per-slice articular circles) enable \alert{tear localization by angular sector}.
+      \item Robust across SIEMENS, GE, Philips; relevant for low-resource radiology settings.
+    \end{itemize}
+  \end{block}
+
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Next steps}
+        \begin{itemize}\footnotesize
+          \item Implement the angular-sector $\to$ tendon mapping end-to-end.
+          \item Prospective validation against arthroscopy.
+          \item Inter-reader and inter-vendor reproducibility study.
+          \item Integration into a clinical reading viewer.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Acknowledgements}
+        \begin{itemize}\footnotesize
+          \item Universidad Nacional de Colombia --- Topics in Computational Geometry.
+          \item Clínica Especialistas Reina Virgen María (Quibdó), Clínica Santa Ana (Bogotá), SOMA Radiology.
+          \item Open-source: SAM (Meta AI), pydicom, scikit-image, OpenCV, NumPy/SciPy.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.4em}
+  \begin{center}
+    \large \textcolor{medBlue}{\textbf{Thank you --- questions welcome.}}\\
+    \footnotesize \textit{1\textsuperscript{st} UEMS Congress 2026 --- Leuven, Belgium}
+  \end{center}
+\end{frame}
