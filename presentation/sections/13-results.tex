@@ -1,68 +1,20 @@
-% Slide 13a -- Slice classification + Dice score
-\begin{frame}{Qualitative results --- slice quality (1/3)}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \centering
-      \includegraphics[height=0.72\textheight,keepaspectratio]{figures/panel1.png}
-      \\[0.2em]
-      {\footnotesize Slice classification by Dice.}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \centering
-      \includegraphics[height=0.72\textheight,keepaspectratio]{figures/panel2.png}
-      \\[0.2em]
-      {\footnotesize Dice score per slice.}
-    \end{column}
-  \end{columns}
-
-  \vspace{0.3em}
-  {\footnotesize Most slices land in \textcolor{green!50!black}{\textbf{Correct}}; failures cluster at the head/shaft extremes.}
+% Slide 13 -- All summary panels on a single dedicated slide (3x2 grid)
+\begin{frame}{Qualitative results: per-dataset summary}
+  \centering
+  \begin{tabular}{@{}ccc@{}}
+    \includegraphics[width=0.30\linewidth,height=0.36\textheight,keepaspectratio]{figures/panel1.png} &
+    \includegraphics[width=0.30\linewidth,height=0.36\textheight,keepaspectratio]{figures/panel2.png} &
+    \includegraphics[width=0.30\linewidth,height=0.36\textheight,keepaspectratio]{figures/panel3.png} \\
+    \includegraphics[width=0.30\linewidth,height=0.36\textheight,keepaspectratio]{figures/panel4.png} &
+    \includegraphics[width=0.30\linewidth,height=0.36\textheight,keepaspectratio]{figures/panel5.png} &
+    \includegraphics[width=0.30\linewidth,height=0.36\textheight,keepaspectratio]{figures/panel6.png} \\
+  \end{tabular}
+  \\[0.3em]
+  {\footnotesize Six panels: slice classification, Dice per slice, area curve, 3D boundary, sphere fit, per-slice articular circles.}
 \end{frame}
 
-% Slide 13b -- Mask area curve + boundary points
-\begin{frame}{Qualitative results --- area curve and 3D boundary (2/3)}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \centering
-      \includegraphics[height=0.72\textheight,keepaspectratio]{figures/panel3.png}
-      \\[0.2em]
-      {\footnotesize Mask area per slice with bell extent (Step 1.5).}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \centering
-      \includegraphics[height=0.72\textheight,keepaspectratio]{figures/panel4.png}
-      \\[0.2em]
-      {\footnotesize Boundary points in DICOM mm coordinates.}
-    \end{column}
-  \end{columns}
-
-  \vspace{0.3em}
-  {\footnotesize \texttt{H$\rightarrow$} indicates the head side. Trimmed tails appear in gray; outliers in red.}
-\end{frame}
-
-% Slide 13c -- Sphere fit + per-slice circles
-\begin{frame}{Qualitative results --- fitted geometry (3/3)}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \centering
-      \includegraphics[height=0.72\textheight,keepaspectratio]{figures/panel5.png}
-      \\[0.2em]
-      {\footnotesize Feature 1: humeral-head sphere (R\,=\,25.2\,mm).}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \centering
-      \includegraphics[height=0.72\textheight,keepaspectratio]{figures/panel6.png}
-      \\[0.2em]
-      {\footnotesize Feature 2: per-slice articular circles.}
-    \end{column}
-  \end{columns}
-
-  \vspace{0.3em}
-  {\footnotesize 17 circles fitted; 6 of them lie on the articular surface.}
-\end{frame}
-
-% Slide 13d -- How to read the figures
-\begin{frame}{How to read these figures}
+% Slide 13b -- How to read the figures
+\begin{frame}{How to read the summary figure}
   \begin{columns}[T]
     \begin{column}{0.55\textwidth}
       \begin{block}{Color code (area curve)}

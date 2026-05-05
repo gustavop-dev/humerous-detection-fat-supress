@@ -14,27 +14,7 @@
   \end{block}
 \end{frame}
 
-% Slide 4b -- Anatomical schematic (image alone)
-\begin{frame}{Anatomical schematic of the proximal humerus}
-  \centering
-  \begin{tikzpicture}[scale=1.3]
-    \draw[thick, medBlue, fill=medSoft] (0,0) ellipse (1.6 and 1.2);
-    \node[medBlue] at (0,0) {\small head};
-    \draw[thick, medTeal] (1.4,0.4) .. controls (2.0,0.6) and (2.0,-0.4) .. (1.4,-0.6);
-    \node[medTeal, font=\footnotesize, align=center] at (2.6,0) {greater\\tubercle};
-    \draw[thick, medBlue] (-0.4,-1.2) -- (-0.7,-3.2);
-    \draw[thick, medBlue] (0.6,-1.2) -- (0.4,-3.2);
-    \node[medBlue, font=\footnotesize, align=center] at (1.4,-2.3) {shaft\\(taper)};
-    \draw[->, thick, medAccent] (-2.6,1.0) -- (-1.7,1.0)
-      node[right, font=\footnotesize] {abrupt closure};
-    \draw[->, thick, medAccent] (-2.6,-2.8) -- (-1.0,-2.8)
-      node[right, font=\footnotesize] {gradual taper};
-  \end{tikzpicture}
-  \\[0.6em]
-  {\footnotesize Sagittal sketch: humeral head, greater tubercle, shaft.}
-\end{frame}
-
-% Slide 4c -- Anatomical asymmetry (text only)
+% Slide 4b -- Anatomical asymmetry (text only)
 \begin{frame}{Anatomical asymmetry: head vs shaft}
   \begin{block}{The two ends of the humerus look different}
     \begin{itemize}
@@ -52,21 +32,43 @@
   \end{block}
 \end{frame}
 
-% Slide 4d -- Bell curve schematic (image alone)
-\begin{frame}{Asymmetric trim of the area curve}
-  \centering
-  \begin{tikzpicture}[scale=1.3]
-    \draw[->] (0,0) -- (6.5,0) node[right, font=\footnotesize] {slice index};
-    \draw[->] (0,0) -- (0,4.0) node[above, font=\footnotesize] {area (px)};
-    \draw[thick, medBlue, smooth, samples=80, domain=0.3:6.0]
-      plot (\x, {3.0*exp(-pow(\x-3.0,2)/1.4)});
-    \draw[medAccent, dashed] (0.7,0) -- (0.7,1.0)
-      node[above, font=\footnotesize, medAccent] {30\% (head)};
-    \draw[medAccent, dashed] (5.5,0) -- (5.5,0.4)
-      node[above, font=\footnotesize, medAccent] {10\% (shaft)};
-    \node[medTeal, font=\footnotesize] at (0.7,3.3) {H $\rightarrow$};
-    \node[medTeal, font=\footnotesize] at (5.5,3.3) {$\leftarrow$ shaft};
-  \end{tikzpicture}
-  \\[0.6em]
-  {\footnotesize Asymmetric thresholds: stricter on the head side (abrupt closure), looser on the shaft side (gradual taper).}
+% Slide 4c -- All anatomy figures on a single dedicated slide
+\begin{frame}{Anatomy and asymmetric trim: visual reference}
+  \begin{columns}[c]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.1]
+        \draw[thick, medBlue, fill=medSoft] (0,0) ellipse (1.6 and 1.2);
+        \node[medBlue] at (0,0) {\small head};
+        \draw[thick, medTeal] (1.4,0.4) .. controls (2.0,0.6) and (2.0,-0.4) .. (1.4,-0.6);
+        \node[medTeal, font=\footnotesize, align=center] at (2.6,0) {greater\\tubercle};
+        \draw[thick, medBlue] (-0.4,-1.2) -- (-0.7,-3.0);
+        \draw[thick, medBlue] (0.6,-1.2) -- (0.4,-3.0);
+        \node[medBlue, font=\footnotesize, align=center] at (1.4,-2.2) {shaft\\(taper)};
+        \draw[->, thick, medAccent] (-2.6,1.0) -- (-1.7,1.0)
+          node[right, font=\footnotesize] {abrupt closure};
+        \draw[->, thick, medAccent] (-2.6,-2.6) -- (-1.0,-2.6)
+          node[right, font=\footnotesize] {gradual taper};
+      \end{tikzpicture}
+      \\[0.4em]
+      {\footnotesize Sagittal sketch of the proximal humerus.}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.1]
+        \draw[->] (0,0) -- (6.5,0) node[right, font=\footnotesize] {slice index};
+        \draw[->] (0,0) -- (0,4.0) node[above, font=\footnotesize] {area (px)};
+        \draw[thick, medBlue, smooth, samples=80, domain=0.3:6.0]
+          plot (\x, {3.0*exp(-pow(\x-3.0,2)/1.4)});
+        \draw[medAccent, dashed] (0.7,0) -- (0.7,1.0)
+          node[above, font=\footnotesize, medAccent] {30\% (head)};
+        \draw[medAccent, dashed] (5.5,0) -- (5.5,0.4)
+          node[above, font=\footnotesize, medAccent] {10\% (shaft)};
+        \node[medTeal, font=\footnotesize] at (0.7,3.3) {H $\rightarrow$};
+        \node[medTeal, font=\footnotesize] at (5.5,3.3) {$\leftarrow$ shaft};
+      \end{tikzpicture}
+      \\[0.4em]
+      {\footnotesize Asymmetric trim thresholds on the area curve.}
+    \end{column}
+  \end{columns}
 \end{frame}
