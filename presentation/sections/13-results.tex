@@ -1,17 +1,71 @@
-% Slide 13 -- Qualitative results: full-figure
-\begin{frame}{Qualitative results: per-dataset summary}
-  \centering
-  \includegraphics[height=0.75\textheight,keepaspectratio]{figures/summary_pd4.png}
-  \\[0.3em]
-  {\footnotesize Summary for dataset \textit{pd\_tse\_fs\_tra\_320\_fov150\_4}: mask boundaries,
-  area curve with Step 1.5 status, slice-circle centers and reconstructed surface.}
+% Slide 13a -- Slice classification + Dice score
+\begin{frame}{Qualitative results --- slice quality (1/3)}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \includegraphics[height=0.72\textheight,keepaspectratio]{figures/panel1.png}
+      \\[0.2em]
+      {\footnotesize Slice classification by Dice.}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \centering
+      \includegraphics[height=0.72\textheight,keepaspectratio]{figures/panel2.png}
+      \\[0.2em]
+      {\footnotesize Dice score per slice.}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.3em}
+  {\footnotesize Most slices land in \textcolor{green!50!black}{\textbf{Correct}}; failures cluster at the head/shaft extremes.}
 \end{frame}
 
-% Slide 13b -- How to read the figure
-\begin{frame}{How to read the summary figure}
+% Slide 13b -- Mask area curve + boundary points
+\begin{frame}{Qualitative results --- area curve and 3D boundary (2/3)}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \includegraphics[height=0.72\textheight,keepaspectratio]{figures/panel3.png}
+      \\[0.2em]
+      {\footnotesize Mask area per slice with bell extent (Step 1.5).}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \centering
+      \includegraphics[height=0.72\textheight,keepaspectratio]{figures/panel4.png}
+      \\[0.2em]
+      {\footnotesize Boundary points in DICOM mm coordinates.}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.3em}
+  {\footnotesize \texttt{H$\rightarrow$} indicates the head side. Trimmed tails appear in gray; outliers in red.}
+\end{frame}
+
+% Slide 13c -- Sphere fit + per-slice circles
+\begin{frame}{Qualitative results --- fitted geometry (3/3)}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \includegraphics[height=0.72\textheight,keepaspectratio]{figures/panel5.png}
+      \\[0.2em]
+      {\footnotesize Feature 1: humeral-head sphere (R\,=\,25.2\,mm).}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \centering
+      \includegraphics[height=0.72\textheight,keepaspectratio]{figures/panel6.png}
+      \\[0.2em]
+      {\footnotesize Feature 2: per-slice articular circles.}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.3em}
+  {\footnotesize 17 circles fitted; 6 of them lie on the articular surface.}
+\end{frame}
+
+% Slide 13d -- How to read the figures
+\begin{frame}{How to read these figures}
   \begin{columns}[T]
     \begin{column}{0.55\textwidth}
-      \begin{block}{Color code (panel 3, area curve)}
+      \begin{block}{Color code (area curve)}
         \begin{itemize}
           \item \textcolor{green!50!black}{\textbf{Green}}: slices kept for analysis.
           \item \textcolor{gray}{\textbf{Gray}}: tails trimmed by direction-aware logic.
@@ -27,8 +81,7 @@
       \end{block}
 
       \begin{block}{Reproducibility}
-        All thresholds are exposed as CLI flags;
-        every run writes \texttt{area\_curve\_validation.csv} for downstream audit.
+        Thresholds are CLI flags; every run writes \texttt{area\_curve\_validation.csv} for downstream audit.
       \end{block}
     \end{column}
   \end{columns}
