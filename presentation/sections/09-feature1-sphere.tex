@@ -1,13 +1,14 @@
 % Slide 9 -- Feature 1: sphere (text only)
 \begin{frame}{Feature 1: global humeral-head sphere}
   \begin{block}{What it is}
-    A single sphere fitted to the 3D contour cloud (DICOM millimeters): a patient-specific \alert{anatomical reference} for the humeral head.
+    A single sphere fitted to the 3D cloud of points on the \alert{articular surface} of the humerus head (units mm).
   \end{block}
 
   \begin{block}{How it is computed}
     \begin{itemize}
       \item Pixel $\to$ world via \texttt{IPP}, \texttt{IOP}, \texttt{PixelSpacing}.
-      \item \alert{RANSAC sphere}: 2000 iterations, 4-point sampling, K\aa{}sa fit.
+      \item \alert{RANSAC sphere}: 2000 iterations, 4-point sampling, K\aa{}sa algebraic fit as base estimator.
+      \item K\aa{}sa: linear least-squares $\Rightarrow$ very fast; not robust alone, but \alert{ideal inside RANSAC}.
       \item Inlier distance $\leq 2.0$\,mm; final refit by least-squares on inliers.
       \item Sanity bound: $r < 200$\,mm.
     \end{itemize}

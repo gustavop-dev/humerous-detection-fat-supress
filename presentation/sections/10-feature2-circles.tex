@@ -1,8 +1,9 @@
 % Slide 10 -- Feature 2: per-slice articular circles (text only)
 \begin{frame}{Feature 2: per-slice articular circles}
   \begin{block}{Key idea}
-    These circles do \alert{not approximate} the sphere ---
-    they \alert{lie on} the cartilage surface where the humeral head meets the glenoid.
+    The circles, as computed by K\aa{}sa, contain arcs that should \alert{lie on the articular surface},
+    providing a \alert{validation method} of the approximating sphere and a useful reference
+    for the glenohumeral space.
   \end{block}
 
   \begin{block}{How they are computed}
@@ -27,7 +28,7 @@
 \begin{frame}{Feature 2: stored information and clinical meaning}
   \begin{block}{What each circle stores}
     \begin{itemize}
-      \item Center in 3D millimeters and radius.
+      \item Center in 3D and radius in mm units (not pixels).
       \item In-plane orthonormal basis $(\mathbf{u},\mathbf{v})$ and slice normal $\mathbf{n}$.
       \item Inlier point cloud and residual statistics.
       \item Re-projection on the original axial PNG for slice-by-slice clinician review.
