@@ -1,33 +1,22 @@
-% Slide 3 -- Fat saturation (text only)
-\begin{frame}{Why fat-suppressed MRI?}
-  \begin{block}{Fat saturation (fs)}
-    \begin{itemize}
-      \item Selective RF pulse \alert{nulls fat signal} $\Rightarrow$ subcutaneous and marrow fat appear dark.
-      \item Cortical bone, tendon, edema and joint fluid become \alert{conspicuous}.
-      \item Standard sequences here: \textbf{PD-fs} (anatomy + edema sensitivity) and \textbf{T1-fs}.
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-% Slide 3b -- Axial plane rationale (text only)
-\begin{frame}{Why the axial plane?}
-  \begin{block}{Geometric structure of the axial stack}
-    \begin{itemize}
-      \item The humeral head appears as \alert{nested circles} that grow to a maximum (the ``equator'') and shrink.
-      \item This yields a clean \emph{area-vs-slice} curve that we can validate geometrically.
-      \item The axial plane gives a direct view of the \alert{glenohumeral contact surface}, where most rotator-cuff tears manifest.
-    \end{itemize}
-  \end{block}
-
-  \begin{block}{Why this matters for the pipeline}
-    The bell-shaped area curve is the \alert{anchor} for downstream validation: trimming non-humeral tails, detecting outlier slices, and selecting articular slices.
-  \end{block}
-\end{frame}
-
-% Slide 3c -- Axial PD-fs example (image only)
-\begin{frame}{Axial PD-fs slice with humeral segmentation}
-  \centering
-  \includegraphics[height=0.78\textheight,keepaspectratio]{figures/seg_example.png}
-  \\[0.4em]
-  {\footnotesize PD-fs axial slice (PixelSpacing $\approx$ 0.47\,mm; matrix 320$\times$320). Green: mask boundary; red dot: positive prompt centroid.}
+% Slide 3 -- Imaging: fat-suppressed axial MRI (consolidated)
+\begin{frame}{Why fat-suppressed axial MRI?}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Two practical choices}
+        \begin{itemize}
+          \item \alert{Fat suppression}: fat appears dark, so tendons, edema and joint fluid stand out.
+          \item \alert{Axial plane}: the humeral head appears as \emph{nested circles}, peaking at the equator.
+        \end{itemize}
+      \end{block}
+      \begin{block}{What this gives us}
+        A clean, bell-shaped \emph{area-vs-slice} curve --- the anchor of our entire pipeline.
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\linewidth,keepaspectratio]{figures/seg_example.png}
+      \\[0.3em]
+      {\scriptsize PD-fs axial slice with humeral segmentation overlay.}
+    \end{column}
+  \end{columns}
 \end{frame}

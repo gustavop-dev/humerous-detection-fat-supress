@@ -1,45 +1,22 @@
-% Slide 10 -- Feature 2: per-slice articular circles (text only)
+% Slide 10 -- Feature 2: per-slice circles (consolidated)
 \begin{frame}{Feature 2: per-slice articular circles}
-  \begin{block}{Key idea}
-    The circles, as computed by K\aa{}sa, contain arcs that should \alert{lie on the articular surface},
-    providing a \alert{validation method} of the approximating sphere and a useful reference
-    for the glenohumeral space.
-  \end{block}
-
-  \begin{block}{How they are computed}
-    \begin{itemize}
-      \item Articular slices: mask area $\geq 70\%$ of the peak.
-      \item Project boundary to the slice's best-fit plane via \alert{SVD}.
-      \item Iterative 2D RANSAC + K\aa{}sa fit (up to 3 circles per slice).
-      \item Inlier distance $\leq 1.5$\,mm; ratio $\geq 35\%$; min.~10 inliers.
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-% Slide 10b -- Five-panel circle render (image only)
-\begin{frame}{Five-panel render for one articular slice}
-  \centering
-  \includegraphics[width=0.95\linewidth,height=0.65\textheight,keepaspectratio]{figures/circle_articular.png}
-  \\[0.6em]
-  {\footnotesize Original image, mask, contour, fitted circle, and overlay. The fitted circle lies precisely on the articular contour.}
-\end{frame}
-
-% Slide 10c -- What each circle stores + clinical meaning (text only)
-\begin{frame}{Feature 2: stored information and clinical meaning}
-  \begin{block}{What each circle stores}
-    \begin{itemize}
-      \item Center in 3D and radius in mm units (not pixels).
-      \item In-plane orthonormal basis $(\mathbf{u},\mathbf{v})$ and slice normal $\mathbf{n}$.
-      \item Inlier point cloud and residual statistics.
-      \item Re-projection on the original axial PNG for slice-by-slice clinician review.
-    \end{itemize}
-  \end{block}
-
-  \begin{block}{Clinical interpretation}
-    \begin{itemize}
-      \item A focal \alert{drop in inlier ratio} on a circle indicates loss of articular continuity.
-      \item A sudden \alert{shift of the center} or radius vs neighbors flags asymmetric pathology.
-      \item Each circle is rendered as a \texttt{*\_circle.png} so the radiologist can verify each fit.
-    \end{itemize}
-  \end{block}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Key idea}
+        On equatorial slices, the articular contour is locally circular. Each fitted circle is an \alert{arc that lies on the cartilage} --- not an approximation of it.
+      \end{block}
+      \begin{block}{Clinical meaning}
+        \begin{itemize}
+          \item A focal \alert{drop in inlier ratio} signals loss of articular continuity --- a potential tear.
+          \item Each circle is rendered as a PNG so the radiologist can \alert{verify it slice by slice}.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\linewidth,height=0.7\textheight,keepaspectratio]{figures/circle_articular.png}
+      \\[0.3em]
+      {\scriptsize Image $\rightarrow$ mask $\rightarrow$ contour $\rightarrow$ fitted circle.}
+    \end{column}
+  \end{columns}
 \end{frame}

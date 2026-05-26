@@ -1,35 +1,17 @@
-% Slide 5 -- Hypothesis & objective
+% Slide 5 -- Hypothesis and objective (consolidated, design principles inlined)
 \begin{frame}{Hypothesis and objective}
   \begin{block}{Hypothesis}
-    A rotator cuff tear produces a \alert{focal, geometrically detectable} discontinuity of the humeral
-    articular contour. If we extract clinically interpretable geometric features from MRI, we can
-    \alert{localize} the lesion to a specific tendon insertion sector --- without training a new neural network.
+    A tear leaves a \alert{focal, geometric trace} on the articular contour. If we extract clinically
+    meaningful geometric features, we can \alert{localize} the lesion to a specific tendon ---
+    \emph{without} training a new neural network.
   \end{block}
 
-  \begin{block}{Objective}
-    Build an \alert{end-to-end pipeline} that:
-    \begin{enumerate}
-      \item Segments the humerus across the entire axial volume from a \alert{single seed slice}.
-      \item Extracts two interpretable features:
-        \textbf{(1)} \alert{circular arcs} on individual slices to identify those that lie on the articular surface;
-        \textbf{(2)} the approximating \alert{sphere} that contains the articular surface.
-      \item Uses these two mathematical objects to place the tear in the muscular complex of the rotator cuff.
-    \end{enumerate}
-  \end{block}
-\end{frame}
-
-% Slide 5b -- Design principles
-\begin{frame}{Design principles}
-  \begin{block}{Interpretable}
-    Every output is geometrically meaningful and \alert{visually verifiable} by a radiologist:
-    masks, boundary CSVs, fitted circles, summary figures.
-  \end{block}
-
-  \begin{block}{Vendor-agnostic}
-    Works on SIEMENS, GE and Philips data \alert{without retraining}: thresholds are geometric (mm, \% of peak), not intensity-based.
-  \end{block}
-
-  \begin{block}{Anatomy-aware}
-    Pipeline parameters reflect humeral anatomy (head vs shaft asymmetry, articular surface localization), \alert{not arbitrary heuristics}.
+  \begin{block}{What we built}
+    An end-to-end pipeline that is:
+    \begin{itemize}
+      \item \alert{Interpretable} --- every output is a mask, a circle, or a sphere a radiologist can verify.
+      \item \alert{Vendor-agnostic} --- works on SIEMENS, GE and Philips without retraining.
+      \item \alert{Anatomy-aware} --- thresholds come from anatomy, not arbitrary heuristics.
+    \end{itemize}
   \end{block}
 \end{frame}

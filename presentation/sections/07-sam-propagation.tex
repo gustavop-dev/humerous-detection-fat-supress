@@ -1,26 +1,23 @@
-% Slide 7 -- SAM segmentation (text only)
+% Slide 7 -- SAM segmentation + propagation (consolidated)
 \begin{frame}{Stage 1: SAM segmentation + bidirectional propagation}
-  \begin{block}{Foundation-model segmentation}
-    \begin{itemize}
-      \item \alert{SAM (ViT-B)} as a frozen segmenter --- no training, no labels.
-      \item One seed slice (click \emph{or} automatic point at $0.40 W,\ 0.40 H$).
-      \item Morphological refinement: small-object removal, hole filling, opening/closing.
-    \end{itemize}
-  \end{block}
-
-  \begin{block}{Bidirectional propagation, dynamic Dice}
-    Centroid of slice $i$ $\to$ positive prompt for $i\!\pm\!1$. \alert{Adaptive threshold}:
-    \[
-      \tau_i = 0.45 + 0.25 \cdot |i - i_\text{seed}| / \Delta_\text{max}
-    \]
-    Strict near the seed, permissive at extremes. \alert{Negative-prompt} fallback for failures.
-  \end{block}
-\end{frame}
-
-% Slide 7b -- Per-slice segmentation (image only)
-\begin{frame}{Per-slice segmentation example}
-  \centering
-  \includegraphics[height=0.78\textheight,keepaspectratio]{figures/seg_example.png}
-  \\[0.4em]
-  {\footnotesize Per-slice segmentation overlay. Green = mask boundary; red dot = positive prompt centroid.}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{block}{Foundation model, no training}
+        \begin{itemize}
+          \item \alert{SAM (ViT-B)} as a frozen segmenter --- no labels, no fine-tuning.
+          \item One seed slice (one click) starts everything.
+          \item The mask of slice $i$ provides the prompt for slice $i\!\pm\!1$.
+        \end{itemize}
+      \end{block}
+      \begin{block}{Adaptive quality control}
+        Dice threshold is \alert{stricter near the seed, looser far from it}. If a slice fails, a negative prompt is added and the slice is re-segmented.
+      \end{block}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth,keepaspectratio]{figures/seg_example.png}
+      \\[0.3em]
+      {\scriptsize Per-slice segmentation: green = mask boundary, red = prompt.}
+    \end{column}
+  \end{columns}
 \end{frame}

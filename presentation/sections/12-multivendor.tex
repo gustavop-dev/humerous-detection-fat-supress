@@ -1,53 +1,23 @@
-% Slide 12 -- Multi-vendor robustness (text only)
+% Slide 12 -- Multi-vendor robustness + equity of access (consolidated)
 \begin{frame}{Multi-vendor robustness and equity of access}
-  \begin{block}{Tested across vendors and sites}
-    \begin{itemize}
-      \item \textbf{SIEMENS} --- Quibd\'o, PD-fs TSE.
-      \item \textbf{GE} --- Optima MR360, Bogot\'a, PD-fs FSE.
-      \item \textbf{Philips} --- Ingenia, SOMA, ePDW SPAIR.
-      \item Matrix 256$\times$256 to 320$\times$320; PD-fs and T1-fs.
-    \end{itemize}
-  \end{block}
-
-  \begin{block}{Why this generalizes}
-    \begin{itemize}
-      \item Frozen SAM $\Rightarrow$ no domain-specific weights to overfit.
-      \item Thresholds are \alert{geometric} (mm, \% of peak), not intensity-based.
-      \item Direction handling reads DICOM headers, not vendor conventions.
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-% Slide 12b -- Per-dataset table (image-style only)
-\begin{frame}{Per-dataset coverage}
-  \centering
-  \begin{tabular}{@{}lcc@{}}
-    \toprule
-    \textbf{Dataset} & \textbf{Kept} & \textbf{Articular} \\
-    \midrule
-    SIEMENS P5SE1 (Quibd\'o)        & 21/32 & 5 \\
-    SIEMENS PD fs (fov150)          & 18/23 & 4 \\
-    SIEMENS T1 fs \#5               & 19/24 & 5 \\
-    SIEMENS T1 fs \#11              & 17/22 & 4 \\
-    GE Optima MR360 (Bogot\'a)      & 16/21 & 4 \\
-    Philips Ingenia (SOMA)          & 20/26 & 5 \\
-    \bottomrule
-  \end{tabular}
-  \\[1em]
-  {\footnotesize \textbf{Kept} = slices retained by Step 1.5 / total. \textbf{Articular} = slices where Feature-2 circles were fitted ($\geq$70\% of peak area).}
-\end{frame}
-
-% Slide 12c -- Equity of access (text only)
-\begin{frame}{Equity of access: why this matters in Colombia}
-  \begin{block}{The setting}
-    Datasets include \alert{Quibd\'o, Choc\'o}, a region with limited subspecialty radiology coverage despite the presence of modern MRI scanners.
-  \end{block}
-
-  \begin{block}{The opportunity}
-    \begin{itemize}
-      \item A vendor-agnostic, interpretable AI tool can directly support diagnostic capacity in such settings.
-      \item Geometric outputs are \alert{auditable} by generalist radiologists, lowering the barrier compared to opaque deep-learning classifiers.
-      \item Aligns with the UEMS pillar of \textbf{Impacting} medical practice across Europe and beyond.
-    \end{itemize}
-  \end{block}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{block}{Tested across 3 vendors and 3 sites}
+        \begin{itemize}\small
+          \item \textbf{SIEMENS} --- Quibd\'o (Choc\'o), PD-fs / T1-fs.
+          \item \textbf{GE} --- Optima MR360, Bogot\'a, PD-fs.
+          \item \textbf{Philips} --- Ingenia, SOMA Radiology.
+        \end{itemize}
+        \emph{6 datasets, matrices 256$\times$256 to 320$\times$320.}
+      \end{block}
+      \begin{block}{Why it generalizes}
+        Frozen SAM (no overfitting), \alert{geometric} thresholds (mm, \% of peak), direction from DICOM headers.
+      \end{block}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \begin{block}{Why this matters in Colombia}
+        Regions like \alert{Choc\'o} have modern MRI but few subspecialty radiologists. An auditable, interpretable tool can directly support generalist readers --- aligned with the UEMS pillar of \textbf{impacting} medical practice.
+      \end{block}
+    \end{column}
+  \end{columns}
 \end{frame}

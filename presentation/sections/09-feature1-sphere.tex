@@ -1,60 +1,39 @@
-% Slide 9 -- Feature 1: sphere (text only)
+% Slide 9 -- Feature 1: global sphere (consolidated)
 \begin{frame}{Feature 1: global humeral-head sphere}
-  \begin{block}{What it is}
-    A single sphere fitted to the 3D cloud of points on the \alert{articular surface} of the humerus head (units mm).
-  \end{block}
-
-  \begin{block}{How it is computed}
-    \begin{itemize}
-      \item Pixel $\to$ world via \texttt{IPP}, \texttt{IOP}, \texttt{PixelSpacing}.
-      \item \alert{RANSAC sphere}: 2000 iterations, 4-point sampling, K\aa{}sa algebraic fit as base estimator.
-      \item K\aa{}sa: linear least-squares $\Rightarrow$ very fast; not robust alone, but \alert{ideal inside RANSAC}.
-      \item Inlier distance $\leq 2.0$\,mm; final refit by least-squares on inliers.
-      \item Sanity bound: $r < 200$\,mm.
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-% Slide 9b -- Sphere schematic (image only)
-\begin{frame}{Sphere fit: inliers and outliers}
-  \centering
-  \begin{tikzpicture}[scale=1.4]
-    \draw[thick, medBlue, fill=medSoft, fill opacity=0.6] (0,0) circle (1.8);
-    \draw[medBlue, dashed] (-1.8,0) arc (180:360:1.8 and 0.4);
-    \draw[medBlue] (-1.8,0) arc (180:0:1.8 and 0.4);
-    \foreach \a in {10,30,...,170}{
-      \filldraw[medTeal] ({1.8*cos(\a)},{1.8*sin(\a)}) circle (1.8pt);
-    }
-    \foreach \a in {200,225,250,290,310,335}{
-      \filldraw[medTeal] ({1.8*cos(\a)},{1.8*sin(\a)}) circle (1.8pt);
-    }
-    \filldraw[medAccent] (2.4,0.2) circle (1.8pt);
-    \filldraw[medAccent] (-2.3,-0.4) circle (1.8pt);
-    \filldraw[medAccent] (0.3,-2.2) circle (1.8pt);
-    \node[medAccent, font=\footnotesize, right] at (2.4,0.2) {tubercle};
-    \node[medAccent, font=\footnotesize, left] at (-2.3,-0.4) {shaft};
-    \filldraw[medBlue] (0,0) circle (1.8pt);
-    \node[medBlue, font=\footnotesize, below right] at (0,0) {$(c_x,c_y,c_z)$};
-  \end{tikzpicture}
-  \\[0.6em]
-  {\footnotesize Inliers (teal) define the humeral head; tubercles and shaft (orange) are excluded by RANSAC.}
-\end{frame}
-
-% Slide 9c -- Clinical interpretation (text only)
-\begin{frame}{Feature 1: clinical interpretation}
-  \begin{block}{Patient-specific anatomical reference}
-    \begin{itemize}
-      \item Recovers the \alert{expected curvature} of the humeral head (typical $r \in 23$--$26$\,mm in adults).
-      \item Centroid $\mathbf{c}$ and radius $r$ characterize the ``ideal'' humeral head for this patient.
-      \item Outliers (tubercles, shaft, artifacts) are excluded \alert{automatically} by RANSAC.
-    \end{itemize}
-  \end{block}
-
-  \begin{block}{Why it matters clinically}
-    \begin{itemize}
-      \item Enables \alert{normalized comparison} across patients, vendors, and acquisitions.
-      \item Provides a per-patient \emph{baseline geometry} against which local deviations stand out.
-      \item Sanity-checks downstream features: a per-slice circle far from the global sphere is suspicious.
-    \end{itemize}
-  \end{block}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{block}{What it is}
+        A single sphere fitted, in \alert{millimeters}, to the 3D points on the articular surface.
+      \end{block}
+      \begin{block}{How}
+        \begin{itemize}
+          \item \alert{K{\aa}sa} algebraic fit --- fast, linear, exact in closed form.
+          \item Wrapped in \alert{RANSAC} (2000 iterations, 2 mm inlier distance) to ignore outliers like the shaft or tubercles.
+        \end{itemize}
+      \end{block}
+      \begin{block}{Why it matters}
+        Provides a patient-specific \alert{reference geometry} against which local deviations stand out.
+      \end{block}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.1]
+        \draw[thick, medBlue, fill=medSoft, fill opacity=0.6] (0,0) circle (1.6);
+        \draw[medBlue, dashed] (-1.6,0) arc (180:360:1.6 and 0.35);
+        \draw[medBlue] (-1.6,0) arc (180:0:1.6 and 0.35);
+        \foreach \a in {10,30,...,170}{
+          \filldraw[medTeal] ({1.6*cos(\a)},{1.6*sin(\a)}) circle (1.5pt);
+        }
+        \foreach \a in {200,225,250,290,310,335}{
+          \filldraw[medTeal] ({1.6*cos(\a)},{1.6*sin(\a)}) circle (1.5pt);
+        }
+        \filldraw[medAccent] (2.1,0.2) circle (1.8pt);
+        \filldraw[medAccent] (-2.0,-0.4) circle (1.8pt);
+        \node[medAccent, font=\scriptsize, right] at (2.1,0.2) {tubercle};
+        \node[medAccent, font=\scriptsize, left] at (-2.0,-0.4) {shaft};
+      \end{tikzpicture}
+      \\[0.3em]
+      {\scriptsize Teal: inliers. Orange: outliers, excluded automatically.}
+    \end{column}
+  \end{columns}
 \end{frame}

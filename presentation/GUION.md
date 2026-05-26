@@ -3,281 +3,169 @@
 **Título:** Interpretable Geometric Analysis of the Humerus in Fat-Suppressed Shoulder MRI
 **Autores:** Marco Paluszny Kluczynsky, Gustavo Adolfo Pérez
 **Evento:** 1st UEMS Congress 2026 — Leuven, Belgium, 27–30 May 2026
-**Duración estimada:** ~20–25 min + preguntas
+**Duración objetivo:** ~8 minutos + preguntas
+**Slides totales:** 16 frames (~30 segundos por slide en promedio)
 
 ---
 
-## Diapositiva 1 — Title (pág. 1)
+## Slide 1 — Título (≈20 s)
 
-> "Good morning / afternoon. My name is [presenter], from Universidad Nacional de Colombia. This work, joint with [co-author], bridges computational geometry and musculoskeletal radiology. We present an interpretable pipeline for geometric analysis of the humerus in fat-suppressed shoulder MRI, toward localization of rotator cuff tears."
+> "Good morning. My name is [presenter], from Universidad Nacional de Colombia. Together with [co-author] we developed a simple geometric pipeline to analyze the humerus in shoulder MRI — with the long-term goal of helping locate rotator cuff tears. The key idea: we do not train a new neural network; we combine a public foundation model with classical geometry."
 
-**Clave:** Establecer que es un puente entre geometría computacional y radiología, no un modelo de deep learning puro.
-
----
-
-## Diapositiva 2 — The clinical problem: rotator cuff tears (pág. 2)
-
-> "Rotator cuff disease affects more than 30% of adults over 60 — it is the leading cause of shoulder pain and disability. Tears can be acute or degenerative, and accurate localization — which tendon, where along its insertion — is what drives surgical planning."
-
-**Énfasis:** La palabra clave es *localización*, no solo detección.
+**Tono:** cálido y directo. Una sola idea clave: *no entrenamos nada nuevo, combinamos lo que ya existe con geometría clásica*.
 
 ---
 
-## Diapositiva 3 — Anatomy of the glenohumeral joint (pág. 3)
+## Slide 2 — El problema clínico (≈30 s)
 
-> "Here is a schematic of the glenohumeral joint in the axial plane. The humeral head is roughly spherical, the glenoid is the concave socket. The rotator cuff tendons — supraspinatus, infraspinatus, subscapularis — insert around the head. A tear disrupts the articular contour focally, and that focal disruption is what we aim to detect geometrically."
+> "Rotator cuff tears affect more than 30% of adults over sixty. The surgical plan depends not only on *whether* there is a tear, but on *where* it is. Reading shoulder MRI is expert-dependent, and access to specialist radiologists is unequal — for example, in Chocó, Colombia, modern scanners exist but specialists do not."
 
-**Señalar en el diagrama TikZ:** los tendones y el marcador de tear.
+> "On the right you can see the axial view of the shoulder. The humeral head is round, the glenoid is the socket, and tendons insert around the head. A tear shows up as a *focal* break in the articular contour. That focal trace is what we want to detect geometrically."
 
----
-
-## Diapositiva 4 — Why is this hard to read on MRI? (pág. 4)
-
-> "MRI reading for rotator cuff tears is expert-dependent and time-consuming. Inter-vendor variability across SIEMENS, GE, and Philips makes automation harder. And subtle partial tears can be missed on a single slice — you need 3D context."
-
-> "There is also an equity-of-access gap. In Colombia, regions like Quibdó in Chocó have modern MRI scanners but lack dedicated musculoskeletal radiologists. An interpretable, automated tool could support generalist radiologists in these settings."
+**Énfasis:** *localización*, no solo detección. Y la motivación de equidad de acceso (Chocó).
 
 ---
 
-## Diapositiva 5 — Why fat-suppressed MRI? (pág. 5)
+## Slide 3 — Por qué MRI axial con saturación de grasa (≈30 s)
 
-> "We work specifically with fat-suppressed sequences — PD-fs and T1-fs. A selective RF pulse nulls the fat signal, so subcutaneous and bone-marrow fat appear dark. This makes cortical bone, tendons, edema and joint fluid conspicuous. These are the standard sequences for shoulder pathology."
+> "We work with fat-suppressed axial sequences for two reasons. First, fat suppression makes fat appear dark — so tendons, fluid and edema become visible. Second, in the axial plane the humeral head appears as nested circles that grow until the equator and then shrink. That gives us a clean bell-shaped curve of area against slice, which becomes the anchor of the whole pipeline."
 
----
+> "On the right is one real axial slice from our data, with our segmentation overlaid in green."
 
-## Diapositiva 6 — Why the axial plane? (pág. 6)
-
-> "In the axial plane, the humeral head appears as nested circles that grow to a maximum — the equator of the head — and then shrink. This gives a clean bell-shaped area-versus-slice curve that we can validate geometrically. The axial plane also gives a direct view of the glenohumeral contact surface, where most rotator cuff tears manifest."
-
-> "This bell-shaped curve becomes the anchor for our downstream validation: trimming non-humeral tails, detecting outlier slices, and selecting articular slices."
+**Idea clave:** las dos elecciones (fat-sup + axial) no son arbitrarias, dan estructura geométrica útil.
 
 ---
 
-## Diapositiva 7 — Axial PD-fs slice with humeral segmentation (pág. 7)
+## Slide 4 — De la anatomía a la geometría (≈35 s)
 
-> "Here is an actual axial PD-fs slice from our data, with the humeral segmentation overlaid. The green contour is the mask boundary and the red dot is the positive prompt centroid used by the segmentation model. The pixel spacing is approximately 0.47 mm, matrix 320×320."
+> "Two anatomical facts drive everything. First, the humeral head is almost a perfect sphere, about 23 to 26 millimeters in radius. Second, the articular contour, slice by slice, is a circle that *lies on* the cartilage — it does not approximate the surface, it lives on it. These give us two natural geometric features: one global sphere, and many local circles."
 
-**Señalar:** la forma casi circular de la cabeza humeral en esta slice.
+> "There is also an important asymmetry: the head closes abruptly at the anatomical neck, while the shaft tapers gradually. We use that to set two different thresholds on the area curve — 30% on the head side, 10% on the shaft side. Anatomy, not arbitrary numbers."
 
----
-
-## Diapositiva 8 — From anatomy to geometry: two natural primitives (pág. 8)
-
-> "Two anatomical observations motivate our geometric approach. First, the articular cartilage of the humeral head covers a near-perfect spherical surface — radius approximately 23 to 26 mm in adults. This motivates fitting a global sphere as a patient-specific reference."
-
-> "Second, in the equatorial axial slices, the contact contour with the glenoid is locally circular. These per-slice circles lie on the articular surface — they do not approximate the sphere, they live on the cartilage interface."
+**Tip:** señalar las dos curvas en el gráfico de la derecha.
 
 ---
 
-## Diapositiva 9 — Anatomical asymmetry: head vs shaft (pág. 9)
+## Slide 5 — Hipótesis y objetivo (≈30 s)
 
-> "The humerus is anatomically asymmetric. The head closes abruptly at the anatomical neck, while the shaft tapers gradually. This is not an arbitrary observation — it directly determines our pipeline parameters: 30% of peak area as threshold on the head side, 10% on the shaft side. These are anatomy-driven thresholds, not heuristics."
+> "Our hypothesis is simple: a tear leaves a focal geometric trace on the articular contour. If we extract clinically meaningful geometric features, we can localize the lesion to a specific tendon — without training a new neural network."
 
----
-
-## Diapositiva 10 — Anatomy and asymmetric trim: visual reference (pág. 10)
-
-> "On the left, a sagittal sketch of the proximal humerus showing the abrupt closure at the head and the gradual taper at the shaft. On the right, the area curve with the two asymmetric trim thresholds. The head side is trimmed at 30% of peak, the shaft side at 10%."
-
-**Señalar ambos diagramas TikZ** y cómo se complementan.
+> "What we built has three properties on purpose: it is *interpretable* — every output is a mask, a circle, or a sphere that a radiologist can verify. It is *vendor-agnostic* — works on SIEMENS, GE and Philips without retraining. And it is *anatomy-aware* — its thresholds come from anatomy, not from heuristics."
 
 ---
 
-## Diapositiva 11 — Hypothesis and objective (pág. 11)
+## Slide 6 — Vista general del pipeline (≈40 s)
 
-> "Our hypothesis: a rotator cuff tear produces a focal, geometrically detectable discontinuity of the humeral articular contour. If we extract clinically interpretable geometric features from MRI, we can localize the lesion to a specific tendon insertion sector — without training a new neural network."
+> "This is the full pipeline at a glance. We start from the DICOM axial MRI. SAM — the Segment Anything Model, used as-is, no training — segments one central slice. Then we propagate the mask to neighbouring slices. A post-processing step cleans common artifacts."
 
-> "The objective: build an end-to-end pipeline that segments the humerus from a single seed slice, extracts two interpretable features — first, circular arcs on individual slices to identify those that lie on the articular surface; second, the approximating sphere that contains the articular surface — and uses these two mathematical objects to place the tear in the muscular complex of the rotator cuff."
+> "Next, the area curve is validated: we trim the non-humeral tails and flag suspicious slices. Finally, the geometry: per-slice circles on the articular surface, the global sphere, and the rule that places the tear in the rotator cuff."
 
-**Énfasis:** El orden es arcos primero, esfera después. Los arcos identifican la superficie articular; la esfera la contiene.
+> "The important property is that every block produces *auditable* outputs — masks, CSVs, figures — that a radiologist can inspect."
 
----
-
-## Diapositiva 12 — Design principles (pág. 12)
-
-> "Three design principles. Interpretable: every output is geometrically meaningful and visually verifiable — masks, CSVs, fitted circles, summary figures. Vendor-agnostic: works on SIEMENS, GE and Philips without retraining, because thresholds are geometric, not intensity-based. And anatomy-aware: parameters reflect humeral anatomy, not arbitrary heuristics."
+**Tip:** seguir el flujo con el puntero por las flechas.
 
 ---
 
-## Diapositiva 13 — Pipeline overview (pág. 13)
+## Slide 7 — Etapa 1: segmentación con SAM (≈30 s)
 
-> "Here is the full pipeline. We start from DICOM axial fat-suppressed MRI. SAM — Segment Anything Model, frozen, no training — segments a central seed slice. Bidirectional propagation with dynamic Dice extends the segmentation to the full volume. Post-processing repairs neighbor-overlap and bright-ring artifacts."
+> "Stage one: segmentation. We use SAM as a frozen segmenter — no labels, no fine-tuning. The user clicks once on a central slice, and from there the mask of slice *i* is used as the prompt for slices *i plus one* and *i minus one*. We propagate up and down through the volume."
 
-> "Then, direction-aware area-curve validation trims the tails and flags outliers. Optionally, SAM can re-segment confirmed outliers. From the validated data, we extract per-slice circular arcs on the articular surface, then construct the approximating sphere plus the shaft axis. These two mathematical objects are what we use to place the tear in the rotator cuff complex."
+> "We add an adaptive quality control: the acceptance threshold is stricter near the seed and looser at the extremes, where the anatomy is naturally harder. If a slice fails, we re-segment it with a corrective negative prompt."
 
-**Señalar el diagrama TikZ** siguiendo el flujo de flechas.
-
----
-
-## Diapositiva 14 — Stage 1: SAM segmentation + bidirectional propagation (pág. 14)
-
-> "Stage 1: we use SAM with the ViT-B backbone as a frozen segmenter — no training, no labels needed. The user clicks one seed point on the central slice, or in batch mode we place it automatically at 40% of width and height."
-
-> "The mask is refined morphologically — small-object removal, hole filling, opening and closing. Then we propagate bidirectionally: the centroid of slice i becomes the positive prompt for slice i±1. The Dice threshold is adaptive — strict near the seed, more permissive at the volume extremes — with a negative-prompt fallback when the mask degrades."
-
-**Fórmula clave:** τᵢ = 0.45 + 0.25 · |i − i_seed| / Δ_max
+**Tip:** señalar el ejemplo de la derecha — la máscara verde sigue al húmero a lo largo de las slices.
 
 ---
 
-## Diapositiva 15 — Per-slice segmentation example (pág. 15)
+## Slide 8 — Etapa 2: validar la curva de áreas (≈30 s)
 
-> "Here is the per-slice segmentation overlay in practice. Green boundary, red centroid dot. You can see the mask tracking the humerus consistently across slices."
+> "Stage two: before we fit any geometry, we validate the curve. We read the DICOM header to detect which end of the volume is the head and which is the shaft — this is more reliable than trusting vendor conventions."
 
----
+> "Then two simple jobs: trim the tails that fall outside the bell of the humerus, and flag internal outliers — slices where the segmentation grabbed extra tissue. Only strong outliers, confirmed by a second geometric check, are excluded."
 
-## Diapositiva 16 — Stage 2: direction-aware validation of the area curve (pág. 16)
-
-> "Stage 2: before fitting any geometry, we validate the area curve. We compute the slice normal from ImageOrientationPatient and project ImagePositionPatient onto it to determine which end of the volume is the head. This is read from the DICOM geometric headers — not vendor conventions — making the pipeline vendor-agnostic by construction."
+**Énfasis:** "limpiamos los datos *antes* de hacer geometría — porque la geometría hereda la calidad de la máscara."
 
 ---
 
-## Diapositiva 17 — Schematic: per-slice mask area (pág. 17)
+## Slide 9 — Feature 1: la esfera global (≈35 s)
 
-> "Here is the schematic of the bell curve. The mask area peaks at the equator of the head. We trim the tails — slices outside the bell that were segmented to something but don't actually contain humerus. We also flag internal strong outliers where SAM grabbed extra tissue. The arrow shows which side is the head."
+> "The first feature is one sphere, fitted in millimeters, to all the points on the articular surface of the head. We use Kåsa's algebraic fit — a closed-form, linear method that is extremely fast. But Kåsa alone is not robust to outliers, so we wrap it inside RANSAC: it tries thousands of candidate spheres on random samples and keeps the one with most inliers."
 
----
+> "Why we care: this sphere gives us a *patient-specific reference geometry*. Once we know the ideal humeral head for this patient, local deviations from it — caused by tears or artifacts — really stand out."
 
-## Diapositiva 18 — Asymmetric trim and outlier flagging (pág. 18)
-
-> "The trim is asymmetric and anatomy-driven. 30% of peak on the head side — because the head closes abruptly at the anatomical neck. 10% on the shaft side — because the shaft tapers gradually."
-
-> "Reversal-from-peak: we walk outward from the peak and trim when the curve genuinely rises again — at least 10% on the head side, 20% on the shaft side, with a minimum of 50 pixels absolute."
-
-> "Internal outliers are detected with a robust MAD residual at 2.5 sigma, cross-checked with either a circle inlier-ratio drop of at least 15% or a Dice drop of at least 10%. Only strong outliers — those with geometric confirmation — are excluded. Weak ones are reported but kept."
+**Tip:** mencionar que el típico radio en adultos cae entre 23 y 26 mm — un *sanity check* para el lector clínico.
 
 ---
 
-## Diapositiva 19 — Feature 1: global humeral-head sphere (pág. 19)
+## Slide 10 — Feature 2: los círculos per-slice (≈35 s)
 
-> "Feature 1: a single sphere fitted to the 3D cloud of points on the articular surface of the humerus head, in millimeter units. We convert pixel coordinates to world coordinates using ImagePositionPatient, ImageOrientationPatient, and PixelSpacing."
+> "The second feature is one circle per articular slice. We only fit circles on slices that are near the equator of the head — at least 70% of the peak area. On each one we run a 2D version of RANSAC plus Kåsa to find the arcs that lie on the cartilage."
 
-> "We use RANSAC with 2000 iterations and 4-point sampling. The base estimator inside RANSAC is the Kåsa algebraic fit — a linear least-squares formulation that is very fast to compute. On its own, Kåsa is not robust to outliers, but inside RANSAC it becomes highly reliable. Inlier distance is 2 mm; the final sphere is refit by least-squares on the inlier set."
-
-**Énfasis:** La sinergia Kåsa + RANSAC — eficiencia + robustez.
+> "Clinically this matters because each circle stores the inlier ratio of its arc. A focal *drop* in that ratio means the cartilage there has lost continuity — which is exactly what a tear looks like geometrically. And every circle is exported as a small PNG so the radiologist can verify it, slice by slice."
 
 ---
 
-## Diapositiva 20 — Sphere fit: inliers and outliers (pág. 20)
+## Slide 11 — El truco geométrico (≈40 s)
 
-> "In this schematic, teal points are inliers — they define the spherical articular surface. Orange points are outliers: the greater tubercle, the shaft, artifacts. RANSAC excludes them automatically. The center and radius characterize the patient-specific humeral head."
+> "Now the key idea that ties everything together. Each circle has its own pair of in-plane axes — *u* and *v* — and a center. Any point on the circle is described by a single number: its angle *theta* around the center."
 
----
+> "Why is this powerful? Because the same angle *theta* corresponds to the same anatomical direction on the humeral head — for every patient and every vendor. We have turned a 2D circle into a 1D anatomical coordinate."
 
-## Diapositiva 21 — Feature 1: clinical interpretation (pág. 21)
-
-> "Clinically, this sphere recovers the expected curvature of the humeral head — typical radius 23 to 26 mm in adults. The centroid and radius characterize the 'ideal' head for this patient. It enables normalized comparison across patients, vendors, and acquisitions. And it provides a baseline geometry against which local deviations — such as those caused by a tear — stand out."
+**Tip:** mostrar el diagrama de la derecha — un solo ángulo es todo lo que se necesita.
 
 ---
 
-## Diapositiva 22 — Feature 2: per-slice articular circles (pág. 22)
+## Slide 12 — Sectores angulares → tendones (≈40 s)
 
-> "Feature 2: per-slice circles computed by Kåsa within RANSAC. These circles contain arcs that should lie on the articular surface, so they provide a validation method of the approximating sphere, and also a useful reference for the glenohumeral space."
+> "And here is the pay-off. The four main rotator cuff tendons insert in predictable angular sectors on the articular circle. Subscapularis between roughly 0 and 45 degrees, supraspinatus between 45 and 135, infraspinatus between 135 and 225, and teres minor between 225 and 270."
 
-> "We select articular slices — those with mask area at least 70% of the peak. Boundary points are projected to the slice's best-fit plane via SVD. Then we run iterative 2D RANSAC with Kåsa fit — up to 3 circles per slice. Inlier distance 1.5 mm, ratio at least 35%, minimum 10 inliers."
+> "So the localization rule becomes simple: if the inlier ratio drops focally inside one of those sectors, that is a *candidate tear in the corresponding tendon*, at the height of the slice where the drop occurs. The articular circle has become a one-dimensional *tendon map*."
 
----
-
-## Diapositiva 23 — Five-panel render for one articular slice (pág. 23)
-
-> "Here is the five-panel render for one articular slice: the original image, the mask, the contour, the fitted circle, and the overlay. You can see the circle lying precisely on the articular contour. This is what the radiologist reviews to validate each fit."
+**Importante:** este es el corazón del trabajo. Pausa breve después de "tendon map".
 
 ---
 
-## Diapositiva 24 — Feature 2: stored information and clinical meaning (pág. 24)
+## Slide 13 — Robustez multivendor y equidad (≈30 s)
 
-> "Each circle stores: center in 3D and radius in mm units — not pixels. An in-plane orthonormal basis (u, v) and slice normal n. The inlier point cloud and residual statistics. And a re-projection on the original axial image for slice-by-slice clinician review."
+> "We tested across three vendors and three sites: SIEMENS in Quibdó (Chocó), GE Optima in Bogotá, and Philips Ingenia at SOMA Radiology. Six datasets in total, with matrix sizes from 256 up to 320."
 
-> "Clinically: a focal drop in inlier ratio on a circle indicates loss of articular continuity — a potential tear. A sudden shift of the center or radius compared to neighbors flags asymmetric pathology. Each circle is rendered as a PNG so the radiologist can verify."
+> "The pipeline generalizes for three concrete reasons: SAM is frozen so there are no weights that can overfit, all thresholds are geometric — millimeters or percentages, not pixel intensities — and the direction is read from the DICOM header instead of trusting vendor conventions."
 
----
-
-## Diapositiva 25 — The geometric trick: parameterizing the articular circle (pág. 25)
-
-> "Now the geometric trick that ties everything together. Each per-slice circle has an in-plane orthonormal basis (u, v) and center c. Any inlier point p has an angular coordinate theta = atan2 of its projections onto v and u. This turns the articular circle into a 1D angular map — each theta corresponds to a known anatomical direction at the humeral head, the same for every patient and vendor."
+> "This matters in Colombia: places like Chocó have the scanners but not the specialists. A tool that is auditable by a generalist radiologist directly supports diagnostic capacity — which aligns with the UEMS pillar of *impacting* medical practice."
 
 ---
 
-## Diapositiva 26 — Angular parameterization of the circle (pág. 26)
+## Slide 14 — Resultados cualitativos (≈25 s)
 
-> "Here is the diagram. The circle with its basis vectors u and v. A point p on the circle at angle theta. This is the parameterization that converts the 2D circle into a 1D coordinate system aligned with anatomy."
+> "Here is one summary figure per dataset, with six panels: slice classification, Dice per slice, the area curve, the 3D boundary point cloud, the sphere fit, and the per-slice articular circles."
 
----
+> "In the area curve: green slices are kept, gray are trimmed tails, red are strong outliers excluded. The whole pipeline runs end-to-end and exports this figure automatically, so a radiologist can audit any single case in one glance."
 
-## Diapositiva 27 — Angular sectors → rotator-cuff tendons (pág. 27)
-
-> "The tendon insertions fall in predictable angular sectors on the articular circle. Subscapularis maps to the lesser tubercle, roughly 0 to 45 degrees. Supraspinatus to the superior greater tubercle, 45 to 135. Infraspinatus to the posterior greater tubercle, 135 to 225. And teres minor to the inferior-posterior portion, 225 to 270."
-
-> "The localization rule: a focal drop in inlier ratio in a specific sector identifies a candidate tear in the corresponding tendon, at the slice height where the drop occurs."
+**Tip:** no detallar cada panel — mencionar el código de colores y seguir.
 
 ---
 
-## Diapositiva 28 — Sector diagram: tendon insertions and a focal drop (pág. 28)
+## Slide 15 — Limitaciones (≈25 s)
 
-> "Here you can see the sector diagram. Each colored sector corresponds to a tendon. The orange marks show a focal drop — in this case in the supraspinatus sector. The articular circle has become a 1D tendon map."
+> "Honest limitations. The cohort is small — six datasets — so this is a proof of concept, not a clinical validation. The localization rule, the angular-sector to tendon mapping, is a *hypothesis* and still needs validation against arthroscopy. And the automatic seed assumes typical centering of the patient."
 
----
-
-## Diapositiva 29 — Multi-vendor robustness (pág. 29)
-
-> "We tested across three vendors and multiple sites: SIEMENS from Quibdó with PD-fs TSE, GE Optima from Bogotá with PD-fs FSE, and Philips Ingenia with ePDW SPAIR. Matrix sizes range from 256 to 320. The pipeline generalizes because SAM is frozen — no domain-specific weights to overfit — thresholds are geometric, and direction handling reads DICOM headers."
+> "But the design has one property that matters clinically: because every output is geometric, visualized and auditable, the system fails *loudly*, not silently. That is the property a radiologist needs to actually trust it."
 
 ---
 
-## Diapositiva 30 — Per-dataset coverage (pág. 30)
+## Slide 16 — Take-home y cierre (≈25 s)
 
-> "Here is the per-dataset coverage table. 'Kept' shows how many slices were retained by the direction-aware validation out of the total. 'Articular' is the number of slices where per-slice circles were fitted — those with at least 70% of peak area. Across all datasets, the pipeline retains a substantial portion and identifies 4 to 5 articular slices per volume."
+> "Three ideas to take home. First, a frozen foundation model plus classical geometry can produce interpretable shoulder MRI features — with no training. Second, two geometric features — a global sphere and per-slice articular circles — let us turn the articular contour into a 1D tendon map. Third, the pipeline is robust across vendors, which makes it especially relevant in low-resource radiology settings."
 
----
-
-## Diapositiva 31 — Equity of access (pág. 31)
-
-> "Our datasets include Quibdó, Chocó — a region with limited subspecialty radiology despite having modern MRI. A vendor-agnostic, interpretable tool can directly support diagnostic capacity there. Geometric outputs are auditable by generalist radiologists, lowering the barrier compared to opaque classifiers. This aligns with the UEMS pillar of impacting medical practice across Europe and beyond."
-
----
-
-## Diapositiva 32 — Qualitative results: per-dataset summary (pág. 32)
-
-> "Here is our seven-panel summary for one dataset. Slice classification, Dice per slice, the area curve with validation overlay, 3D boundary point cloud, sphere fit, and per-slice articular circles. Each panel tells part of the story; together they give a complete audit of the pipeline's output."
-
----
-
-## Diapositiva 33 — How to read the summary figure (pág. 33)
-
-> "How to read the figure. In the area curve: green means kept, gray means trimmed tails, red means strong outlier excluded. Vertical lines mark the bell extent. The caret shows which side is the head."
-
-> "Every slice exports a five-panel circle PNG for slice-by-slice clinician review. And every run writes a CSV for downstream audit. Thresholds are CLI flags — fully reproducible."
-
----
-
-## Diapositiva 34 — Limitations and clinical considerations (pág. 34)
-
-> "Limitations. The validation cohort is 6 datasets across 3 vendors — proof of concept, not clinical validation. The automatic seed point assumes typical centering. Pattern B outliers without GPU can only be flagged, not re-segmented. And the angular-sector tear-localization rule is still a hypothesis that needs validation against arthroscopic ground truth."
-
-> "For clinical translation we need a larger multi-center cohort with surgical confirmation, an inter-reader study, PACS integration, and a containerized reproducible pipeline. But a key property: because outputs are geometric, visualized, and auditable, the system fails loudly rather than silently — important for clinical deployment."
-
----
-
-## Diapositiva 35 — Take-home messages (pág. 35)
-
-> "Take-home messages. A frozen foundation model plus anatomy-aware classical geometry produces interpretable features without training. DICOM-header reading makes the pipeline direction-aware with anatomy-driven thresholds. Two features — per-slice articular circles and the approximating sphere — enable tear localization by angular sector. And it works robustly across SIEMENS, GE and Philips, relevant for low-resource settings."
-
----
-
-## Diapositiva 36 — Next steps and acknowledgements (pág. 36)
-
-> "Next steps: implement the angular-sector to tendon mapping end-to-end, prospective validation against arthroscopy, inter-reader reproducibility study, and integration into a clinical viewer."
-
-> "We thank Universidad Nacional de Colombia, the clinical sites — Clínica Especialistas Reina Virgen María in Quibdó, Clínica Santa Ana in Bogotá, SOMA Radiology — and the open-source tools that made this possible: SAM from Meta AI, pydicom, scikit-image, OpenCV, NumPy and SciPy."
-
-> "Thank you — questions are welcome."
+> "Thank you. Questions are very welcome."
 
 ---
 
 ## Notas generales para el presentador
 
-- **Ritmo:** ~40–50 segundos por diapositiva de texto, ~20–30 segundos por diapositiva de imagen/diagrama.
-- **Señalar diagramas TikZ:** usar puntero láser o cursor en las diapositivas con esquemas (págs. 3, 10, 17, 20, 26, 28).
-- **Fórmulas:** no leer la fórmula de Dice dinámico literalmente — explicar el concepto ("estricto cerca de la semilla, permisivo en los extremos").
-- **Kåsa + RANSAC:** enfatizar que Kåsa es el estimador base (rápido, lineal), RANSAC provee la robustez. Esta sinergia es clave.
-- **Arcos → esfera (no al revés):** mantener el orden conceptual — los arcos per-slice identifican la superficie articular, la esfera la contiene y provee la referencia global.
-- **Honestidad:** la localización de desgarros por sector angular es una hipótesis, no un resultado validado. Dejarlo claro en la diap. 34.
+- **Tiempo objetivo:** 8 minutos. Promedio de 30 seg por slide; los diagramas (slides 6, 11, 12) pueden costar un poco más, así que los slides de texto deben ir rápidos.
+- **Velocidad:** no leer las viñetas en voz alta. Hablar como si estuviera explicando a un colega clínico curioso, usando las viñetas solo como guía visual.
+- **Tres palabras a destacar siempre:** *interpretable*, *auditable*, *vendor-agnostic*. Son los tres mensajes que el público debe recordar.
+- **Tres slides que NO se pueden saltar:** Slide 6 (pipeline), Slide 11 (el truco geométrico), Slide 12 (sectores → tendones). Es el arco narrativo.
+- **Honestidad:** dejar claro en el slide 15 que la regla de localización por sectores es una hipótesis, no un resultado validado. Esto genera confianza, no resta credibilidad.
+- **Si se queda corto de tiempo:** se puede acortar el slide 14 (resultados) a "this is the auto-generated audit figure, color-coded as we just described" y pasar al siguiente.
+- **Si sobra tiempo:** detenerse un poco más en slide 11 — el paso de circle 2D a coordenada angular 1D es la idea más original del trabajo.

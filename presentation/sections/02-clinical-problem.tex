@@ -1,48 +1,31 @@
-% Slide 2 -- Clinical problem (text only)
+% Slide 2 -- Clinical problem + anatomy (consolidated)
 \begin{frame}{The clinical problem: rotator cuff tears}
-  \begin{block}{Why it matters}
-    \begin{itemize}
-      \item Rotator cuff disease affects \alert{$>$30\% of adults over 60}, the leading cause of shoulder pain and disability.
-      \item Tears arise from acute trauma or chronic degeneration (microtrauma + tendon-insertion ischemia).
-      \item Accurate \alert{localization} --- which tendon, where along the insertion --- drives surgical planning.
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-% Slide 2b -- Glenohumeral schematic (image only)
-\begin{frame}{Anatomy of the glenohumeral joint}
-  \centering
-  \begin{tikzpicture}[scale=1.4]
-    \draw[thick, medBlue, fill=medSoft] (0,0) circle (1.6);
-    \node[medBlue] at (0,0) {\small Humeral head};
-    \draw[thick, medTeal] (-2.2,-0.6) arc (-30:30:1.4);
-    \node[medTeal, rotate=90] at (-2.4,0) {\small Glenoid};
-    \draw[medAccent, ultra thick] (1.1,1.1) -- (1.5,1.5);
-    \draw[medAccent, ultra thick] (1.0,1.5) -- (1.6,1.1);
-    \node[medAccent, right] at (1.6,1.3) {\small Tear};
-    \node[gray, font=\footnotesize] at (0,1.95) {Supraspinatus};
-    \node[gray, font=\footnotesize] at (1.95,0) {Infraspinatus};
-    \node[gray, font=\footnotesize] at (-0.4,-1.95) {Subscapularis};
-  \end{tikzpicture}
-  \\[0.6em]
-  {\footnotesize Axial schematic of the glenohumeral joint. Tears disrupt the articular contour focally.}
-\end{frame}
-
-% Slide 2c -- Diagnostic challenge (text only)
-\begin{frame}{Why is this hard to read on MRI?}
-  \begin{block}{Diagnostic challenge}
-    \begin{itemize}
-      \item MRI reading is \alert{expert-dependent} and time-consuming.
-      \item Inter-vendor variability (SIEMENS / GE / Philips) complicates automation.
-      \item Subtle partial tears can be missed on a single slice; 3D context is needed.
-    \end{itemize}
-  \end{block}
-
-  \begin{block}{Equity-of-access gap}
-    \begin{itemize}
-      \item Limited access to subspecialty musculoskeletal radiology in low-resource settings.
-      \item In Colombia, regions like \alert{Choc\'o} (Quibd\'o) lack dedicated MSK readers despite having modern MRI.
-      \item Automated, interpretable tools can support generalist radiologists.
-    \end{itemize}
-  \end{block}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{block}{Why it matters}
+        \begin{itemize}
+          \item Affects \alert{$>$30\% of adults over 60} --- main cause of shoulder pain.
+          \item Surgical planning depends on \alert{where} the tear is, not only \emph{if} there is one.
+          \item MRI reading is expert-dependent; access to specialists is unequal (e.g.\ \alert{Choc\'o, Colombia}).
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.0]
+        \draw[thick, medBlue, fill=medSoft] (0,0) circle (1.4);
+        \node[medBlue, font=\footnotesize] at (0,0) {Humeral head};
+        \draw[thick, medTeal] (-1.9,-0.5) arc (-30:30:1.2);
+        \node[medTeal, rotate=90, font=\scriptsize] at (-2.1,0) {Glenoid};
+        \draw[medAccent, ultra thick] (1.0,1.0) -- (1.4,1.4);
+        \draw[medAccent, ultra thick] (1.0,1.4) -- (1.4,1.0);
+        \node[medAccent, right, font=\scriptsize] at (1.4,1.2) {Tear};
+        \node[gray, font=\scriptsize] at (0,1.7) {Supraspinatus};
+        \node[gray, font=\scriptsize] at (1.7,0) {Infraspinatus};
+        \node[gray, font=\scriptsize] at (-0.3,-1.7) {Subscapularis};
+      \end{tikzpicture}
+      \\[0.3em]
+      {\scriptsize Axial view: tears disrupt the articular contour \emph{focally}.}
+    \end{column}
+  \end{columns}
 \end{frame}

@@ -1,40 +1,15 @@
-% Slide 13 -- All summary panels on a single dedicated slide (3x2 grid)
+% Slide 13 -- Qualitative results, single dedicated frame
 \begin{frame}{Qualitative results: per-dataset summary}
   \centering
   \begin{tabular}{@{}ccc@{}}
-    \includegraphics[width=0.30\linewidth,height=0.36\textheight,keepaspectratio]{figures/panel1.png} &
-    \includegraphics[width=0.30\linewidth,height=0.36\textheight,keepaspectratio]{figures/panel2.png} &
-    \includegraphics[width=0.30\linewidth,height=0.36\textheight,keepaspectratio]{figures/panel3.png} \\
-    \includegraphics[width=0.30\linewidth,height=0.36\textheight,keepaspectratio]{figures/panel4.png} &
-    \includegraphics[width=0.30\linewidth,height=0.36\textheight,keepaspectratio]{figures/panel5.png} &
-    \includegraphics[width=0.30\linewidth,height=0.36\textheight,keepaspectratio]{figures/panel6.png} \\
+    \includegraphics[width=0.30\linewidth,height=0.34\textheight,keepaspectratio]{figures/panel1.png} &
+    \includegraphics[width=0.30\linewidth,height=0.34\textheight,keepaspectratio]{figures/panel2.png} &
+    \includegraphics[width=0.30\linewidth,height=0.34\textheight,keepaspectratio]{figures/panel3.png} \\
+    \includegraphics[width=0.30\linewidth,height=0.34\textheight,keepaspectratio]{figures/panel4.png} &
+    \includegraphics[width=0.30\linewidth,height=0.34\textheight,keepaspectratio]{figures/panel5.png} &
+    \includegraphics[width=0.30\linewidth,height=0.34\textheight,keepaspectratio]{figures/panel6.png} \\
   \end{tabular}
   \\[0.3em]
-  {\footnotesize Six panels: slice classification, Dice per slice, area curve, 3D boundary, sphere fit, per-slice articular circles.}
-\end{frame}
-
-% Slide 13b -- How to read the figures
-\begin{frame}{How to read the summary figure}
-  \begin{columns}[T]
-    \begin{column}{0.55\textwidth}
-      \begin{block}{Color code (area curve)}
-        \begin{itemize}
-          \item \textcolor{green!50!black}{\textbf{Green}}: slices kept for analysis.
-          \item \textcolor{gray}{\textbf{Gray}}: tails trimmed by direction-aware logic.
-          \item \textcolor{red}{\textbf{Red}}: strong outliers excluded after Pass 2.
-          \item Vertical lines: bell-extent boundaries.
-          \item Caret \texttt{H$\rightarrow$}: which side of the volume is the head.
-        \end{itemize}
-      \end{block}
-    \end{column}
-    \begin{column}{0.45\textwidth}
-      \begin{block}{Auditability by design}
-        Every slice exports a five-panel \texttt{*\_circle.png} (image, mask, contour, fitted circle, overlay). A radiologist can verify each fit \alert{slice by slice}, not just trust an aggregate score.
-      \end{block}
-
-      \begin{block}{Reproducibility}
-        Thresholds are CLI flags; every run writes \texttt{area\_curve\_validation.csv} for downstream audit.
-      \end{block}
-    \end{column}
-  \end{columns}
+  {\footnotesize Slice classification, Dice per slice, area curve, 3D boundary, sphere fit, articular circles.
+  \alert{Green} = kept, \textcolor{gray}{gray} = trimmed, \textcolor{red}{red} = outlier.}
 \end{frame}

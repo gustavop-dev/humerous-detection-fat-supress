@@ -16,15 +16,15 @@
   ]
     \node[box] (dicom) {DICOM\\axial fs MRI};
     \node[box, right=of dicom] (sam) {SAM seed\\(central slice)};
-    \node[box, right=of sam] (prop) {Bidirectional\\propagation\\(dynamic Dice)};
-    \node[box, right=of prop] (post) {Neighbor +\\bright-ring\\post-processing};
+    \node[box, right=of sam] (prop) {Bidirectional\\propagation};
+    \node[box, right=of prop] (post) {Post-processing\\(neighbor + ring)};
 
-    \node[box, below=1.0cm of sam] (val) {Direction-aware\\area-curve\\validation (1.5)};
-    \node[box, right=of val] (resam) {Optional SAM\\re-segmentation\\(Step 1.6)};
+    \node[box, below=1.0cm of sam] (val) {Area-curve\\validation\\(direction-aware)};
+    \node[box, right=of val] (resam) {Optional SAM\\re-segmentation};
 
-    \node[feat, below=1.0cm of val] (circles) {Per-slice\\circular arcs\\(articular surface)};
-    \node[feat, right=of circles] (sphere) {Approximating\\sphere +\\shaft axis};
-    \node[feat, right=of sphere] (locate) {Place the tear\\in the rotator\\cuff complex};
+    \node[feat, below=1.0cm of val] (circles) {Per-slice\\articular circles};
+    \node[feat, right=of circles] (sphere) {Approximating\\sphere};
+    \node[feat, right=of sphere] (locate) {Tear localization\\(rotator cuff)};
 
     \draw[arr] (dicom) -- (sam);
     \draw[arr] (sam) -- (prop);
@@ -39,6 +39,6 @@
   \end{center}
 
   \vspace{0.4em}
-  {\footnotesize \textcolor{medTeal}{Foundation model (SAM, frozen) + classical geometry + clinical anatomy.}\\
-  Each block produces auditable artifacts: masks, CSVs, validation reports, summary figures.}
+  {\footnotesize \textcolor{medTeal}{Frozen SAM + classical geometry + clinical anatomy.}\\
+  Every block produces \alert{auditable} outputs: masks, CSVs, summary figures.}
 \end{frame}
