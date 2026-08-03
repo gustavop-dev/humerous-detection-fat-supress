@@ -1,0 +1,504 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{lmodern}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{textcomp}
+\providecommand{\degree}{\ensuremath{^\circ}}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=azulunal,urlcolor=azulunal,citecolor=azulunal]{hyperref}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+\definecolor{azulunal}{RGB}{20,70,130}
+\definecolor{grisclaro}{RGB}{245,245,247}
+\definecolor{rojoalerta}{RGB}{170,40,40}
+
+\titleformat{\section}{\large\bfseries\color{azulunal}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+
+% ---------------------------------------------------------------------------
+% Enlaces al repositorio. No se usan rutas absolutas en ningun sitio.
+% ---------------------------------------------------------------------------
+\newcommand{\ghrepo}{https://github.com/gustavop-dev/humerous-detection-fat-supress}
+\newcommand{\ghbranch}{geometry-exercises}
+\newcommand{\ghblob}{\ghrepo/blob/\ghbranch}
+\newcommand{\gh}[1]{\href{\ghblob/#1}{\texttt{#1}}}
+\newcommand{\ghl}[2]{\href{\ghblob/#1}{#2}}
+
+\newcommand{\Rd}{\ensuremath{R/d}}
+\newcommand{\Ot}{\ensuremath{O(3,1)}}
+
+\title{\vspace{-1.5cm}\textbf{Representación geométrica del húmero y transporte\\
+de las estructuras musculares mediante \Ot}\\[0.35cm]
+\large Implementación de los ejercicios propuestos y análisis de resultados}
+\author{Gustavo Adolfo Pérez\\
+\small Universidad Nacional de Colombia --- Tópicos en Geometría Computacional\\
+\small Ejercicios propuestos por el profesor Marco Paluszny}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+Se implementan los ejercicios de geometría proyectiva propuestos sobre el pipeline de
+segmentación del húmero en MRI axial con saturación de grasa. El objetivo final es
+transportar las mallas de los músculos del manguito rotador desde un húmero de referencia
+al húmero de un paciente, usando el par (esfera articular, eje diafisario) como única
+correspondencia y una transformación del grupo \Ot{} que preserva esferas y manda rectas
+en rectas.
+
+El núcleo matemático se verifica contra el resultado publicado en el enunciado y pasa
+16 de 16 pruebas. El transporte completo se ejecuta sobre 3 datasets, con verificación
+numérica de que la transformación lleva la esfera del referente exactamente sobre la del
+paciente ($5\times10^{-14}$ mm) y el eje sobre el eje ($5\times10^{-13}$ mm).
+
+El hallazgo principal es negativo y es el más útil del trabajo: la aparente violación de
+la condición $R_1/d_1 = R_2/d_2$ ---que justificaría la necesidad de \Ot{}--- resultó ser
+en su mayor parte un artefacto de la cobertura axial limitada de los volúmenes de
+resonancia, no una diferencia anatómica. Se cuantifica el sesgo, se corrige, y la
+corrección se valida de forma cruzada: mejora la fidelidad del hueso transportado de
+4.4 mm a 3.3 mm de RMS contra datos que no intervinieron en derivarla.
+\end{abstract}
+
+\vspace{-0.3cm}
+\begin{center}
+\colorbox{grisclaro}{\parbox{0.94\textwidth}{\small
+\textbf{Repositorio:} \url{\ghrepo} \quad(rama \texttt{\ghbranch})\\[2pt]
+\textbf{Este informe en PDF:} \ghl{informe/informe.pdf}{\texttt{informe/informe.pdf}}
+\quad\textbf{fuente:} \ghl{informe/informe.tex}{\texttt{informe/informe.tex}}\\[2pt]
+\textbf{Demostraciones de papel:} \ghl{excercises/DEMOSTRACIONES.md}{\texttt{excercises/DEMOSTRACIONES.md}}
+}}
+\end{center}
+
+% ===========================================================================
+\section{Contexto y objetivo}
+
+El enunciado (30 diapositivas) converge en una sola actividad: extraer de un húmero de
+referencia, dado como malla \texttt{.stl}, el par (esfera, eje); extraer el mismo par del
+húmero de un paciente a partir de los arcos circulares detectados en su resonancia;
+construir la transformación que lleva un par en el otro; y usarla para transportar las
+mallas de los músculos del manguito rotador.
+
+La esfera aproxima la superficie articular de la cabeza humeral y el eje aproxima el eje
+del brazo. Anatómicamente el centro de la esfera es \emph{excéntrico} respecto al eje, y esa
+excentricidad $d$ es la cantidad clave: la razón adimensional \Rd{} decide qué grupo de
+transformaciones hace falta.
+
+El interés va más allá del ejercicio. La presentación del proyecto para el congreso UEMS
+(\ghl{presentation/GUION.md}{\texttt{presentation/GUION.md}}) asume una regla fija de
+sectores angulares para asignar cada tendón ---subescapular $0$--$45\degree$, supraespinoso
+$45$--$135\degree$, infraespinoso $135$--$225\degree$, redondo menor
+$225$--$270\degree$--- y el propio guion la reconoce como hipótesis sin validar.
+Transportar las mallas musculares reales al húmero del paciente es justamente lo que
+convertiría esa regla en una cantidad medida por paciente.
+
+\subsection{El nudo técnico}
+
+Una similaridad $T(x) = (sR)x + b$ multiplica todas las distancias por el mismo factor $s$.
+Manda esferas en esferas y rectas en rectas, pero \emph{preserva toda cantidad adimensional
+construida con distancias}, en particular \Rd. Por tanto solo puede llevar un par
+(esfera, eje) exactamente sobre otro si
+
+\[
+\frac{R_1}{d_1} \;=\; \frac{R_2}{d_2}.
+\]
+
+Cuando la igualdad falla hay que salir del grupo de similaridades. El grupo \Ot{} ---las
+matrices $M$ con $M^{\mathsf T} \eta M = \eta$, $\eta = \mathrm{diag}(1,1,1,-1)$--- preserva la
+cuádrica $x^2+y^2+z^2-w^2=0$ de $P^3$ (esto es, la esfera) y manda rectas en rectas, pero
+\emph{no} preserva el centro de la esfera, así que sí puede alterar \Rd.
+
+% ===========================================================================
+\section{Ejercicios y dónde está cada uno}
+
+\begin{longtable}{@{}p{1.6cm} p{6.4cm} p{7.6cm}@{}}
+\toprule
+\textbf{Diap.} & \textbf{Ejercicio} & \textbf{Dónde está resuelto} \\
+\midrule
+\endhead
+4 & $R \in O(3) \Rightarrow \mathrm{diag}(R,1) \in \Ot$ &
+Demostración en \gh{excercises/DEMOSTRACIONES.md}; \texttt{embed\_rotation} \\
+\addlinespace
+11--12 & Construir $T$ de dos pares esfera/eje; verificar $R$ ortogonal &
+\texttt{similarity\_from\_pairs} en \gh{Geometry/similarity.py} \\
+\addlinespace
+13 & Ilustrar $R_1/d_1 = R_2/d_2$ cumplida y violada &
+Demostración y \texttt{pair\_similarity\_invariant} \\
+\addlinespace
+17a & Siempre existe $T$ con $S_1 \to S_2$ y $L_1 \parallel L_2$ &
+Demostración constructiva; \texttt{similarity\_axis\_parallel} \\
+\addlinespace
+17b & Por qué no se logra $T(L_1) = L_2$ &
+Demostración (argumento del cilindro) \\
+\addlinespace
+18 & Verificar que $M$ preserva la esfera y manda $A_1,B_1 \to A_2,B_2$ &
+\texttt{test\_boost\_ground\_truth} en \gh{Geometry/selftest.py} \\
+\addlinespace
+19 & Script en Python que construye $M \in \Ot$ &
+\texttt{boost\_fixing\_sphere} en \gh{Geometry/lorentz.py} \\
+\addlinespace
+24 & Contraejemplo (vale doble) &
+\texttt{build\_non\_similar\_example} y demostración \\
+\addlinespace
+25a & Detectar arcos circulares: secuencia estructurada &
+Ya implementado en \gh{humerus\_boundary\_analysis.py}; documentado en 9 pasos \\
+\addlinespace
+25b & Estrategia para detectar el eje del húmero &
+\gh{Geometry/sphere\_axis.py} \\
+\addlinespace
+29 & Actividad completa: transporte de los músculos &
+\gh{Geometry/transfer.py} \\
+\bottomrule
+\end{longtable}
+
+% ===========================================================================
+\section{Software implementado}
+
+Se añadió el paquete \ghl{Geometry}{\texttt{Geometry/}} y el ejecutable
+\gh{exercises\_geometry.py}. \textbf{No se introdujo ninguna dependencia nueva} y
+\textbf{no se modificó} el pipeline de segmentación existente: todo el trabajo nuevo
+consume los CSV que ese pipeline ya había producido, por lo que \emph{no necesita SAM,
+ni el checkpoint de 375~MB, ni GPU}.
+
+\begin{longtable}{@{}p{4.2cm} p{11.4cm}@{}}
+\toprule
+\textbf{Módulo} & \textbf{Contenido} \\
+\midrule
+\endhead
+\gh{Geometry/lorentz.py} & Álgebra de Minkowski, marcos $\eta$-ortonormales, el boost que
+fija la esfera, acción proyectiva y detección del plano evanescente. \\
+\gh{Geometry/similarity.py} & Grupo de similaridades, el par (esfera, eje) como estructura
+de datos, el invariante \Rd{} y el contraejemplo. \\
+\gh{Geometry/sphere\_axis.py} & Extracción del par desde malla y desde CSV; estimador
+robusto del eje; incertidumbre por bootstrap; calibración del sesgo por truncamiento. \\
+\gh{Geometry/stl\_io.py} & Lectura y escritura de STL binario y ASCII con
+\texttt{numpy}; muestreo de superficie ponderado por área. \\
+\gh{Geometry/transfer.py} & Forma canónica, composición completa, transporte de mallas y
+métricas de eficacia. \\
+\gh{Geometry/selftest.py} & Las 16 pruebas de verificación. \\
+\gh{exercises\_geometry.py} & Interfaz de línea de comandos. \\
+\bottomrule
+\end{longtable}
+
+\subsection{La composición}
+
+La transformación se construye por conjugación:
+\[
+\Phi \;=\; K_{\text{pac}}^{-1} \circ M \circ K_{\text{std}},
+\]
+donde $K$ lleva un par a la forma canónica ---esfera de radio $\rho$ en el origen, eje
+paralelo a $e_1$ a altura $h = \rho\, d/R$--- y $M$ es el boost de \Ot{} que fija esa esfera
+y manda la cuerda canónica del referente en la del paciente. Con
+$Q = [v\;\; n\;\; w]$ por columnas ($v$ la dirección del eje, $w$ el unitario del centro
+hacia el pie de la perpendicular, $n = w \times v$), se toma $K(x) = (\rho/R)\,Q^{\mathsf T}(x - C)$.
+
+Todo se representa en coordenadas homogéneas en la carta $w = \rho$, de modo que $\Phi$ es
+\textbf{una sola matriz $4\times4$}: una única deshomogeneización y sin pérdida de precisión
+por composiciones sucesivas.
+
+Si las razones \Rd{} coinciden, entonces $h_{\text{std}} = h_{\text{pac}}$, sale $M = I$ y
+$\Phi$ se reduce a una similaridad. En caso contrario $\Phi$ es genuinamente proyectiva:
+preserva rectas, planos y razones dobles, pero \emph{no} ángulos ni razones de distancias.
+Como una proyectividad manda planos en planos, los triángulos siguen siendo triángulos
+planos y las mallas se transportan vértice a vértice sin remallar.
+
+% ===========================================================================
+\section{Verificación}
+
+El núcleo se verifica contra el resultado publicado en el enunciado. Con $\rho = 5$,
+$A_1 = (-\sqrt{21},0,2)$, $B_1 = (\sqrt{21},0,2)$, $A_2 = (-4,0,-3)$, $B_2 = (4,0,-3)$, la
+implementación reproduce
+
+\[
+M = \begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & \tfrac{31\sqrt{21}}{84} & -\tfrac{25\sqrt{21}}{84}\\[2pt]
+0 & 0 & -\tfrac{25\sqrt{21}}{84} & \tfrac{31\sqrt{21}}{84}
+\end{pmatrix}
+\]
+
+entrada por entrada, con $\lVert M^{\mathsf T}\eta M - \eta\rVert = 4.4\times10^{-16}$ y factor
+proyectivo $4/\sqrt{21} = 0.872871560944$ exacto.
+
+\begin{center}
+\begin{tabular}{@{}p{7.6cm} p{7.6cm}@{}}
+\toprule
+\textbf{Prueba} & \textbf{Resultado} \\
+\midrule
+$O(3) \subset \Ot$, 200 rotaciones & $\lVert M^{\mathsf T}\eta M - \eta\rVert \le 7.8\times10^{-16}$ \\
+Matriz publicada, entrada por entrada & $4.4\times10^{-16}$ \\
+La esfera se preserva, 500 puntos & $8.9\times10^{-15}$ mm \\
+La cuerda va a la cuerda & colinealidad $1.3\times10^{-14}$ \\
+Generaliza a 30 cuerdas aleatorias & $\le 2.1\times10^{-12}$ \\
+Coincide con la receta del enunciado & $\le 1.1\times10^{-13}$, y $M_0 = M$ \\
+Normalización \emph{timelike} sin \texttt{NaN} & $\langle c,c\rangle = -21 < 0$ \\
+Familia de gauge & cortes fijos, deslizamiento interior \\
+Similaridad de la diapositiva 12 & $\det R = +1$, $\lVert R^{\mathsf T}R - I\rVert = 3.9\times10^{-15}$ \\
+Invariante \Rd & hueco nulo cuando las razones coinciden \\
+Eje paralelo, 50 pares aleatorios & paralelismo $\le 1.2\times10^{-15}$ \\
+Contraejemplo & $5/3 \ne 5$, hueco irreducible 2.0 mm \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Total: \textbf{16 de 16}. Se ejecutan con
+\texttt{python exercises\_geometry.py -{}-selftest}.
+
+\subsection{Dos rectificaciones}
+
+\paragraph{La receta del enunciado es correcta.} Una primera lectura de este trabajo
+concluyó que la receta de las diapositivas 20--21 no generalizaba. \textbf{Era un error de
+transcripción}: los vectores $s_{20}, t_{20}$ pertenecen al segundo marco, no al primero.
+Con la lectura correcta la receta se mantiene en \Ot{} sobre cuerdas arbitrarias y produce
+exactamente la misma matriz que la ruta corta $M = F_2\,(\eta F_1^{\mathsf T} \eta)$.
+
+Lo que sí queda como aporte: los cuatro vectores escritos a mano en la diapositiva son la
+completación $\eta$-ortonormal de cada marco (hay que \emph{generarlos} en el caso general);
+el paso $s_2 = M_0 s_1$ es redundante, pues sale $M_0 = M$; y el vector
+$c = (n_A + n_B)/2$ es \emph{timelike}, con norma de Minkowski negativa, de modo que
+normalizarlo sin cuidado produce \texttt{NaN}.
+
+\paragraph{Un fallo silencioso que conviene conocer.} El error cometido produce una matriz
+que \emph{sigue mandando $A_1 \to A_2$ y $B_1 \to B_2$ con error $4.4\times10^{-16}$ y aun
+así está fuera de \Ot} ($\lVert M^{\mathsf T}\eta M - \eta\rVert = 1.88$). Mapea bien y está
+mal. Por eso la implementación verifica la pertenencia al grupo antes de devolver nada, y
+hay una prueba dedicada a ese caso.
+
+% ===========================================================================
+\section{Resultados}
+
+\subsection{El par del húmero de referencia}
+
+De \texttt{Humero.stl} (2590 triángulos, 155 mm de longitud):
+$R = 22.89$ mm, $d = 10.50$ mm, $\Rd = 2.18$ ($d/R = 0.459$), con RMS del eje de 0.75 mm.
+El enunciado anticipa $R \approx 24$ mm y $d/R \approx 0.4$: el referente cae donde debe.
+
+Tres precauciones resultaron imprescindibles para llegar ahí, y todas son del estimador,
+no del dato:
+
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt]
+\item \textbf{Muestrear la superficie, no los vértices.} El 70\,\% de los 1301 vértices están
+en la cabeza y la diáfisis se queda con unos 10 por banda. Muestreando 40\,000 puntos
+ponderados por área, el RMS del eje baja de 2.09 mm a 0.75 mm.
+\item \textbf{Rechazar losas por radio anómalo.} La malla tiene geometría espuria en algunas
+bandas (radios transversales de 32 a 56 mm donde la diáfisis mide 11). Sin ese filtro el eje
+salía con $d = 49.5$ mm.
+\item \textbf{No reseleccionar la región diafisaria iterando} sobre el eje ya refinado: se
+realimenta y diverge ($8.5\degree \to 8.4\degree \to 11.1\degree$).
+\end{itemize}
+
+El eje correcto queda a $6.1\degree$ del PCA global, que es exactamente lo que la cabeza tuerce.
+
+\subsection{Los pares de los pacientes}
+
+De los 8 datasets, 5 tienen los CSV necesarios y \textbf{3 superan los criterios de calidad},
+fijados a priori en el código y reportados como banderas, no aplicados a ojo.
+
+\begin{center}
+\begin{tabular}{@{}l r r r r r c@{}}
+\toprule
+\textbf{Dataset} & \textbf{$R$ (mm)} & \textbf{$d$ (mm)} & \textbf{\Rd} &
+\textbf{$\sigma$ eje} & \textbf{art./diáf.} & \textbf{Usable} \\
+\midrule
+\texttt{pd\_tse\_fs\_tra\_320\_fov150\_4}  & 24.56 & 4.77 & 5.15 & $1.02\degree$ & 6/11 & sí \\
+\texttt{t1\_tse\_fs\_tra\_320\_fov150\_11} & 23.92 & 3.26 & 7.33 & $1.21\degree$ & 7/10 & sí \\
+\texttt{t1\_tse\_fs\_tra\_320\_fov150\_5}  & 23.95 & 4.43 & 5.41 & $0.36\degree$ & 8/9  & sí \\
+\texttt{AXIAL-P5SE1 \ldots SIEMENS}        & 24.57 & 3.16 & 7.78 & $3.13\degree$ & 3/11 & no \\
+\texttt{AXIAL fs PD FSE \ldots GE}         & 19.69 & 1.54 & 12.78 & $2.30\degree$ & 6/10 & no \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\small
+Motivo de exclusión: el dataset SIEMENS tiene solo 3 círculos articulares y su eje no
+converge; el dataset GE da un radio de 19.69 mm, fuera del rango anatómico admitido.
+\normalsize
+
+\subsection{El hallazgo principal: la violación de \texorpdfstring{\Rd}{R/d} es un artefacto}
+
+La lectura inmediata de la tabla anterior es que el referente tiene $\Rd = 2.18$ y los
+pacientes entre 5.15 y 12.78, luego la condición de la diapositiva 13 se viola por un factor
+de 2.5 a 6 y \Ot{} es imprescindible. \textbf{Esa conclusión no se sostiene.}
+
+Los volúmenes son cortos (unos 68 mm, de 19 a 31 cortes) y solo cubren el húmero proximal:
+los cortes que el pipeline toma por diáfisis son en realidad cuello quirúrgico y metáfisis.
+El propio enunciado ya lo anotaba como pendiente en la diapositiva 16.
+
+Como el húmero de referencia \emph{sí} está completo, el sesgo es medible: se trunca su malla
+a la misma extensión axial y se re-estima con el \emph{mismo} estimador.
+
+\begin{center}
+\begin{tabular}{@{}r r r r r@{}}
+\toprule
+\textbf{Extensión} & \textbf{Error angular} & \textbf{$d$ leído} &
+\textbf{$d_{\text{esc}}$} & \textbf{\Rd{} leído} \\
+\midrule
+55 mm  & $55.5\degree$ & 1.71 mm  & 0.163 & 12.43 \\
+60 mm  & $19.1\degree$ & 4.50 mm  & 0.428 & 5.02 \\
+\textbf{68 mm} & $\mathbf{10.0\degree}$ & \textbf{4.78 mm} & \textbf{0.455} & \textbf{4.80} \\
+80 mm  & $10.0\degree$ & 3.70 mm  & 0.352 & 6.24 \\
+100 mm & $6.3\degree$  & 4.87 mm  & 0.464 & 4.66 \\
+130 mm & $3.4\degree$  & 6.49 mm  & 0.618 & 3.50 \\
+\midrule
+\textbf{completa} & --- & \textbf{10.50 mm} & 1.000 & \textbf{2.18} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Es decir: \textbf{el propio húmero de referencia, visto con la cobertura de una resonancia,
+aparenta $\Rd \approx 5.2$ cuando en realidad vale 2.18.} Aplicando el factor
+$d_{\text{esc}} = 0.425 \pm 0.044$ (ventana de 58 a 100 mm):
+
+\begin{center}
+\begin{tabular}{@{}l r r r@{}}
+\toprule
+\textbf{Dataset} & \textbf{\Rd{} leído} & \textbf{\Rd{} corregido} & \textbf{Referente} \\
+\midrule
+\texttt{pd\_tse\_fs\_tra\_320\_fov150\_4}  & 5.15 & \textbf{2.19} & 2.18 \\
+\texttt{t1\_tse\_fs\_tra\_320\_fov150\_5}  & 5.41 & \textbf{2.30} & 2.18 \\
+\texttt{t1\_tse\_fs\_tra\_320\_fov150\_11} & 7.33 & \textbf{3.11} & 2.18 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Dos de los tres datasets caen prácticamente sobre el referente. \textbf{Con estos datos no
+se puede afirmar que haga falta \Ot.} La maquinaria hay que construirla igual ---el enunciado
+la pide y el caso general la necesita--- pero la conclusión honesta es que la violación
+observada era, en su mayor parte, el sesgo del eje.
+
+\paragraph{Precisión no es exactitud.} El bootstrap da $\sigma$ del eje de apenas
+$0.36\degree$ a $1.21\degree$: el eje está muy bien \emph{determinado} por los datos
+disponibles. Pero el truncamiento introduce $10\degree$ de error \emph{sistemático}. Reportar
+solo $\sigma$ habría dado una falsa sensación de exactitud.
+
+\subsection{Transporte y validación cruzada}
+
+$\Phi$ verifica numéricamente en los 3 datasets: la esfera del referente va sobre la del
+paciente con error máximo de $7.8\times10^{-14}$ mm, el eje sobre el eje con
+$5.6\times10^{-13}$ mm, y $M$ está en \Ot{} a $10^{-16}$. Las cuatro mallas (húmero,
+infraespinoso, redondo menor y subescapular; entre 2590 y 38\,776 triángulos) se transportan
+sin cruzar el plano evanescente.
+
+La comparación entre usar el $d$ crudo y el corregido es la validación cruzada del hallazgo:
+la corrección se deriva del \emph{referente} y se valida contra la nube de borde del
+\emph{paciente}, que no intervino en derivarla.
+
+\begin{center}
+\begin{tabular}{@{}l c r r r r@{}}
+\toprule
+\textbf{Dataset} & \textbf{Variante} & \textbf{\Rd} &
+\textbf{$w_{\max}/w_{\min}$} & \textbf{RMS} & \textbf{P95} \\
+\midrule
+\multirow{2}{*}{\texttt{pd\_\ldots\_fov150\_4}}
+ & crudo     & 5.15 & 3.39 & 4.27 mm & 8.76 mm \\
+ & corregido & 2.19 & \textbf{1.01} & \textbf{3.33 mm} & \textbf{6.84 mm} \\
+\addlinespace
+\multirow{2}{*}{\texttt{t1\_\ldots\_fov150\_11}}
+ & crudo     & 7.33 & 5.00 & 4.47 mm & 9.61 mm \\
+ & corregido & 3.11 & \textbf{1.77} & \textbf{3.60 mm} & \textbf{7.60 mm} \\
+\addlinespace
+\multirow{2}{*}{\texttt{t1\_\ldots\_fov150\_5}}
+ & crudo     & 5.41 & 3.58 & 4.40 mm & 9.06 mm \\
+ & corregido & 2.30 & \textbf{1.10} & \textbf{3.07 mm} & \textbf{6.18 mm} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+La columna $w_{\max}/w_{\min}$ mide la distorsión proyectiva: cae de 3.4--5.0 a 1.0--1.8, es
+decir el transporte pasa de ser fuertemente proyectivo a ser casi una similaridad. Y la
+fidelidad del hueso mejora en los tres casos, de forma consistente y sin haber ajustado nada
+contra esos datos.
+
+\subsection{Eficacia de modelación}
+
+\begin{center}
+\colorbox{grisclaro}{\parbox{0.94\textwidth}{\small
+\textcolor{rojoalerta}{\textbf{Advertencia.}} No existe segmentación muscular del paciente.
+Ninguna de estas métricas mide exactitud anatómica de los músculos: miden
+\emph{consistencia geométrica} del transporte. Índices de Dice o IoU musculares, espesor
+tendinoso y detección de desgarro son sencillamente no evaluables con los datos
+disponibles, y no se sustituyen por nada.
+}}
+\end{center}
+
+\paragraph{M1, fidelidad ósea.} Es la única métrica con verdad de referencia, porque el
+húmero del referente sí tiene contraparte en el paciente. Distancia de la nube de borde de
+la resonancia a la superficie del húmero transportado, restringida a la banda que la
+resonancia realmente cubre: RMS de 3.07 a 3.60 mm, mediana de 2.13 a 2.33 mm (variante
+corregida). Como los músculos viajan solidarios al hueso por la misma $\Phi$, este error es
+una \emph{cota inferior} del error muscular.
+
+\paragraph{M2, plausibilidad anatómica.} La penetración de los músculos en el hueso es
+inferior al 0.1\,\% de los vértices para el infraespinoso y el redondo menor, y del 6.6\,\%
+para el subescapular. Las huellas de inserción se sitúan de forma muy estable entre datasets
+($\theta \approx 45$--$58\degree$ para el infraespinoso, $74$--$82\degree$ para el redondo
+menor, $207\degree$ para el subescapular), lo que indica que el transporte es reproducible.
+
+\paragraph{Sobre los sectores angulares.} Estas cifras \emph{no} deben compararse todavía con
+la regla nominal de la presentación. El origen angular $\theta = 0$ del pipeline procede de
+una base obtenida por SVD, sin anclaje anatómico, de modo que los sectores nominales no están
+bien definidos hasta fijar una dirección de referencia. Que el trabajo lo haga evidente ya es
+un resultado: la regla de sectores necesita un origen anatómico explícito antes de poder
+validarse.
+
+% ===========================================================================
+\section{Limitaciones}
+
+\begin{itemize}[leftmargin=1.2em,itemsep=2pt]
+\item \textbf{Cobertura axial insuficiente.} Es la limitación dominante y la causa del sesgo
+del eje. La solución real es cobertura distal: o un stack axial que llegue a la mitad del
+brazo, o fusionar la esfera del axial con el eje de un stack \emph{coronal}, donde la
+diáfisis se ve a lo largo dentro de cada imagen. Existe uno sin procesar en el repositorio.
+\item \textbf{Tres datasets válidos.} No es una validación, es una prueba de concepto. No se
+promedian entre sí.
+\item \textbf{Falta el supraespinoso}, justo el tendón donde ocurre la mayoría de los
+desgarros y el sector central de la hipótesis de la presentación. No se fabrica ni se estima
+por complemento.
+\item \textbf{La corrección del sesgo es de primer orden}: corrige la magnitud de $d$, no el
+error angular de $10\degree$, y el factor tiene una dispersión de en torno al 10\,\%.
+\item \textbf{La libertad de gauge no se ha explotado.} El boost admite una familia de un
+parámetro que fija esfera y eje pero desliza los puntos a lo largo de la recta; está
+implementada y verificada, pero optimizarla contra la nube del paciente queda pendiente.
+\end{itemize}
+
+% ===========================================================================
+\section{Cómo reproducir}
+
+\begin{verbatim}
+git clone https://github.com/gustavop-dev/humerous-detection-fat-supress.git
+cd humerous-detection-fat-supress
+git checkout geometry-exercises
+
+python3 -m venv venv-analysis
+source venv-analysis/bin/activate
+pip install numpy scipy matplotlib     # sin torch, sin SAM, sin GPU
+
+python exercises_geometry.py --selftest    # 16/16
+python exercises_geometry.py --all         # pipeline completo
+\end{verbatim}
+
+\noindent
+Salidas por dataset en \texttt{Datasets/Out/<dataset>/geometry/}:
+\texttt{patient\_frame.json}, \texttt{transfer\_report.json} y
+\texttt{muscles\_mapped/*.stl}. Salidas globales en \texttt{excercises/out/}:
+\texttt{standard\_frame.json}, \texttt{axis\_bias\_calibration.json} y
+\texttt{bias\_comparison.json}.
+
+\vspace{0.4cm}
+\hrule
+\vspace{0.25cm}
+\noindent\small
+Código y documentación: \url{\ghrepo} \quad rama \texttt{\ghbranch}.
+
+\end{document}

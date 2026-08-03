@@ -1,0 +1,75 @@
+{
+  "path": "/home/cerrotico/unal/humerous-detection-fat-supress/excercises/Humero.stl",
+  "d_true": 10.50320010987767,
+  "radius_true": 22.889130787348922,
+  "ratio_true": 2.1792530417299183,
+  "rows": [
+    {
+      "z_extent_mm": 55.0,
+      "ok": true,
+      "angle_deg": 55.475711551599574,
+      "d_trunc": 1.7076132931628387,
+      "d_scale": 0.1625802874646675,
+      "radius_trunc": 21.21841706694403,
+      "ratio_trunc": 12.425774121050154,
+      "n_slabs": 7
+    },
+    {
+      "z_extent_mm": 60.0,
+      "ok": true,
+      "angle_deg": 19.070285582033,
+      "d_trunc": 4.497798097615726,
+      "d_scale": 0.42823121054180424,
+      "radius_trunc": 22.596642820800046,
+      "ratio_trunc": 5.023934452010748,
+      "n_slabs": 8
+    },
+    {
+      "z_extent_mm": 68.0,
+      "ok": true,
+      "angle_deg": 10.014967022168717,
+      "d_trunc": 4.777557523108749,
+      "d_scale": 0.45486684754446643,
+      "radius_trunc": 22.922507983082,
+      "ratio_trunc": 4.797955413871471,
+      "n_slabs": 8
+    },
+    {
+      "z_extent_mm": 80.0,
+      "ok": true,
+      "angle_deg": 9.990182275486736,
+      "d_trunc": 3.7004992029356063,
+      "d_scale": 0.3523211177758572,
+      "radius_trunc": 23.073928505591308,
+      "ratio_trunc": 6.235355621016418,
+      "n_slabs": 10
+    },
+    {
+      "z_extent_mm": 100.0,
+      "ok": true,
+      "angle_deg": 6.310128951868917,
+      "d_trunc": 4.8742334436531,
+      "d_scale": 0.4640712728180012,
+      "radius_trunc": 22.69484247936389,
+      "ratio_trunc": 4.656084437013494,
+      "n_slabs": 10
+    },
+    {
+      "z_extent_mm": 130.0,
+      "ok": true,
+      "angle_deg": 3.4101312129139996,
+      "d_trunc": 6.493720024744798,
+      "d_scale": 0.6182610972667101,
+      "radius_trunc": 22.751277903916016,
+      "ratio_trunc": 3.5035815860894215,
+      "n_slabs": 10
+    }
+  ],
+  "d_scale_mean": 0.41338863890191774,
+  "d_scale_std": 0.1373051762737166,
+  "d_scale_mri_like": 0.42487261217003225,
+  "d_scale_mri_like_std": 0.043906687059440265,
+  "ratio_mri_like": 5.178332480978033,
+  "n_mri_like": 4,
+  "stable": true
+}
