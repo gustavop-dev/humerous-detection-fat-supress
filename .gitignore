@@ -14,6 +14,9 @@ batch_segmentation_results/
 
 # Large binary outputs (STL, npy, model files)
 *.stl
+# ...pero los .stl de excercises/ son ENTRADAS (húmero y músculos de referencia
+# entregados por el profesor), no salidas: sin ellos el análisis no se reproduce.
+!excercises/*.stl
 *.npy
 
 # Old dataset directories (moved to Datasets/In)
@@ -26,7 +29,9 @@ axial_sections_2_propagation_results/
 venv/
 .venv/
 env/
-venv-analysis/        # lightweight analysis-only venv (numpy/scipy/cv2/pydicom/matplotlib)
+# venv ligero solo para análisis (numpy/scipy/matplotlib): gitignore no admite
+# comentarios al final de la línea, así que este va aparte.
+venv-analysis/
 
 # Python cache
 __pycache__/
