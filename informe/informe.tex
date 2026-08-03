@@ -41,7 +41,7 @@
 de las estructuras musculares mediante \Ot}\\[0.35cm]
 \large Implementación de los ejercicios propuestos y análisis de resultados}
 \author{Gustavo Adolfo Pérez\\
-\small Universidad Nacional de Colombia --- Tópicos en Geometría Computacional\\
+\small Universidad Nacional de Colombia, Tópicos en Geometría Computacional\\
 \small Ejercicios propuestos por el profesor Marco Paluszny}
 \date{\today}
 
@@ -63,7 +63,7 @@ numérica de que la transformación lleva la esfera del referente exactamente so
 paciente ($5\times10^{-14}$ mm) y el eje sobre el eje ($5\times10^{-13}$ mm).
 
 El hallazgo principal es negativo y es el más útil del trabajo: la aparente violación de
-la condición $R_1/d_1 = R_2/d_2$ ---que justificaría la necesidad de \Ot{}--- resultó ser
+la condición $R_1/d_1 = R_2/d_2$, que justificaría la necesidad de \Ot{}, resultó ser
 en su mayor parte un artefacto de la cobertura axial limitada de los volúmenes de
 resonancia, no una diferencia anatómica. Se cuantifica el sesgo, se corrige, y la
 corrección se valida de forma cruzada: mejora la fidelidad del hueso transportado de
@@ -96,9 +96,9 @@ transformaciones hace falta.
 
 El interés va más allá del ejercicio. La presentación del proyecto para el congreso UEMS
 (\ghl{presentation/GUION.md}{\texttt{presentation/GUION.md}}) asume una regla fija de
-sectores angulares para asignar cada tendón ---subescapular $0$--$45\degree$, supraespinoso
+sectores angulares para asignar cada tendón (subescapular $0$--$45\degree$, supraespinoso
 $45$--$135\degree$, infraespinoso $135$--$225\degree$, redondo menor
-$225$--$270\degree$--- y el propio guion la reconoce como hipótesis sin validar.
+$225$--$270\degree$), y el propio guion la reconoce como hipótesis sin validar.
 Transportar las mallas musculares reales al húmero del paciente es justamente lo que
 convertiría esa regla en una cantidad medida por paciente.
 
@@ -113,8 +113,8 @@ construida con distancias}, en particular \Rd. Por tanto solo puede llevar un pa
 \frac{R_1}{d_1} \;=\; \frac{R_2}{d_2}.
 \]
 
-Cuando la igualdad falla hay que salir del grupo de similaridades. El grupo \Ot{} ---las
-matrices $M$ con $M^{\mathsf T} \eta M = \eta$, $\eta = \mathrm{diag}(1,1,1,-1)$--- preserva la
+Cuando la igualdad falla hay que salir del grupo de similaridades. El grupo \Ot{}, formado
+por las matrices $M$ con $M^{\mathsf T} \eta M = \eta$ y $\eta = \mathrm{diag}(1,1,1,-1)$, preserva la
 cuádrica $x^2+y^2+z^2-w^2=0$ de $P^3$ (esto es, la esfera) y manda rectas en rectas, pero
 \emph{no} preserva el centro de la esfera, así que sí puede alterar \Rd.
 
@@ -196,8 +196,8 @@ La transformación se construye por conjugación:
 \[
 \Phi \;=\; K_{\text{pac}}^{-1} \circ M \circ K_{\text{std}},
 \]
-donde $K$ lleva un par a la forma canónica ---esfera de radio $\rho$ en el origen, eje
-paralelo a $e_1$ a altura $h = \rho\, d/R$--- y $M$ es el boost de \Ot{} que fija esa esfera
+donde $K$ lleva un par a la forma canónica (esfera de radio $\rho$ en el origen, eje
+paralelo a $e_1$ a altura $h = \rho\, d/R$) y $M$ es el boost de \Ot{} que fija esa esfera
 y manda la cuerda canónica del referente en la del paciente. Con
 $Q = [v\;\; n\;\; w]$ por columnas ($v$ la dirección del eje, $w$ el unitario del centro
 hacia el pie de la perpendicular, $n = w \times v$), se toma $K(x) = (\rho/R)\,Q^{\mathsf T}(x - C)$.
@@ -351,7 +351,7 @@ a la misma extensión axial y se re-estima con el \emph{mismo} estimador.
 100 mm & $6.3\degree$  & 4.87 mm  & 0.464 & 4.66 \\
 130 mm & $3.4\degree$  & 6.49 mm  & 0.618 & 3.50 \\
 \midrule
-\textbf{completa} & --- & \textbf{10.50 mm} & 1.000 & \textbf{2.18} \\
+\textbf{completa} & n/a & \textbf{10.50 mm} & 1.000 & \textbf{2.18} \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -373,8 +373,8 @@ $d_{\text{esc}} = 0.425 \pm 0.044$ (ventana de 58 a 100 mm):
 \end{center}
 
 Dos de los tres datasets caen prácticamente sobre el referente. \textbf{Con estos datos no
-se puede afirmar que haga falta \Ot.} La maquinaria hay que construirla igual ---el enunciado
-la pide y el caso general la necesita--- pero la conclusión honesta es que la violación
+se puede afirmar que haga falta \Ot.} La maquinaria hay que construirla igual, porque el
+enunciado la pide y el caso general la necesita, pero la conclusión honesta es que la violación
 observada era, en su mayor parte, el sesgo del eje.
 
 \paragraph{Precisión no es exactitud.} El bootstrap da $\sigma$ del eje de apenas
